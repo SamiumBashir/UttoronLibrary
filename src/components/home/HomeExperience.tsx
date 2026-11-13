@@ -11,7 +11,6 @@ import BookCatalogClient from "@/components/books/BookCatalogClient";
 import BookCoverArt from "@/components/books/BookCoverArt";
 import { useStore } from "@/components/providers/StoreProvider";
 import {
-  ArrowDown,
   ArrowRight,
   Award,
   BookOpen,
@@ -48,37 +47,6 @@ interface HomeExperienceProps {
   authors: Author[];
   testimonials: Testimonial[];
 }
-
-const GALLERY_WINGS = [
-  {
-    id: 0,
-    code: "HALL 01",
-    label: "Entrance Foyer",
-    targetProgress: 0.02,
-    subtitle: "Hanging Manifesto & Literary Threshold",
-  },
-  {
-    id: 1,
-    code: "HALL 02",
-    label: "Lit Niches I",
-    targetProgress: 0.28,
-    subtitle: "Fiction, Cosmos & Delta Archives",
-  },
-  {
-    id: 2,
-    code: "CORNER",
-    label: "The 90° Turn",
-    targetProgress: 0.56,
-    subtitle: "Turning Into the Contemporary Wing",
-  },
-  {
-    id: 3,
-    code: "WING 02",
-    label: "Collector Alcoves",
-    targetProgress: 0.86,
-    subtitle: "Poetry, Systems & Archival Editions",
-  },
-];
 
 const JOURNEY_STEPS = [
   {
@@ -161,26 +129,6 @@ export default function HomeExperience({
     }
   };
 
-  const jumpToGalleryWing = (targetP: number) => {
-    const el = galleryTrackRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const docTop = rect.top + window.scrollY;
-    const maxScroll = Math.max(0, el.offsetHeight - window.innerHeight);
-    window.scrollTo({
-      top: docTop + maxScroll * targetP,
-      behavior: "smooth",
-    });
-  };
-
-  const activeWing =
-    walkProgress < 0.18
-      ? GALLERY_WINGS[0]
-      : walkProgress < 0.45
-      ? GALLERY_WINGS[1]
-      : walkProgress < 0.72
-      ? GALLERY_WINGS[2]
-      : GALLERY_WINGS[3];
 
   // Publishing Journey vertical progress line
   const journeyRef = useRef<HTMLDivElement | null>(null);
@@ -239,89 +187,7 @@ export default function HomeExperience({
             />
           </div>
 
-          {/* Entrance Editorial Headline (fades gently as you walk deeper into the hall) */}
-          <div
-            className="pointer-events-none absolute inset-x-0 top-20 z-10 mx-auto max-w-7xl px-4 transition-all duration-500 sm:px-6 lg:px-8"
-            style={{
-              opacity: Math.max(0, 1 - walkProgress * 3.8),
-              transform: `translateY(${-walkProgress * 80}px)`,
-            }}
-          >
-            <div className="max-w-xl rounded-3xl border border-[#dedbd2]/90 bg-white/82 p-6 shadow-[0_24px_60px_rgba(20,20,19,0.08)] backdrop-blur-md sm:p-8">
-              <div className="flex items-center gap-2 font-mono text-[10px] font-semibold uppercase tracking-[0.24em] text-[#62605a]">
-                <span className="h-2 w-2 rounded-full bg-[#d93829]" />
-                <span>Room 01 • Sunlit Architectural Gallery</span>
-              </div>
-              <h1 className="mt-3 font-serif text-4xl font-semibold leading-[1.03] tracking-tight text-[#141413] sm:text-5xl lg:text-6xl">
-                Stories That Shape Worlds.
-              </h1>
-              <p className="mt-3 text-sm leading-relaxed text-[#62605a] sm:text-base">
-                Discover extraordinary stories, explore new perspectives, and experience
-                the magic of reading with Uttoron Prokasoni.
-              </p>
 
-              <div className="pointer-events-auto mt-6 flex flex-wrap items-center gap-3">
-                <Link
-                  href="/books"
-                  onClick={rememberSpotAndNavigate}
-                  className="inline-flex items-center gap-2 rounded-full bg-[#141413] px-6 py-3 text-xs font-bold uppercase tracking-[0.16em] text-white transition hover:bg-[#d93829]"
-                >
-                  Explore Books <ArrowRight className="h-3.5 w-3.5" />
-                </Link>
-                <a
-                  href="#publications-archive"
-                  className="inline-flex items-center gap-2 rounded-full border border-[#dedbd2] bg-white px-6 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-[#141413] transition hover:border-[#141413]"
-                >
-                  Discover Our Publications
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* Minimaze Signature Edge-Floating Spatial HUD (Bottom Left) */}
-          <div className="absolute bottom-5 left-4 right-4 z-20 mx-auto flex max-w-7xl flex-wrap items-end justify-between gap-4 sm:px-4">
-            <div className="rounded-2xl border border-[#dedbd2] bg-white/90 px-4 py-3 shadow-lg backdrop-blur-md">
-              <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-[#62605a]">
-                <span className="h-2 w-2 rounded-full bg-[#d93829]" />
-                <span>{activeWing.code}</span>
-                <span>•</span>
-                <span>{Math.round(walkProgress * 100)}% WALKED</span>
-              </div>
-              <p className="mt-0.5 font-serif text-lg font-semibold text-[#141413]">
-                {activeWing.label} —{" "}
-                <span className="font-sans text-xs font-normal text-[#62605a]">
-                  {activeWing.subtitle}
-                </span>
-              </p>
-
-              {/* Quick Corner & Wing Jump Pills */}
-              <div className="mt-2.5 flex flex-wrap gap-1.5">
-                {GALLERY_WINGS.map((wing) => {
-                  const isCurrent = wing.id === activeWing.id;
-                  return (
-                    <button
-                      key={wing.id}
-                      type="button"
-                      onClick={() => jumpToGalleryWing(wing.targetProgress)}
-                      className={`rounded-full px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] transition ${
-                        isCurrent
-                          ? "bg-[#141413] text-white"
-                          : "border border-[#dedbd2] bg-[#f6f5f0] text-[#62605a] hover:border-[#141413] hover:text-[#141413]"
-                      }`}
-                    >
-                      {wing.label}
-                    </button>
-                  );
-                })}
-                <a
-                  href="#publications-archive"
-                  className="inline-flex items-center gap-1 rounded-full border border-[#d93829]/40 bg-[#d93829]/10 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-[#d93829] hover:bg-[#d93829] hover:text-white"
-                >
-                  Skip to Grid <ArrowDown className="h-3 w-3" />
-                </a>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 

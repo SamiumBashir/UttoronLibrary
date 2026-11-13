@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-serif: "Cormorant Garamond", "Palatino Linotype", "Book Antiqua", Georgia, "Times New Roman", serif;
+  --font-sans: "Plus Jakarta Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --color-gallery-bg: #f6f5f0;
+  --color-gallery-surface: #ffffff;
+  --color-gallery-stone: #eceae3;
+  --color-gallery-border: #dedbd2;
+  --color-gallery-ink: #141413;
+  --color-gallery-muted: #62605a;
+  --color-gallery-red: #d93829;
+  --color-gallery-brass: #b08b46;
+}
+
+:root {
+  --bg-ivory: #f6f5f0;
+  --bg-surface: #ffffff;
+  --bg-stone: #eceae3;
+  --accent-red: #d93829;
+  --accent-brass: #b08b46;
+  --text-ink: #141413;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background-color: var(--bg-ivory);
+  color: var(--text-ink);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-editorial {
+  font-family: var(--font-serif);
+}
+
+/* Subtle architectural plaster micro-texture */
+.paper-grain {
+  background-image: radial-gradient(rgba(20, 20, 19, 0.03) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+/* 3D Perspective utilities for realistic CSS book mockups */
+.perspective-1200 {
+  perspective: 1200px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+/* Custom architectural scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #eceae3;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #141413;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d93829;
+}

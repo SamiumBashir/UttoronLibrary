@@ -1,0 +1,176 @@
+// Prisma schema for Uttoron Prokasoni (PostgreSQL)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String      @id @default(uuid())
+  firebaseUid String?     @unique
+  email       String      @unique
+  name        String
+  phone       String?     @default("")
+  passwordHash String    @default("")
+  role        String      @default("customer") // "customer" | "admin"
+  wishlist    String[]    @default([])
+  addresses   Address[]
+  orders      Order[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Address {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  label       String   @default("Home")
+  fullName    String
+  phone       String
+  addressLine String
+  city        String   @default("Dhaka")
+  postalCode  String
+  isDefault   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model Author {
+  id             String   @id @default(uuid())
+  slug           String   @unique
+  name           String
+  roleTitle      String
+  nationality    String
+  portraitColors String[]
+  bio            String
+  longBio        String
+  quote          String
+  awards         String[] @default([])
+  featured       Boolean  @default(false)
+  books          Book[]
+  createdAt      DateTime @default(now())
+}
+
+model Book {
+  id              String      @id @default(uuid())
+  slug            String      @unique
+  title           String
+  subtitle        String?
+  authorId        String
+  author          Author      @relation(fields: [authorId], references: [id])
+  authorName      String
+  publisherId     String
+  publisherName   String
+  isbn            String      @unique
+  category        String
+  tags            String[]    @default([])
+  description     String
+  longDescription String
+  price           Float
+  originalPrice   Float
+  stock           Int         @default(0)
+  soldCount       Int         @default(0)
+  rating          Float       @default(5.0)
+  reviewCount     Int         @default(0)
+  pages           Int
+  language        String      @default("Bengali")
+  binding         String      @default("Clothbound Hardcover")
+  dimensions      String      @default("5.5 x 8.5 in")
+  publicationDate String
+  edition         String      @default("First Archival Edition")
+  spineColor      String      @default("#141413")
+  coverPalette    Json
+  coverImageUrl   String?     // Optional Firebase Storage URL
+  isNewArrival    Boolean     @default(false)
+  isBestSeller    Boolean     @default(false)
+  isEditorialPick Boolean     @default(false)
+  reviews         Review[]
+  orderItems      OrderItem[]
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+model Review {
+  id               String   @id @default(uuid())
+  bookId           String
+  book             Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  reviewerName     String
+  rating           Int      @default(5)
+  title            String
+  comment          String
+  verifiedPurchase Boolean  @default(true)
+  createdAt        DateTime @default(now())
+}
+
+model Order {
+  id                String      @id @default(uuid())
+  orderNumber       String      @unique
+  userId            String?
+  user              User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  customerName      String
+  customerPhone     String
+  customerEmail     String
+  shippingAddress   String
+  city              String
+  postalCode        String
+  instructions      String?
+  subtotal          Float
+  deliveryCharge    Float
+  discount          Float       @default(0)
+  couponCode        String?
+  total             Float
+  paymentMethod     String      // COD, BKASH, NAGAD, CARD
+  paymentStatus     String      @default("PENDING")
+  orderStatus       String      @default("CONFIRMED")
+  estimatedDelivery String
+  timeline          Json        // Array of { status, timestamp, label, note }
+  items             OrderItem[]
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+}
+
+model OrderItem {
+  id        String @id @default(uuid())
+  orderId   String
+  order     Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  bookId    String
+  book      Book   @relation(fields: [bookId], references: [id])
+  title     String
+  slug      String
+  quantity  Int    @default(1)
+  unitPrice Float
+  lineTotal Float
+}
+
+model Coupon {
+  id             String   @id @default(uuid())
+  code           String   @unique
+  type           String   // "percentage" | "fixed"
+  value          Float
+  minOrderAmount Float    @default(0)
+  maxDiscount    Float?
+  description    String
+  expiresAt      String
+  active         Boolean  @default(true)
+  createdAt      DateTime @default(now())
+}
+
+model Newsletter {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  subscribedAt DateTime @default(now())
+  active       Boolean  @default(true)
+}
+
+model ContactMessage {
+  id         String   @id @default(uuid())
+  name       String
+  email      String
+  subject    String
+  message    String
+  parameters String[] @default([])
+  createdAt  DateTime @default(now())
+}

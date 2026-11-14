@@ -7,6 +7,7 @@ import { useStore } from "@/components/providers/StoreProvider";
 import {
   BookOpen,
   Heart,
+  Menu,
   Search,
   ShoppingBag,
   User,
@@ -108,68 +109,18 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* Right Actions + Minimaze Paper Blind Menu Trigger */}
-          <div className="flex items-center gap-1.5 sm:gap-2">
+          {/* Menu Icon Trigger Button */}
+          <div className="flex items-center">
             <button
               type="button"
-              aria-label="Search books"
-              onClick={() => setSearchOpen(true)}
-              className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/85 text-[#141413] transition hover:border-[#141413]"
-            >
-              <Search className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-            </button>
-
-            <Link
-              href="/account?tab=wishlist"
-              aria-label={`Wishlist (${wishlist.length} items)`}
-              className="relative hidden xs:flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/85 text-[#141413] transition hover:border-[#141413]"
-            >
-              <Heart className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-              {wishlist.length > 0 && (
-                <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#d93829] px-1 text-[10px] font-bold text-white">
-                  {wishlist.length}
-                </span>
-              )}
-            </Link>
-
-            <button
-              type="button"
-              aria-label={`Shopping cart (${cartCount} items)`}
-              onClick={() => setCartOpen(true)}
-              className="relative flex h-8 sm:h-9 items-center gap-1.5 sm:gap-2 rounded-full border border-[#141413] bg-[#141413] px-2.5 sm:px-3.5 text-xs font-semibold text-[#f6f5f0] transition hover:bg-[#2a2a28]"
-            >
-              <ShoppingBag className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">Bag</span>
-              <span className="flex h-4 min-w-4 sm:h-5 sm:min-w-5 items-center justify-center rounded-full bg-[#d93829] px-1 text-[10px] font-bold text-white">
-                {cartCount}
-              </span>
-            </button>
-
-            <Link
-              href="/account"
-              aria-label="Account or Login"
-              className="hidden h-9 items-center gap-1.5 rounded-full border border-[#dedbd2] bg-white/85 px-3 text-xs font-semibold text-[#141413] transition hover:border-[#141413] sm:inline-flex"
-            >
-              <User className="h-3.5 w-3.5" />
-              <span>{user ? user.name.split(" ")[0] : "Account"}</span>
-            </Link>
-
-            {/* Signature Minimaze Paper-Blind Toggle */}
-            <button
-              type="button"
-              aria-label={blindOpen ? "Close Paper Blind Menu" : "Open Paper Blind Menu"}
+              aria-label={blindOpen ? "Close Navigation Menu" : "Open Navigation Menu"}
               onClick={() => setBlindOpen((v) => !v)}
-              className="inline-flex h-8 sm:h-9 items-center gap-1.5 sm:gap-2 rounded-full border border-[#dedbd2] bg-white px-3 sm:px-3.5 font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.14em] sm:tracking-[0.16em] text-[#141413] transition hover:border-[#141413]"
+              className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-[#dedbd2] bg-white text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
             >
               {blindOpen ? (
-                <>
-                  <X className="h-3.5 w-3.5" /> Close
-                </>
+                <X className="h-4 w-4 sm:h-5 sm:w-5" />
               ) : (
-                <>
-                  <span className="h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-[#d93829]" />
-                  Menu
-                </>
+                <Menu className="h-4 w-4 sm:h-5 sm:w-5" />
               )}
             </button>
           </div>
@@ -209,7 +160,65 @@ export default function Navbar() {
               />
             )}
 
-            <div className="relative z-10 mx-auto max-w-7xl px-4 py-6 sm:py-10 sm:px-6 lg:px-8">
+            <div className="relative z-10 mx-auto max-w-7xl px-4 py-6 sm:py-8 sm:px-6 lg:px-8">
+              {/* Menu Header Utility Bar: Reader Login / Account + Search & Bag Triggers */}
+              <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border-b border-[#dedbd2] pb-5">
+                <Link
+                  href="/account"
+                  onClick={() => setBlindOpen(false)}
+                  className="inline-flex items-center gap-2 rounded-full border border-[#141413] bg-[#141413] px-3.5 sm:px-4 py-1.5 sm:py-2 text-xs font-semibold text-[#f6f5f0] shadow-xs transition hover:bg-[#2a2a28]"
+                >
+                  <User className="h-3.5 w-3.5" />
+                  <span>{user ? `Signed in as ${user.name}` : "Reader Sign In / Account"}</span>
+                </Link>
+
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setBlindOpen(false);
+                      setSearchOpen(true);
+                    }}
+                    className="flex items-center gap-1.5 rounded-full border border-[#dedbd2] bg-white px-3 py-1.5 text-xs font-semibold text-[#141413] transition hover:border-[#141413]"
+                  >
+                    <Search className="h-3.5 w-3.5 text-[#62605a]" />
+                    <span>Search</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setBlindOpen(false);
+                      setCartOpen(true);
+                    }}
+                    className="flex items-center gap-1.5 rounded-full border border-[#dedbd2] bg-white px-3 py-1.5 text-xs font-semibold text-[#141413] transition hover:border-[#141413]"
+                  >
+                    <ShoppingBag className="h-3.5 w-3.5 text-[#62605a]" />
+                    <span>Bag</span>
+                    {cartCount > 0 && (
+                      <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-[#d93829] px-1 text-[10px] font-bold text-white">
+                        {cartCount}
+                      </span>
+                    )}
+                  </button>
+
+                  <Link
+                    href="/account?tab=wishlist"
+                    onClick={() => setBlindOpen(false)}
+                    className="flex items-center gap-1.5 rounded-full border border-[#dedbd2] bg-white px-3 py-1.5 text-xs font-semibold text-[#141413] transition hover:border-[#141413]"
+                  >
+                    <Heart className="h-3.5 w-3.5 text-[#62605a]" />
+                    <span>Wishlist</span>
+                    {wishlist.length > 0 && (
+                      <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-[#d93829] px-1 text-[10px] font-bold text-white">
+                        {wishlist.length}
+                      </span>
+                    )}
+                  </Link>
+                </div>
+              </div>
+
+              {/* Main Navigation Grid */}
               <div className="grid gap-2.5 sm:gap-3 md:grid-cols-2 lg:grid-cols-3">
                 {NAV_LINKS.map((item) => {
                   const active =

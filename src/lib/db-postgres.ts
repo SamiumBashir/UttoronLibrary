@@ -1,7 +1,63 @@
 import { prisma, isDatabaseConnected } from "@/lib/prisma";
-import type { Book, Author, Review, Order, CoverPalette, BookCategory } from "@/lib/types";
+import type {
+  Book,
+  Author,
+  Review,
+  Order,
+  CoverPalette,
+  BookCategory,
+  OrderStatus,
+  PaymentMethod,
+  PaymentStatus,
+  OrderTimelineEvent,
+} from "@/lib/types";
 
 export { isDatabaseConnected };
+
+function mapPrismaOrderToOrder(o: any): Order {
+  return {
+    id: o.id,
+    orderNumber: o.orderNumber,
+    userId: o.userId ?? undefined,
+    customer: {
+      fullName: o.customerName,
+      phone: o.customerPhone,
+      email: o.customerEmail,
+      address: o.shippingAddress,
+      city: o.city,
+      postalCode: o.postalCode,
+      instructions: o.instructions ?? "",
+    },
+    items: (o.items || []).map((it: any) => ({
+      bookId: it.bookId,
+      slug: it.slug,
+      title: it.title,
+      authorName: it.book?.authorName || "Uttoron Author",
+      isbn: it.book?.isbn || "",
+      unitPrice: it.unitPrice,
+      quantity: it.quantity,
+      lineTotal: it.lineTotal,
+      coverPalette: it.book?.coverPalette || {
+        base: "#141413",
+        accent: "#d93829",
+        spine: "#2a2a28",
+        foil: "gold",
+      },
+    })),
+    subtotal: o.subtotal,
+    deliveryCharge: o.deliveryCharge,
+    discount: o.discount,
+    couponCode: o.couponCode ?? undefined,
+    total: o.total,
+    paymentMethod: o.paymentMethod as PaymentMethod,
+    paymentStatus: o.paymentStatus as PaymentStatus,
+    orderStatus: o.orderStatus as OrderStatus,
+    timeline: (Array.isArray(o.timeline) ? o.timeline : []) as OrderTimelineEvent[],
+    estimatedDelivery: o.estimatedDelivery,
+    createdAt: typeof o.createdAt === "object" ? o.createdAt.toISOString() : String(o.createdAt),
+    updatedAt: typeof o.updatedAt === "object" ? o.updatedAt.toISOString() : String(o.updatedAt),
+  };
+}
 
 export async function getBooksFromDb(): Promise<Book[] | null> {
   if (!isDatabaseConnected()) return null;
@@ -170,6 +226,99 @@ export async function createOrderInDb(order: Order): Promise<boolean> {
     return true;
   } catch (err) {
     console.error("[PostgreSQL] Failed to insert order:", err);
+    return false;
+  }
+}
+
+export async function getOrderFromDb(orderNumber: string): Promise<Order | null> {
+  if (!isDatabaseConnected()) return null;
+  try {
+    const trimmed = orderNumber.trim();
+    const o = await prisma.order.findFirst({
+      where: {
+        orderNumber: {
+          equals: trimmed,
+          mode: "insensitive",
+        },
+      },
+      include: {
+        items: {
+          include: { book: true },
+        },
+      },
+    });
+    if (!o) return null;
+    return mapPrismaOrderToOrder(o);
+  } catch (err) {
+    console.error("[PostgreSQL] Failed to fetch order:", err);
+    return null;
+  }
+}
+
+export async function getOrdersFromDb(filter?: {
+  userId?: string;
+  email?: string;
+  isAdmin?: boolean;
+}): Promise<Order[] | null> {
+  if (!isDatabaseConnected()) return null;
+  try {
+    const where: any = {};
+    if (!filter?.isAdmin) {
+      const conditions: any[] = [];
+      if (filter?.userId) conditions.push({ userId: filter.userId });
+      if (filter?.email) conditions.push({ customerEmail: { equals: filter.email, mode: "insensitive" } });
+      if (conditions.length > 0) {
+        where.OR = conditions;
+      }
+    }
+    const list = await prisma.order.findMany({
+      where,
+      orderBy: { createdAt: "desc" },
+      include: {
+        items: {
+          include: { book: true },
+        },
+      },
+    });
+    return list.map(mapPrismaOrderToOrder);
+  } catch (err) {
+    console.error("[PostgreSQL] Failed to list orders:", err);
+    return null;
+  }
+}
+
+export async function updateOrderStatusInDb(
+  orderNumber: string,
+  orderStatus: OrderStatus,
+  note?: string
+): Promise<boolean> {
+  if (!isDatabaseConnected()) return false;
+  try {
+    const order = await prisma.order.findFirst({
+      where: { orderNumber: { equals: orderNumber.trim(), mode: "insensitive" } },
+    });
+    if (!order) return false;
+
+    const timeline = (Array.isArray(order.timeline) ? order.timeline : []) as any[];
+    const nowIso = new Date().toISOString();
+    timeline.unshift({
+      status: orderStatus,
+      label: `Order ${orderStatus}`,
+      note: note || `Status updated to ${orderStatus} by curator.`,
+      timestamp: nowIso,
+    });
+
+    await prisma.order.update({
+      where: { id: order.id },
+      data: {
+        orderStatus,
+        updatedAt: new Date(),
+        timeline,
+      },
+    });
+    return true;
+  } catch (err) {
+    console.error("[PostgreSQL] Failed to update order status:", err);
     return false;
   }
 }

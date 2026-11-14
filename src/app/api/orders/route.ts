@@ -6,7 +6,7 @@ import {
   updateStore,
   validateCouponOnSubtotal,
 } from "@/lib/db";
-import { createOrderInDb } from "@/lib/db-postgres";
+import { createOrderInDb, getOrdersFromDb } from "@/lib/db-postgres";
 import { getAuthenticatedUser } from "@/lib/auth";
 import {
   getSiteBaseUrl,
@@ -27,11 +27,28 @@ export async function GET() {
   if (!user) {
     return NextResponse.json({ error: "Authentication required." }, { status: 401 });
   }
+
+  const dbOrders = await getOrdersFromDb({
+    userId: user.id,
+    email: user.email,
+    isAdmin: user.role === "admin",
+  });
+
   const store = readStore();
-  const orders =
+  const fileOrders =
     user.role === "admin"
       ? store.orders
       : store.orders.filter((o) => o.userId === user.id || o.customer.email === user.email);
+
+  // Merge unique by orderNumber
+  const mergedMap = new Map<string, Order>();
+  for (const o of fileOrders) mergedMap.set(o.orderNumber, o);
+  if (dbOrders) {
+    for (const o of dbOrders) mergedMap.set(o.orderNumber, o);
+  }
+  const orders = Array.from(mergedMap.values()).sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
 
   return NextResponse.json({ orders });
 }

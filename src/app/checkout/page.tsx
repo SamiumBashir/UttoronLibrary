@@ -155,7 +155,13 @@ function CheckoutContent() {
       });
 
       const data = (await res.json()) as {
-        order?: { orderNumber: string };
+        order?: {
+          id?: string;
+          orderNumber: string;
+          total?: number;
+          status?: string;
+          estimatedDelivery?: string;
+        };
         redirectUrl?: string;
         error?: string;
       };
@@ -169,6 +175,65 @@ function CheckoutContent() {
         window.location.href = data.redirectUrl;
         return;
       }
+
+      const orderSummary = {
+        id: data.order.id || `ord-${data.order.orderNumber}`,
+        orderNumber: data.order.orderNumber,
+        customer: {
+          fullName: fullName.trim(),
+          phone: phone.trim(),
+          email: email.trim(),
+          address: address.trim(),
+          city: city.trim(),
+          postalCode: postalCode.trim(),
+          instructions: instructions.trim(),
+        },
+        items: cart.map((c) => ({
+          bookId: c.bookId,
+          slug: c.slug,
+          title: c.title,
+          authorName: c.authorName,
+          isbn: c.isbn,
+          unitPrice: c.price,
+          quantity: c.quantity,
+          lineTotal: c.price * c.quantity,
+          coverPalette: c.coverPalette,
+        })),
+        subtotal: cartSubtotal,
+        deliveryCharge,
+        discount: appliedDiscount,
+        couponCode: appliedCode || undefined,
+        total: totalPayable,
+        paymentMethod: selectedPayment,
+        paymentStatus: selectedPayment === "COD" ? "PENDING_COD" : "AWAITING_GATEWAY",
+        orderStatus: selectedPayment === "COD" ? "CONFIRMED" : "PROCESSING",
+        estimatedDelivery:
+          data.order.estimatedDelivery ||
+          (city.toLowerCase().includes("dhaka")
+            ? "2-3 Business Days"
+            : "3-5 Business Days"),
+        timeline: [
+          {
+            status: selectedPayment === "COD" ? "CONFIRMED" : "PROCESSING",
+            label:
+              selectedPayment === "COD"
+                ? "Order Confirmed (Cash on Delivery)"
+                : "Payment Processing",
+            note: "Your volumes have been reserved in our Dhaka bindery.",
+            timestamp: new Date().toISOString(),
+          },
+        ],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      try {
+        sessionStorage.setItem(
+          `uttoron_order_${data.order.orderNumber.toUpperCase()}`,
+          JSON.stringify(orderSummary)
+        );
+        sessionStorage.setItem("uttoron_last_order", JSON.stringify(orderSummary));
+      } catch {}
 
       clearCart();
       sessionStorage.removeItem("uttoron_checkout_coupon");

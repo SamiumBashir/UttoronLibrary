@@ -1,36 +1,51 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import type { Order } from "@/lib/types";
 import { formatPrice } from "@/lib/format";
 import { ArrowRight, Clock, PackageSearch } from "lucide-react";
 
-export default function TrackOrderPage() {
-  const [orderNumber, setOrderNumber] = useState("");
+function TrackContent() {
+  const searchParams = useSearchParams();
+  const initialQuery = searchParams.get("id") || searchParams.get("order") || "";
+  const [orderNumber, setOrderNumber] = useState(initialQuery);
   const [order, setOrder] = useState<Order | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleTrack = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!orderNumber.trim()) return;
+  const fetchTrack = async (targetId: string) => {
+    const trimmed = targetId.trim().toUpperCase();
+    if (!trimmed) return;
     setLoading(true);
     setError("");
     setOrder(null);
     try {
-      const res = await fetch(
-        `/api/orders/${encodeURIComponent(orderNumber.trim().toUpperCase())}`
-      );
+      const res = await fetch(`/api/orders/${encodeURIComponent(trimmed)}`);
       const data = (await res.json()) as { order?: Order; error?: string };
       if (!res.ok || !data.order) {
-        setError(data.error || "Order number not found.");
+        setError(data.error || "Order number not found in current records.");
       } else {
         setOrder(data.order);
       }
+    } catch {
+      setError("Failed to locate order. Please check network connection.");
     } finally {
       setLoading(false);
     }
+  };
+
+  useEffect(() => {
+    if (initialQuery) {
+      setOrderNumber(initialQuery);
+      void fetchTrack(initialQuery);
+    }
+  }, [initialQuery]);
+
+  const handleTrack = async (e: React.FormEvent) => {
+    e.preventDefault();
+    void fetchTrack(orderNumber);
   };
 
   return (
@@ -42,7 +57,7 @@ export default function TrackOrderPage() {
             Track Your Order
           </h1>
           <p className="mt-2 text-sm text-[#62605a]">
-            Enter your Uttoron Prokasoni order ID (e.g. UP-20261112-A1B2) to inspect live
+            Enter your Uttoron Prokasoni order ID (e.g. UP-20261114-98BD) to inspect live
             bindery and courier milestones.
           </p>
         </div>
@@ -56,7 +71,7 @@ export default function TrackOrderPage() {
             required
             value={orderNumber}
             onChange={(e) => setOrderNumber(e.target.value)}
-            placeholder="Enter Order ID (e.g. UP-20261112-...)"
+            placeholder="Enter Order ID (e.g. UP-20261114-...)"
             className="flex-1 rounded-2xl border border-[#dedbd2] bg-[#f6f5f0] px-4 py-3 text-sm uppercase text-[#141413] focus:border-[#141413] focus:outline-none"
           />
           <button
@@ -122,3 +137,16 @@ export default function TrackOrderPage() {
   );
 }
 
+export default function TrackOrderPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#f6f5f0] pt-28 text-center text-sm text-[#62605a]">
+          Loading tracker...
+        </div>
+      }
+    >
+      <TrackContent />
+    </Suspense>
+  );
+}

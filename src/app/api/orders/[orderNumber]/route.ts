@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { readStore, updateStore } from "@/lib/db";
+import { getOrderFromDb, updateOrderStatusInDb } from "@/lib/db-postgres";
 import { getAuthenticatedUser } from "@/lib/auth";
 import type { OrderStatus } from "@/lib/types";
 
@@ -8,6 +9,14 @@ export async function GET(
   context: { params: Promise<{ orderNumber: string }> }
 ) {
   const { orderNumber } = await context.params;
+
+  // 1. Try PostgreSQL database first
+  const dbOrder = await getOrderFromDb(orderNumber);
+  if (dbOrder) {
+    return NextResponse.json({ order: dbOrder });
+  }
+
+  // 2. Fallback to file/memory store
   const store = readStore();
   const order = store.orders.find(
     (o) => o.orderNumber.toUpperCase() === orderNumber.toUpperCase()
@@ -35,6 +44,10 @@ export async function PATCH(
     note?: string;
   };
 
+  if (body.orderStatus) {
+    await updateOrderStatusInDb(orderNumber, body.orderStatus, body.note);
+  }
+
   const updated = updateStore((store) => {
     const order = store.orders.find(
       (o) => o.orderNumber.toUpperCase() === orderNumber.toUpperCase()
@@ -53,9 +66,10 @@ export async function PATCH(
     return order;
   });
 
-  if (!updated) {
+  const refreshed = (await getOrderFromDb(orderNumber)) || updated;
+  if (!refreshed) {
     return NextResponse.json({ error: "Order not found." }, { status: 404 });
   }
-  return NextResponse.json({ order: updated });
+  return NextResponse.json({ order: refreshed });
 }
 

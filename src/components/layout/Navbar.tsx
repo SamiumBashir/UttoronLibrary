@@ -69,16 +69,16 @@ export default function Navbar() {
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* Brand Logo */}
-          <Link href="/" className="group flex items-center gap-3 focus:outline-none">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#141413]/15 bg-white text-[#141413] shadow-xs transition group-hover:border-[#d93829]">
+          <Link href="/" className="group flex items-center gap-2 sm:gap-3 focus:outline-none">
+            <span className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-xl border border-[#141413]/15 bg-white text-[#141413] shadow-xs transition group-hover:border-[#d93829]">
               <BookOpen className="h-4 w-4" />
             </span>
             <div>
-              <span className="flex items-center gap-1.5 font-serif text-xl font-bold tracking-tight text-[#141413]">
+              <span className="flex items-center gap-1.5 font-serif text-base sm:text-xl font-bold tracking-tight text-[#141413]">
                 Uttoron Prokasoni
                 <span className="h-1.5 w-1.5 rounded-full bg-[#d93829]" />
               </span>
-              <span className="block font-mono text-[9px] uppercase tracking-[0.24em] text-[#62605a]">
+              <span className="hidden xs:block font-mono text-[9px] uppercase tracking-[0.24em] text-[#62605a]">
                 3D Gallery &amp; Press
               </span>
             </div>
@@ -109,22 +109,22 @@ export default function Navbar() {
           </nav>
 
           {/* Right Actions + Minimaze Paper Blind Menu Trigger */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <button
               type="button"
               aria-label="Search books"
               onClick={() => setSearchOpen(true)}
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/85 text-[#141413] transition hover:border-[#141413]"
+              className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/85 text-[#141413] transition hover:border-[#141413]"
             >
-              <Search className="h-4 w-4" />
+              <Search className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </button>
 
             <Link
               href="/account?tab=wishlist"
               aria-label={`Wishlist (${wishlist.length} items)`}
-              className="relative flex h-9 w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/85 text-[#141413] transition hover:border-[#141413]"
+              className="relative hidden xs:flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/85 text-[#141413] transition hover:border-[#141413]"
             >
-              <Heart className="h-4 w-4" />
+              <Heart className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               {wishlist.length > 0 && (
                 <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#d93829] px-1 text-[10px] font-bold text-white">
                   {wishlist.length}
@@ -136,11 +136,11 @@ export default function Navbar() {
               type="button"
               aria-label={`Shopping cart (${cartCount} items)`}
               onClick={() => setCartOpen(true)}
-              className="relative flex h-9 items-center gap-2 rounded-full border border-[#141413] bg-[#141413] px-3.5 text-xs font-semibold text-[#f6f5f0] transition hover:bg-[#2a2a28]"
+              className="relative flex h-8 sm:h-9 items-center gap-1.5 sm:gap-2 rounded-full border border-[#141413] bg-[#141413] px-2.5 sm:px-3.5 text-xs font-semibold text-[#f6f5f0] transition hover:bg-[#2a2a28]"
             >
               <ShoppingBag className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">Bag</span>
-              <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#d93829] px-1.5 text-[10px] font-bold text-white">
+              <span className="flex h-4 min-w-4 sm:h-5 sm:min-w-5 items-center justify-center rounded-full bg-[#d93829] px-1 text-[10px] font-bold text-white">
                 {cartCount}
               </span>
             </button>
@@ -159,7 +159,7 @@ export default function Navbar() {
               type="button"
               aria-label={blindOpen ? "Close Paper Blind Menu" : "Open Paper Blind Menu"}
               onClick={() => setBlindOpen((v) => !v)}
-              className="inline-flex h-9 items-center gap-2 rounded-full border border-[#dedbd2] bg-white px-3.5 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-[#141413] transition hover:border-[#141413]"
+              className="inline-flex h-8 sm:h-9 items-center gap-1.5 sm:gap-2 rounded-full border border-[#dedbd2] bg-white px-3 sm:px-3.5 font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.14em] sm:tracking-[0.16em] text-[#141413] transition hover:border-[#141413]"
             >
               {blindOpen ? (
                 <>
@@ -167,7 +167,7 @@ export default function Navbar() {
                 </>
               ) : (
                 <>
-                  <span className="h-2 w-2 rounded-full bg-[#d93829]" />
+                  <span className="h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-[#d93829]" />
                   Menu
                 </>
               )}
@@ -187,7 +187,7 @@ export default function Navbar() {
             animate={{ y: 0 }}
             exit={{ y: "-100%" }}
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-x-0 top-[61px] z-40 overflow-hidden border-b border-[#dedbd2] bg-[#f6f5f0] shadow-[0_32px_64px_rgba(20,20,19,0.16)]"
+            className="fixed inset-x-0 top-[53px] sm:top-[61px] z-40 max-h-[calc(100dvh-53px)] sm:max-h-[calc(100dvh-61px)] overflow-y-auto overscroll-contain border-b border-[#dedbd2] bg-[#f6f5f0] pb-10 shadow-[0_32px_64px_rgba(20,20,19,0.16)]"
           >
             {/* Paper blind horizontal slat lines */}
             <div
@@ -209,8 +209,8 @@ export default function Navbar() {
               />
             )}
 
-            <div className="relative z-10 mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-              <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+            <div className="relative z-10 mx-auto max-w-7xl px-4 py-6 sm:py-10 sm:px-6 lg:px-8">
+              <div className="grid gap-2.5 sm:gap-3 md:grid-cols-2 lg:grid-cols-3">
                 {NAV_LINKS.map((item) => {
                   const active =
                     item.href === "/"
@@ -220,19 +220,19 @@ export default function Navbar() {
                     <Link
                       key={item.href}
                       href={item.href}
-                      className="group flex items-baseline justify-between rounded-2xl border border-[#dedbd2]/80 bg-white/85 px-6 py-5 transition hover:border-[#141413] hover:bg-white"
+                      className="group flex items-baseline justify-between rounded-2xl border border-[#dedbd2]/80 bg-white/85 px-4 py-3.5 sm:px-6 sm:py-5 transition hover:border-[#141413] hover:bg-white"
                     >
                       <div>
-                        <span className="font-mono text-[11px] font-semibold text-[#d93829]">
+                        <span className="font-mono text-[10px] sm:text-[11px] font-semibold text-[#d93829]">
                           {item.code}
                         </span>
-                        <h3 className="mt-1 font-serif text-3xl font-semibold text-[#141413] transition group-hover:translate-x-1">
+                        <h3 className="mt-0.5 sm:mt-1 font-serif text-xl sm:text-3xl font-semibold text-[#141413] transition group-hover:translate-x-1">
                           {item.label}
                         </h3>
-                        <p className="mt-0.5 text-xs text-[#62605a]">{item.note}</p>
+                        <p className="mt-0.5 text-[11px] sm:text-xs text-[#62605a]">{item.note}</p>
                       </div>
                       <span
-                        className={`h-2.5 w-2.5 rounded-full transition ${
+                        className={`h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full transition ${
                           active
                             ? "bg-[#d93829]"
                             : "bg-[#dedbd2] group-hover:bg-[#d93829]"
@@ -244,7 +244,10 @@ export default function Navbar() {
               </div>
 
               <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-[#dedbd2] pt-5 font-mono text-xs text-[#62605a]">
-                <div className="flex flex-wrap gap-5">
+                <div className="flex flex-wrap gap-3 sm:gap-5">
+                  <Link href="/account?tab=wishlist" className="hover:text-[#141413]">
+                    Wishlist ({wishlist.length})
+                  </Link>
                   <Link href="/track" className="hover:text-[#141413]">
                     Track Order
                   </Link>
@@ -258,7 +261,7 @@ export default function Navbar() {
                     CMS Console
                   </Link>
                 </div>
-                <span>GALLERY OPEN • DHAKA &amp; ONLINE</span>
+                <span className="hidden sm:inline">GALLERY OPEN • DHAKA &amp; ONLINE</span>
               </div>
             </div>
           </motion.div>

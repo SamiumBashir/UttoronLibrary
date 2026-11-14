@@ -171,12 +171,18 @@ export default function MinimazeGalleryCanvas({
     const width = container.clientWidth || 1000;
     const height = container.clientHeight || 720;
 
+    const calcFov = (w: number, h: number) => {
+      const aspect = w / h;
+      if (aspect >= 1.2) return 46;
+      return Math.min(74, Math.round(46 / Math.max(0.55, aspect)));
+    };
+
     // Bright Minimaze-Light Museum White Atmosphere
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0xf5f4ef);
     scene.fog = new THREE.Fog(0xf5f4ef, 12, 34);
 
-    const camera = new THREE.PerspectiveCamera(46, width / height, 0.1, 70);
+    const camera = new THREE.PerspectiveCamera(calcFov(width, height), width / height, 0.1, 70);
 
     const renderer = new THREE.WebGLRenderer({
       antialias: !caps.isMobile,
@@ -498,6 +504,7 @@ export default function MinimazeGalleryCanvas({
       const nw = container.clientWidth || 1000;
       const nh = container.clientHeight || 720;
       camera.aspect = nw / nh;
+      camera.fov = calcFov(nw, nh);
       camera.updateProjectionMatrix();
       renderer.setSize(nw, nh);
     };

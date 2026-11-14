@@ -50,12 +50,12 @@ export default function BookCard3D({ book }: BookCard3DProps) {
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="group relative flex flex-col rounded-2xl border border-[#dedbd2] bg-white p-4 transition-all duration-300 hover:-translate-y-1.5 hover:border-[#141413] hover:shadow-[0_24px_48px_-16px_rgba(20,20,19,0.14)]"
+      className="group relative flex flex-col rounded-2xl border border-[#dedbd2] bg-white p-3 sm:p-4 transition-all duration-300 hover:-translate-y-1.5 hover:border-[#141413] hover:shadow-[0_24px_48px_-16px_rgba(20,20,19,0.14)]"
     >
       {/* Top plaque metadata & Wishlist */}
-      <div className="mb-3 flex items-center justify-between gap-2">
+      <div className="mb-2 sm:mb-3 flex items-center justify-between gap-1.5 sm:gap-2">
         <span
-          className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 font-mono text-[10px] font-medium uppercase ${
+          className={`inline-flex items-center gap-1 sm:gap-1.5 rounded-full px-1.5 sm:px-2.5 py-0.5 font-mono text-[9px] sm:text-[10px] font-medium uppercase ${
             stockBadge.tone === "out"
               ? "bg-red-50 text-red-700"
               : stockBadge.tone === "low"
@@ -75,9 +75,9 @@ export default function BookCard3D({ book }: BookCard3DProps) {
           {stockBadge.label}
         </span>
 
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1 sm:gap-1.5">
           {discount > 0 && (
-            <span className="rounded-full bg-[#d93829]/10 px-2 py-0.5 font-mono text-[10px] font-bold text-[#d93829]">
+            <span className="rounded-full bg-[#d93829]/10 px-1.5 sm:px-2 py-0.5 font-mono text-[9px] sm:text-[10px] font-bold text-[#d93829]">
               -{discount}%
             </span>
           )}
@@ -85,13 +85,13 @@ export default function BookCard3D({ book }: BookCard3DProps) {
             type="button"
             aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
             onClick={() => void toggleWishlist(book.id, book.title)}
-            className={`flex h-8 w-8 items-center justify-center rounded-full border transition ${
+            className={`flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full border transition ${
               wishlisted
                 ? "border-[#d93829] bg-[#d93829] text-white"
                 : "border-[#dedbd2] bg-[#f6f5f0] text-[#62605a] hover:border-[#141413] hover:text-[#141413]"
             }`}
           >
-            <Heart className={`h-3.5 w-3.5 ${wishlisted ? "fill-current" : ""}`} />
+            <Heart className={`h-3 w-3 sm:h-3.5 sm:w-3.5 ${wishlisted ? "fill-current" : ""}`} />
           </button>
         </div>
       </div>
@@ -99,12 +99,12 @@ export default function BookCard3D({ book }: BookCard3DProps) {
       {/* Sunlit Museum Alcove 3D Book Mockup Stage */}
       <Link
         href={`/books/${book.slug}`}
-        className="perspective-1200 relative mx-auto my-1 flex h-64 w-full items-center justify-center rounded-xl bg-[#f6f5f0]"
+        className="perspective-1200 relative mx-auto my-1 flex h-44 xs:h-52 sm:h-60 md:h-64 w-full items-center justify-center overflow-hidden rounded-xl bg-[#f6f5f0]"
       >
         {/* Floor Cast Shadow */}
         <div
           aria-hidden="true"
-          className="absolute bottom-3 h-5 w-36 rounded-full bg-black/20 blur-md transition-all duration-500"
+          className="absolute bottom-2 sm:bottom-3 h-4 sm:h-5 w-24 sm:w-36 rounded-full bg-black/20 blur-md transition-all duration-500"
           style={{
             transform: hovered ? "scale(1.1) translateX(6px)" : "scale(0.95)",
             opacity: hovered ? 0.3 : 0.16,
@@ -113,7 +113,7 @@ export default function BookCard3D({ book }: BookCard3DProps) {
 
         {/* Physical 3D Book Box */}
         <div
-          className="preserve-3d relative h-52 w-36 transition-transform duration-300 ease-out will-change-transform"
+          className="preserve-3d relative h-36 w-24 xs:h-42 xs:w-29 sm:h-48 sm:w-33 md:h-52 md:w-36 transition-transform duration-300 ease-out will-change-transform"
           style={{
             transform: `rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg) translateZ(${
               hovered ? 12 : 0
@@ -179,49 +179,51 @@ export default function BookCard3D({ book }: BookCard3DProps) {
       </Link>
 
       {/* Book Plaque Metadata */}
-      <div className="mt-4 flex flex-1 flex-col">
-        <div className="flex items-center justify-between gap-2 font-mono text-[10px] uppercase tracking-[0.16em] text-[#62605a]">
-          <span>{book.category}</span>
-          <span>{book.pages} PP</span>
+      <div className="mt-2.5 sm:mt-4 flex flex-1 flex-col">
+        <div className="flex items-center justify-between gap-1.5 font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.14em] sm:tracking-[0.16em] text-[#62605a]">
+          <span className="truncate">{book.category}</span>
+          <span className="shrink-0">{book.pages} PP</span>
         </div>
 
-        <Link href={`/books/${book.slug}`} className="mt-1.5 block">
-          <h3 className="font-serif text-xl font-semibold leading-snug text-[#141413] transition group-hover:text-[#d93829] line-clamp-2">
+        <Link href={`/books/${book.slug}`} className="mt-1 sm:mt-1.5 block">
+          <h3 className="font-serif text-xs xs:text-sm sm:text-lg md:text-xl font-semibold leading-snug text-[#141413] transition group-hover:text-[#d93829] line-clamp-2 min-h-[2rem] sm:min-h-0">
             {book.title}
           </h3>
         </Link>
-        <p className="mt-0.5 text-xs font-medium text-[#62605a]">{book.authorName}</p>
+        <p className="mt-0.5 text-[10px] xs:text-[11px] sm:text-xs font-medium text-[#62605a] truncate">
+          {book.authorName}
+        </p>
 
         {/* Price & Actions */}
-        <div className="mt-auto pt-4">
-          <div className="mb-3 flex items-baseline gap-2">
-            <span className="font-mono text-lg font-bold text-[#141413]">
+        <div className="mt-auto pt-2.5 sm:pt-4">
+          <div className="mb-2 sm:mb-3 flex items-baseline gap-1.5 sm:gap-2">
+            <span className="font-mono text-xs xs:text-sm sm:text-lg font-bold text-[#141413]">
               {formatPrice(book.price)}
             </span>
             {book.originalPrice > book.price && (
-              <span className="font-mono text-xs text-[#62605a]/65 line-through">
+              <span className="font-mono text-[10px] sm:text-xs text-[#62605a]/65 line-through">
                 {formatPrice(book.originalPrice)}
               </span>
             )}
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <button
               type="button"
               disabled={book.stock <= 0}
               onClick={() => addToCart(book, 1)}
-              className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-full bg-[#141413] px-3 py-2.5 text-xs font-semibold text-white transition hover:bg-[#d93829] disabled:cursor-not-allowed disabled:opacity-45"
+              className="inline-flex flex-1 items-center justify-center gap-1 sm:gap-1.5 rounded-full bg-[#141413] px-2 sm:px-3 py-2 sm:py-2.5 text-[10px] xs:text-xs font-semibold text-white transition hover:bg-[#d93829] disabled:cursor-not-allowed disabled:opacity-45"
             >
-              <ShoppingBag className="h-3.5 w-3.5" />
-              {book.stock > 0 ? "Add to Bag" : "Sold Out"}
+              <ShoppingBag className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+              <span className="truncate">{book.stock > 0 ? "Add to Bag" : "Sold Out"}</span>
             </button>
             <Link
               href={`/books/${book.slug}`}
               aria-label={`View details for ${book.title}`}
-              className="inline-flex items-center justify-center gap-1 rounded-full border border-[#dedbd2] bg-[#f6f5f0] px-3.5 py-2.5 text-xs font-semibold text-[#141413] transition hover:border-[#141413] hover:bg-white"
+              className="inline-flex items-center justify-center gap-1 rounded-full border border-[#dedbd2] bg-[#f6f5f0] px-2 sm:px-3.5 py-2 sm:py-2.5 text-[10px] xs:text-xs font-semibold text-[#141413] transition hover:border-[#141413] hover:bg-white"
             >
-              <Eye className="h-3.5 w-3.5" />
-              3D
+              <Eye className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+              <span>3D</span>
             </Link>
           </div>
         </div>

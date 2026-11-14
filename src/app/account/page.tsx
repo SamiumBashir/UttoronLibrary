@@ -201,16 +201,16 @@ function AccountContent() {
   };
 
   return (
-    <div className="paper-grain min-h-screen bg-[#f6f5f0] pb-24 pt-28 text-[#141413]">
+    <div className="paper-grain min-h-screen bg-[#f6f5f0] pb-24 pt-20 sm:pt-28 text-[#141413]">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         {!user ? (
           <div className="mx-auto max-w-lg">
-            <div className="rounded-[2rem] border border-[#dedbd2] bg-white p-8 shadow-sm">
-              <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-[#62605a]">
+            <div className="rounded-2xl sm:rounded-[2rem] border border-[#dedbd2] bg-white p-5 sm:p-8 shadow-sm">
+              <p className="inline-flex items-center gap-2 font-mono text-[10px] sm:text-xs font-semibold uppercase tracking-[0.24em] text-[#62605a]">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#d93829]" />
                 Reader Membership
               </p>
-              <h1 className="mt-2 font-serif text-4xl font-semibold text-[#141413]">
+              <h1 className="mt-1.5 sm:mt-2 font-serif text-2xl xs:text-3xl sm:text-4xl font-semibold text-[#141413]">
                 {authMode === "login"
                   ? "Sign In"
                   : authMode === "signup"
@@ -387,7 +387,7 @@ function AccountContent() {
                 <h2 className="font-serif text-2xl font-semibold text-[#141413]">
                   Your Saved Wishlist ({wishlistedBooks.length})
                 </h2>
-                <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                <div className="mt-4 grid grid-cols-2 gap-3 sm:gap-6 sm:grid-cols-2">
                   {wishlistedBooks.map((b) => (
                     <BookCard3D key={b.id} book={b} />
                   ))}
@@ -398,22 +398,22 @@ function AccountContent() {
         ) : (
           <div>
             {/* Signed-In Header */}
-            <div className="flex flex-wrap items-center justify-between gap-4 rounded-[2rem] border border-[#dedbd2] bg-white p-7 text-[#141413] shadow-sm">
+            <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl sm:rounded-[2rem] border border-[#dedbd2] bg-white p-5 sm:p-7 text-[#141413] shadow-sm">
               <div>
                 <p className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-[#62605a]">
                   <span className="h-1.5 w-1.5 rounded-full bg-[#d93829]" />
                   {user.role === "admin" ? "Curator & Admin Account" : "Reader Account"}
                 </p>
-                <h1 className="mt-1 font-serif text-3xl font-semibold sm:text-4xl">
+                <h1 className="mt-1 font-serif text-2xl sm:text-4xl font-semibold">
                   {user.name}
                 </h1>
                 <p className="text-xs text-[#62605a]">{user.email}</p>
               </div>
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-2.5 sm:gap-3">
                 {user.role === "admin" && (
                   <Link
                     href="/admin"
-                    className="inline-flex items-center gap-2 rounded-full bg-[#141413] px-5 py-2.5 text-xs font-bold uppercase tracking-[0.16em] text-white transition hover:bg-[#d93829]"
+                    className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full bg-[#141413] px-4 sm:px-5 py-2 sm:py-2.5 text-xs font-bold uppercase tracking-[0.16em] text-white transition hover:bg-[#d93829]"
                   >
                     <Shield className="h-4 w-4" /> CMS Console
                   </Link>
@@ -421,7 +421,7 @@ function AccountContent() {
                 <button
                   type="button"
                   onClick={() => void logout()}
-                  className="inline-flex items-center gap-2 rounded-full border border-[#dedbd2] px-5 py-2.5 text-xs font-semibold text-[#141413] hover:border-[#141413]"
+                  className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-[#dedbd2] px-4 sm:px-5 py-2 sm:py-2.5 text-xs font-semibold text-[#141413] hover:border-[#141413]"
                 >
                   <LogOut className="h-4 w-4" /> Sign Out
                 </button>
@@ -429,7 +429,7 @@ function AccountContent() {
             </div>
 
             {/* Tabs */}
-            <div className="mt-8 flex flex-wrap gap-2">
+            <div className="mt-6 sm:mt-8 flex gap-2 overflow-x-auto pb-2 scrollbar-none sm:flex-wrap">
               {(
                 [
                   { id: "profile", label: "Profile", icon: UserIcon },

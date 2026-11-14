@@ -151,7 +151,7 @@ export default function BookCatalogClient({
       <div
         role="tablist"
         aria-label="Book categories"
-        className="mt-5 flex flex-wrap gap-2"
+        className="mt-4 sm:mt-5 flex gap-2 overflow-x-auto pb-2 scrollbar-none sm:flex-wrap"
       >
         {categories.map((cat) => {
           const active = selectedCategory.toLowerCase() === cat.toLowerCase();
@@ -162,7 +162,7 @@ export default function BookCatalogClient({
               aria-selected={active}
               type="button"
               onClick={() => setSelectedCategory(cat)}
-              className={`rounded-full px-4 py-2 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] transition ${
+              className={`shrink-0 rounded-full px-3.5 sm:px-4 py-1.5 sm:py-2 font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.12em] transition ${
                 active
                   ? "bg-[#141413] text-white shadow-sm"
                   : "border border-[#dedbd2] bg-white text-[#62605a] hover:border-[#141413] hover:text-[#141413]"
@@ -195,14 +195,14 @@ export default function BookCatalogClient({
           </button>
         </div>
       ) : viewMode === "grid" ? (
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="mt-6 sm:mt-8 grid grid-cols-2 gap-3 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filteredBooks.map((book) => (
             <BookCard3D key={book.id} book={book} />
           ))}
         </div>
       ) : (
         /* Minimaze-Inspired Index List with Live Hover Cover Preview */
-        <div className="relative mt-8 grid gap-8 lg:grid-cols-12">
+        <div className="relative mt-6 sm:mt-8 grid gap-8 lg:grid-cols-12">
           <div className="divide-y divide-[#dedbd2] rounded-3xl border border-[#dedbd2] bg-white lg:col-span-8">
             {filteredBooks.map((book, idx) => {
               const badge = getStockBadge(book.stock);
@@ -210,20 +210,20 @@ export default function BookCatalogClient({
                 <div
                   key={book.id}
                   onMouseEnter={() => setHoveredRowBook(book)}
-                  className="group flex flex-wrap items-center justify-between gap-4 px-5 py-4 transition hover:bg-[#f6f5f0]"
+                  className="group flex flex-wrap items-center justify-between gap-3 sm:gap-4 px-4 sm:px-5 py-3.5 sm:py-4 transition hover:bg-[#f6f5f0]"
                 >
-                  <div className="flex min-w-0 items-baseline gap-4">
+                  <div className="flex min-w-0 items-baseline gap-3 sm:gap-4">
                     <span className="font-mono text-xs text-[#d93829]">
                       {String(idx + 1).padStart(2, "0")}
                     </span>
                     <div className="min-w-0">
                       <Link
                         href={`/books/${book.slug}`}
-                        className="block truncate font-serif text-2xl font-semibold text-[#141413] group-hover:text-[#d93829]"
+                        className="block truncate font-serif text-base sm:text-2xl font-semibold text-[#141413] group-hover:text-[#d93829]"
                       >
                         {book.title}
                       </Link>
-                      <p className="font-mono text-[11px] text-[#62605a]">
+                      <p className="font-mono text-[10px] sm:text-[11px] text-[#62605a]">
                         {book.authorName} • {book.category} • {badge.label}
                       </p>
                     </div>

@@ -102,102 +102,104 @@ export default function CartPage() {
   };
 
   return (
-    <div className="paper-grain min-h-screen bg-[#f6f5f0] pb-24 pt-28 text-[#141413]">
+    <div className="paper-grain min-h-screen bg-[#f6f5f0] pb-24 pt-20 sm:pt-28 text-[#141413]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <header className="mb-10">
-          <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.26em] text-[#62605a]">
+        <header className="mb-6 sm:mb-10">
+          <p className="inline-flex items-center gap-2 font-mono text-[10px] sm:text-xs font-semibold uppercase tracking-[0.26em] text-[#62605a]">
             <span className="h-1.5 w-1.5 rounded-full bg-[#d93829]" />
             Your Reading Bag
           </p>
-          <h1 className="mt-2 font-serif text-4xl font-semibold text-[#141413] sm:text-5xl">
+          <h1 className="mt-1.5 sm:mt-2 font-serif text-2xl xs:text-3xl sm:text-5xl font-semibold text-[#141413]">
             Shopping Cart
           </h1>
         </header>
 
         {cart.length === 0 ? (
-          <div className="rounded-[2rem] border border-[#dedbd2] bg-white px-6 py-20 text-center">
-            <ShoppingBag className="mx-auto h-12 w-12 text-[#d93829]" />
-            <h2 className="mt-4 font-serif text-3xl font-semibold text-[#141413]">
+          <div className="rounded-2xl sm:rounded-[2rem] border border-[#dedbd2] bg-white px-5 sm:px-6 py-12 sm:py-20 text-center">
+            <ShoppingBag className="mx-auto h-10 w-10 sm:h-12 sm:w-12 text-[#d93829]" />
+            <h2 className="mt-4 font-serif text-2xl sm:text-3xl font-semibold text-[#141413]">
               No volumes in your bag yet
             </h2>
-            <p className="mt-2 text-sm text-[#62605a]">
+            <p className="mt-2 text-xs sm:text-sm text-[#62605a]">
               Browse our gallery collection to discover clothbound editions and new arrivals.
             </p>
             <Link
               href="/books"
-              className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#141413] px-7 py-3.5 text-xs font-bold uppercase tracking-[0.18em] text-white transition hover:bg-[#d93829]"
+              className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#141413] px-6 sm:px-7 py-3 sm:py-3.5 text-xs font-bold uppercase tracking-[0.18em] text-white transition hover:bg-[#d93829]"
             >
               Continue Shopping <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         ) : (
-          <div className="grid gap-10 lg:grid-cols-12">
+          <div className="grid gap-6 sm:gap-10 lg:grid-cols-12">
             {/* Cart Items List */}
-            <div className="space-y-4 lg:col-span-8">
+            <div className="space-y-3 sm:space-y-4 lg:col-span-8">
               {cart.map((item) => (
                 <div
                   key={item.bookId}
-                  className="flex flex-col gap-4 rounded-[2rem] border border-[#dedbd2] bg-white p-5 sm:flex-row sm:items-center"
+                  className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 rounded-2xl sm:rounded-[2rem] border border-[#dedbd2] bg-white p-3.5 sm:p-5"
                 >
-                  <Link
-                    href={`/books/${item.slug}`}
-                    className="h-28 w-20 shrink-0 overflow-hidden rounded-r shadow-md"
-                  >
-                    <BookCoverArt
-                      title={item.title}
-                      authorName={item.authorName}
-                      category=""
-                      palette={item.coverPalette}
-                      compact
-                    />
-                  </Link>
-
-                  <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-3 min-w-0 flex-1">
                     <Link
                       href={`/books/${item.slug}`}
-                      className="font-serif text-2xl font-semibold text-[#141413] hover:text-[#d93829]"
+                      className="h-20 w-14 sm:h-28 sm:w-20 shrink-0 overflow-hidden rounded-r shadow-md"
                     >
-                      {item.title}
+                      <BookCoverArt
+                        title={item.title}
+                        authorName={item.authorName}
+                        category=""
+                        palette={item.coverPalette}
+                        compact
+                      />
                     </Link>
-                    <p className="text-xs text-[#62605a]">
-                      {item.authorName} • ISBN {item.isbn}
-                    </p>
-                    <p className="mt-2 text-sm font-semibold text-[#141413]">
-                      {formatPrice(item.price)} each
-                    </p>
+
+                    <div className="min-w-0 flex-1">
+                      <Link
+                        href={`/books/${item.slug}`}
+                        className="font-serif text-base sm:text-2xl font-semibold text-[#141413] hover:text-[#d93829] line-clamp-2"
+                      >
+                        {item.title}
+                      </Link>
+                      <p className="text-[11px] sm:text-xs text-[#62605a] truncate">
+                        {item.authorName} • ISBN {item.isbn}
+                      </p>
+                      <p className="mt-1 sm:mt-2 text-xs sm:text-sm font-semibold text-[#141413]">
+                        {formatPrice(item.price)} each
+                      </p>
+                    </div>
                   </div>
 
-                  <div className="flex items-center justify-between gap-6 sm:justify-end">
-                    <div className="inline-flex items-center rounded-full border border-[#dedbd2] bg-[#f6f5f0] px-1.5 py-1">
+                  <div className="flex items-center justify-between border-t border-[#eceae3] pt-2.5 sm:border-0 sm:pt-0 sm:justify-end gap-4 sm:gap-6">
+                    <div className="inline-flex items-center rounded-full border border-[#dedbd2] bg-[#f6f5f0] px-1 sm:px-1.5 py-0.5 sm:py-1">
                       <button
                         type="button"
                         aria-label="Decrease quantity"
                         onClick={() => updateQuantity(item.bookId, item.quantity - 1)}
-                        className="p-1.5 text-[#141413] hover:text-[#d93829]"
+                        className="p-1 sm:p-1.5 text-[#141413] hover:text-[#d93829]"
                       >
                         <Minus className="h-3.5 w-3.5" />
                       </button>
-                      <span className="min-w-7 text-center text-xs font-bold">
+                      <span className="min-w-6 sm:min-w-7 text-center text-xs font-bold">
                         {item.quantity}
                       </span>
                       <button
                         type="button"
                         aria-label="Increase quantity"
                         onClick={() => updateQuantity(item.bookId, item.quantity + 1)}
-                        className="p-1.5 text-[#141413] hover:text-[#d93829]"
+                        className="p-1 sm:p-1.5 text-[#141413] hover:text-[#d93829]"
                       >
                         <Plus className="h-3.5 w-3.5" />
                       </button>
                     </div>
 
                     <div className="text-right">
-                      <p className="font-serif text-xl font-bold text-[#141413]">
+                      <p className="font-serif text-base sm:text-xl font-bold text-[#141413]">
                         {formatPrice(item.price * item.quantity)}
                       </p>
                       <button
                         type="button"
                         onClick={() => removeFromCart(item.bookId)}
-                        className="mt-1 inline-flex items-center gap-1 text-xs text-[#d93829]/80 hover:text-[#d93829]"
+                        className="mt-0.5 inline-flex items-center gap-1 text-[11px] sm:text-xs text-[#d93829]/80 hover:text-[#d93829]"
                       >
                         <Trash2 className="h-3 w-3" /> Remove
                       </button>

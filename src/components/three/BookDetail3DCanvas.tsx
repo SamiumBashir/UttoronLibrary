@@ -223,21 +223,21 @@ export default function BookDetail3DCanvas({ book }: BookDetail3DCanvasProps) {
   }, [book, caps.ready, caps.webglSupported, caps.reducedMotion, preset]);
 
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-[#dedbd2] bg-gradient-to-br from-[#ffffff] via-[#f6f5f0] to-[#eceae3] shadow-lg">
-      <div className="relative h-[420px] w-full sm:h-[520px]">
+    <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-[#dedbd2] bg-gradient-to-br from-[#ffffff] via-[#f6f5f0] to-[#eceae3] shadow-lg">
+      <div className="relative h-[300px] xs:h-[360px] sm:h-[460px] md:h-[520px] w-full">
         {caps.ready && !caps.webglSupported ? (
-          <div className="flex h-full w-full items-center justify-center p-8">
+          <div className="flex h-full w-full items-center justify-center p-4 sm:p-8">
             <div
-              className="flex h-80 w-56 flex-col justify-between rounded-r-lg border border-[#dedbd2] p-6 shadow-2xl"
+              className="flex h-60 w-40 sm:h-80 sm:w-56 flex-col justify-between rounded-r-lg border border-[#dedbd2] p-4 sm:p-6 shadow-2xl"
               style={{
                 background: `linear-gradient(135deg, ${book.coverPalette.primary}, ${book.coverPalette.secondary})`,
               }}
             >
-              <span className="text-[11px] uppercase tracking-[0.22em] text-[#d6b87a]">
+              <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-[#d6b87a]">
                 {book.category}
               </span>
-              <h3 className="font-serif text-2xl font-bold text-[#f6f1e7]">{book.title}</h3>
-              <span className="text-xs text-[#f6f1e7]/80">{book.authorName}</span>
+              <h3 className="font-serif text-lg sm:text-2xl font-bold text-[#f6f1e7]">{book.title}</h3>
+              <span className="text-[11px] sm:text-xs text-[#f6f1e7]/80">{book.authorName}</span>
             </div>
           </div>
         ) : (
@@ -249,22 +249,22 @@ export default function BookDetail3DCanvas({ book }: BookDetail3DCanvasProps) {
         )}
 
         {/* Zoom & Reset Controls */}
-        <div className="absolute right-4 top-4 flex flex-col gap-2">
+        <div className="absolute right-3 top-3 sm:right-4 sm:top-4 flex flex-col gap-1.5 sm:gap-2">
           <button
             type="button"
             aria-label="Zoom in"
             onClick={() => setZoom((z) => Math.max(3.2, z - 0.45))}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/90 text-[#141413] backdrop-blur-md transition hover:border-[#141413]"
+            className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/90 text-[#141413] backdrop-blur-md transition hover:border-[#141413]"
           >
-            <ZoomIn className="h-4 w-4" />
+            <ZoomIn className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
           </button>
           <button
             type="button"
             aria-label="Zoom out"
             onClick={() => setZoom((z) => Math.min(6.4, z + 0.45))}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/90 text-[#141413] backdrop-blur-md transition hover:border-[#141413]"
+            className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/90 text-[#141413] backdrop-blur-md transition hover:border-[#141413]"
           >
-            <ZoomOut className="h-4 w-4" />
+            <ZoomOut className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
           </button>
           <button
             type="button"
@@ -273,20 +273,20 @@ export default function BookDetail3DCanvas({ book }: BookDetail3DCanvasProps) {
               setZoom(4.6);
               selectPreset("3d");
             }}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/90 text-[#141413] backdrop-blur-md transition hover:border-[#141413]"
+            className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/90 text-[#141413] backdrop-blur-md transition hover:border-[#141413]"
           >
-            <RotateCcw className="h-4 w-4" />
+            <RotateCcw className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
           </button>
         </div>
 
-        <p className="pointer-events-none absolute left-5 top-4 font-mono text-[10px] uppercase tracking-[0.22em] text-[#62605a]">
+        <p className="pointer-events-none absolute left-3 top-3 sm:left-5 sm:top-4 font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.18em] sm:tracking-[0.22em] text-[#62605a]">
           Drag to rotate 360° • Scroll to zoom
         </p>
       </div>
 
       {/* Angle Preset Strip (Front, Spine, Back, 3D) */}
-      <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[#dedbd2] bg-white/90 px-4 py-3">
-        <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[#dedbd2] bg-white/90 px-3 sm:px-4 py-2.5 sm:py-3">
+        <div className="flex flex-wrap gap-1.5 sm:gap-2">
           {(
             [
               { id: "3d", label: "3D Orbit" },
@@ -299,7 +299,7 @@ export default function BookDetail3DCanvas({ book }: BookDetail3DCanvasProps) {
               key={item.id}
               type="button"
               onClick={() => selectPreset(item.id)}
-              className={`rounded-full px-3.5 py-1.5 font-mono text-[11px] font-medium transition ${
+              className={`rounded-full px-2.5 sm:px-3.5 py-1 sm:py-1.5 font-mono text-[10px] sm:text-[11px] font-medium transition ${
                 preset === item.id
                   ? "bg-[#141413] text-white"
                   : "border border-[#dedbd2] bg-[#f6f5f0] text-[#141413] hover:border-[#141413]"
@@ -309,7 +309,7 @@ export default function BookDetail3DCanvas({ book }: BookDetail3DCanvasProps) {
             </button>
           ))}
         </div>
-        <span className="font-mono text-[11px] text-[#62605a]">{book.binding}</span>
+        <span className="hidden xs:inline font-mono text-[10px] sm:text-[11px] text-[#62605a]">{book.binding}</span>
       </div>
     </div>
   );

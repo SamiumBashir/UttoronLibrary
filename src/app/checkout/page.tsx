@@ -203,15 +203,15 @@ function CheckoutContent() {
   }
 
   return (
-    <div className="paper-grain min-h-screen bg-[#f6f5f0] pb-24 pt-28 text-[#141413]">
+    <div className="paper-grain min-h-screen bg-[#f6f5f0] pb-24 pt-20 sm:pt-28 text-[#141413]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <header className="mb-10 flex flex-wrap items-end justify-between gap-4">
+        <header className="mb-6 sm:mb-10 flex flex-wrap items-end justify-between gap-3 sm:gap-4">
           <div>
-            <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.26em] text-[#62605a]">
+            <p className="inline-flex items-center gap-2 font-mono text-[10px] sm:text-xs font-semibold uppercase tracking-[0.26em] text-[#62605a]">
               <span className="h-1.5 w-1.5 rounded-full bg-[#d93829]" />
               Secure Fulfillment
             </p>
-            <h1 className="mt-2 font-serif text-4xl font-semibold text-[#141413] sm:text-5xl">
+            <h1 className="mt-1.5 sm:mt-2 font-serif text-2xl xs:text-3xl sm:text-5xl font-semibold text-[#141413]">
               Checkout
             </h1>
           </div>
@@ -226,11 +226,11 @@ function CheckoutContent() {
           )}
         </header>
 
-        <form onSubmit={handlePlaceOrder} className="grid gap-10 lg:grid-cols-12">
+        <form onSubmit={handlePlaceOrder} className="grid gap-6 sm:gap-10 lg:grid-cols-12">
           {/* LEFT: Delivery & Payment Details */}
-          <div className="space-y-8 lg:col-span-7">
-            <section className="rounded-[2rem] border border-[#dedbd2] bg-white p-6 sm:p-8">
-              <h2 className="flex items-center gap-2 font-serif text-2xl font-semibold text-[#141413]">
+          <div className="space-y-6 sm:space-y-8 lg:col-span-7">
+            <section className="rounded-2xl sm:rounded-[2rem] border border-[#dedbd2] bg-white p-4 sm:p-8">
+              <h2 className="flex items-center gap-2 font-serif text-xl sm:text-2xl font-semibold text-[#141413]">
                 <Truck className="h-5 w-5 text-[#d93829]" />
                 Delivery Information
               </h2>
@@ -400,8 +400,8 @@ function CheckoutContent() {
 
           {/* RIGHT: Order Summary */}
           <aside className="lg:col-span-5">
-            <div className="sticky top-28 rounded-[2rem] border border-[#dedbd2] bg-white p-6 shadow-sm sm:p-8">
-              <h2 className="font-serif text-2xl font-semibold text-[#141413]">
+            <div className="sticky top-28 rounded-2xl sm:rounded-[2rem] border border-[#dedbd2] bg-white p-5 sm:p-8 shadow-sm">
+              <h2 className="font-serif text-xl sm:text-2xl font-semibold text-[#141413]">
                 Order Summary
               </h2>
 

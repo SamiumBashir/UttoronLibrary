@@ -98,10 +98,10 @@ export default function BookDetailClient({
   };
 
   return (
-    <div className="paper-grain bg-[#f6f5f0] pb-24 pt-28 text-[#141413]">
+    <div className="paper-grain bg-[#f6f5f0] pb-24 pt-20 sm:pt-28 text-[#141413]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
-        <nav aria-label="Breadcrumb" className="mb-8 flex items-center gap-2 text-xs text-[#62605a]">
+        <nav aria-label="Breadcrumb" className="mb-6 sm:mb-8 flex flex-wrap items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs text-[#62605a]">
           <Link href="/" className="hover:text-[#141413]">Home</Link>
           <span>/</span>
           <Link href="/books" className="hover:text-[#141413]">Books</Link>
@@ -113,11 +113,11 @@ export default function BookDetailClient({
             {book.category}
           </Link>
           <span>/</span>
-          <span className="truncate font-medium text-[#141413]">{book.title}</span>
+          <span className="truncate max-w-[180px] sm:max-w-none font-medium text-[#141413]">{book.title}</span>
         </nav>
 
         {/* Main 2-Column Stage */}
-        <div className="grid gap-12 lg:grid-cols-12">
+        <div className="grid gap-8 lg:gap-12 lg:grid-cols-12">
           {/* LEFT: Interactive 3D Book Model + Visual Previews */}
           <div className="lg:col-span-6">
             <BookDetail3DCanvas book={book} />
@@ -204,16 +204,16 @@ export default function BookDetailClient({
               )}
             </div>
 
-            <h1 className="mt-4 font-serif text-4xl font-semibold leading-tight text-[#141413] sm:text-5xl">
+            <h1 className="mt-3 sm:mt-4 font-serif text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-[#141413]">
               {book.title}
             </h1>
             {book.subtitle && (
-              <p className="mt-2 font-serif text-xl italic text-[#62605a]">
+              <p className="mt-1.5 sm:mt-2 font-serif text-base sm:text-xl italic text-[#62605a]">
                 {book.subtitle}
               </p>
             )}
 
-            <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-[#62605a]">
+            <div className="mt-3 sm:mt-4 flex flex-wrap items-center gap-x-4 sm:gap-x-6 gap-y-1.5 sm:gap-y-2 text-xs sm:text-sm text-[#62605a]">
               <span>
                 By{" "}
                 {author ? (
@@ -232,49 +232,49 @@ export default function BookDetailClient({
               </span>
             </div>
 
-            <p className="mt-6 text-base leading-relaxed text-[#62605a]">
+            <p className="mt-4 sm:mt-6 text-sm sm:text-base leading-relaxed text-[#62605a]">
               {book.description}
             </p>
 
             {/* Quick Spec Grid */}
-            <div className="mt-6 grid grid-cols-2 gap-3 rounded-2xl border border-[#dedbd2] bg-white p-4 text-xs sm:grid-cols-4">
+            <div className="mt-5 sm:mt-6 grid grid-cols-2 gap-2 sm:gap-3 rounded-2xl border border-[#dedbd2] bg-white p-3 sm:p-4 text-xs sm:grid-cols-4">
               <div>
-                <span className="block text-[#62605a]">ISBN</span>
-                <span className="mt-0.5 block font-mono font-semibold text-[#141413]">
+                <span className="block text-[11px] text-[#62605a]">ISBN</span>
+                <span className="mt-0.5 block font-mono text-xs font-semibold text-[#141413] truncate">
                   {book.isbn}
                 </span>
               </div>
               <div>
-                <span className="block text-[#62605a]">Published</span>
-                <span className="mt-0.5 block font-semibold text-[#141413]">
+                <span className="block text-[11px] text-[#62605a]">Published</span>
+                <span className="mt-0.5 block text-xs font-semibold text-[#141413]">
                   {book.publicationDate}
                 </span>
               </div>
               <div>
-                <span className="block text-[#62605a]">Pages</span>
-                <span className="mt-0.5 block font-semibold text-[#141413]">
+                <span className="block text-[11px] text-[#62605a]">Pages</span>
+                <span className="mt-0.5 block text-xs font-semibold text-[#141413]">
                   {book.pages} pages
                 </span>
               </div>
               <div>
-                <span className="block text-[#62605a]">Language</span>
-                <span className="mt-0.5 block font-semibold text-[#141413]">
+                <span className="block text-[11px] text-[#62605a]">Language</span>
+                <span className="mt-0.5 block text-xs font-semibold text-[#141413]">
                   {book.language}
                 </span>
               </div>
             </div>
 
             {/* Pricing Block */}
-            <div className="mt-8 flex items-baseline gap-3">
-              <span className="font-serif text-4xl font-bold text-[#141413]">
+            <div className="mt-6 sm:mt-8 flex items-baseline gap-2.5 sm:gap-3">
+              <span className="font-serif text-3xl sm:text-4xl font-bold text-[#141413]">
                 {formatPrice(book.price)}
               </span>
               {book.originalPrice > book.price && (
                 <>
-                  <span className="text-lg text-[#62605a]/70 line-through">
+                  <span className="text-base sm:text-lg text-[#62605a]/70 line-through">
                     {formatPrice(book.originalPrice)}
                   </span>
-                  <span className="rounded-full bg-[#d93829]/10 px-3 py-1 text-xs font-bold text-[#d93829]">
+                  <span className="rounded-full bg-[#d93829]/10 px-2.5 sm:px-3 py-0.5 sm:py-1 text-[11px] sm:text-xs font-bold text-[#d93829]">
                     Save {discount}%
                   </span>
                 </>
@@ -282,18 +282,18 @@ export default function BookDetailClient({
             </div>
 
             {/* Quantity + Cart / Buy Now / Wishlist */}
-            <div className="mt-6 flex flex-wrap items-center gap-3">
+            <div className="mt-5 sm:mt-6 flex flex-wrap items-center gap-2.5 sm:gap-3">
               <div className="inline-flex items-center rounded-full border border-[#dedbd2] bg-white px-2 py-1">
                 <button
                   type="button"
                   aria-label="Decrease quantity"
                   disabled={quantity <= 1 || book.stock <= 0}
                   onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                  className="p-2 text-[#141413] disabled:opacity-40"
+                  className="p-1.5 sm:p-2 text-[#141413] disabled:opacity-40"
                 >
-                  <Minus className="h-4 w-4" />
+                  <Minus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </button>
-                <span className="min-w-8 text-center text-sm font-bold text-[#141413]">
+                <span className="min-w-7 sm:min-w-8 text-center text-xs sm:text-sm font-bold text-[#141413]">
                   {quantity}
                 </span>
                 <button
@@ -301,47 +301,47 @@ export default function BookDetailClient({
                   aria-label="Increase quantity"
                   disabled={quantity >= book.stock || book.stock <= 0}
                   onClick={() => setQuantity((q) => Math.min(book.stock, q + 1))}
-                  className="p-2 text-[#141413] disabled:opacity-40"
+                  className="p-1.5 sm:p-2 text-[#141413] disabled:opacity-40"
                 >
-                  <Plus className="h-4 w-4" />
+                  <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </button>
               </div>
 
               <button
                 type="button"
-                disabled={book.stock <= 0}
-                onClick={() => addToCart(book, quantity)}
-                className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-[#141413] px-6 py-3.5 text-xs font-bold uppercase tracking-[0.16em] text-white shadow-lg transition hover:bg-[#d93829] disabled:cursor-not-allowed disabled:opacity-45"
-              >
-                <ShoppingBag className="h-4 w-4" />
-                {book.stock > 0 ? "Add to Cart" : "Out of Stock"}
-              </button>
-
-              <button
-                type="button"
-                disabled={book.stock <= 0}
-                onClick={handleBuyNow}
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-[#dedbd2] bg-white px-6 py-3.5 text-xs font-bold uppercase tracking-[0.16em] text-[#141413] transition hover:border-[#141413] disabled:cursor-not-allowed disabled:opacity-45"
-              >
-                <Zap className="h-4 w-4 text-[#d93829]" />
-                Buy Now
-              </button>
-
-              <button
-                type="button"
                 aria-label={wishlisted ? "Saved in wishlist" : "Add to wishlist"}
                 onClick={() => void toggleWishlist(book.id, book.title)}
-                className={`inline-flex items-center justify-center gap-2 rounded-full border px-4 py-3.5 text-xs font-semibold transition ${
+                className={`inline-flex items-center justify-center rounded-full border p-2.5 sm:px-4 sm:py-3.5 text-xs font-semibold transition ${
                   wishlisted
                     ? "border-[#d93829] bg-[#141413] text-white"
                     : "border-[#dedbd2] bg-white text-[#141413] hover:border-[#141413]"
                 }`}
               >
                 <Heart className={`h-4 w-4 ${wishlisted ? "fill-[#d93829] text-[#d93829]" : ""}`} />
-                <span className="hidden sm:inline">
-                  {wishlisted ? "Wishlisted" : "Wishlist"}
-                </span>
+                <span className="hidden sm:inline ml-1.5">{wishlisted ? "Saved" : "Wishlist"}</span>
               </button>
+
+              <div className="flex w-full sm:w-auto sm:flex-1 gap-2 sm:gap-3">
+                <button
+                  type="button"
+                  disabled={book.stock <= 0}
+                  onClick={() => addToCart(book, quantity)}
+                  className="inline-flex flex-1 items-center justify-center gap-1.5 sm:gap-2 rounded-full bg-[#141413] px-4 sm:px-6 py-3 sm:py-3.5 text-xs font-bold uppercase tracking-[0.14em] sm:tracking-[0.16em] text-white shadow-lg transition hover:bg-[#d93829] disabled:cursor-not-allowed disabled:opacity-45"
+                >
+                  <ShoppingBag className="h-4 w-4" />
+                  <span>{book.stock > 0 ? "Add to Cart" : "Out of Stock"}</span>
+                </button>
+
+                <button
+                  type="button"
+                  disabled={book.stock <= 0}
+                  onClick={handleBuyNow}
+                  className="inline-flex items-center justify-center gap-1.5 sm:gap-2 rounded-full border border-[#dedbd2] bg-white px-4 sm:px-6 py-3 sm:py-3.5 text-xs font-bold uppercase tracking-[0.14em] sm:tracking-[0.16em] text-[#141413] transition hover:border-[#141413] disabled:cursor-not-allowed disabled:opacity-45"
+                >
+                  <Zap className="h-4 w-4 text-[#d93829]" />
+                  <span>Buy Now</span>
+                </button>
+              </div>
             </div>
 
             <div className="mt-6 flex flex-wrap gap-4 border-t border-[#dedbd2] pt-5 text-xs text-[#62605a]">

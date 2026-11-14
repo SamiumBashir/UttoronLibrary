@@ -35,20 +35,20 @@ export default function Footer() {
 
   return (
     <footer className="border-t border-[#dedbd2] bg-[#eceae3] text-[#141413]">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="grid gap-12 lg:grid-cols-12">
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:py-16 sm:px-6 lg:px-8">
+        <div className="grid gap-8 sm:gap-12 lg:grid-cols-12">
           {/* Brand + Newsletter */}
           <div className="lg:col-span-4">
-            <Link href="/" className="inline-flex items-center gap-3">
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#141413]/20 bg-white text-[#141413]">
-                <BookOpen className="h-5 w-5" />
+            <Link href="/" className="inline-flex items-center gap-2.5 sm:gap-3">
+              <span className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl border border-[#141413]/20 bg-white text-[#141413]">
+                <BookOpen className="h-4 w-4 sm:h-5 sm:w-5" />
               </span>
               <div>
-                <span className="flex items-center gap-1.5 font-serif text-2xl font-bold text-[#141413]">
+                <span className="flex items-center gap-1.5 font-serif text-xl sm:text-2xl font-bold text-[#141413]">
                   Uttoron Prokasoni
-                  <span className="h-2 w-2 rounded-full bg-[#d93829]" />
+                  <span className="h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-[#d93829]" />
                 </span>
-                <span className="block font-mono text-[9px] uppercase tracking-[0.26em] text-[#62605a]">
+                <span className="block font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.24em] sm:tracking-[0.26em] text-[#62605a]">
                   Est. 1998 • Dhaka &amp; Worldwide
                 </span>
               </div>
@@ -177,9 +177,9 @@ export default function Footer() {
         </div>
 
         {/* Bottom Legal Bar */}
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-[#dedbd2] pt-8 font-mono text-[11px] text-[#62605a] sm:flex-row">
+        <div className="mt-8 sm:mt-12 flex flex-col items-center justify-between gap-4 border-t border-[#dedbd2] pt-6 sm:pt-8 text-center sm:text-left font-mono text-[10px] sm:text-[11px] text-[#62605a] sm:flex-row">
           <p>© {new Date().getFullYear()} UTTORON PROKASONI. ALL ARCHIVAL RIGHTS RESERVED.</p>
-          <div className="flex flex-wrap gap-6">
+          <div className="flex flex-wrap justify-center sm:justify-end gap-4 sm:gap-6">
             <Link href="/privacy" className="hover:text-[#141413]">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-[#141413]">Terms &amp; Conditions</Link>
             <Link href="/returns" className="hover:text-[#141413]">Refund &amp; Return Policy</Link>

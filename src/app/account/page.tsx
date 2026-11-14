@@ -160,8 +160,14 @@ function AccountContent() {
         notify(err.error || "Google sign-in failed.", "error");
       }
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "Google sign-in cancelled.";
-      notify(msg, "error");
+      const raw = err instanceof Error ? err.message : "Google sign-in cancelled.";
+      if (raw.includes("auth/unauthorized-domain")) {
+        notify("This domain is not authorized in Firebase. Please add your domain in Firebase Console > Authentication > Settings > Authorized domains.", "error");
+      } else if (raw.includes("auth/popup-closed-by-user")) {
+        notify("Sign-in popup was closed.", "info");
+      } else {
+        notify(raw, "error");
+      }
     } finally {
       setAuthBusy(false);
     }

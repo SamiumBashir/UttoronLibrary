@@ -19,15 +19,38 @@ export interface EmailResult {
 
 /**
  * Returns a configured Nodemailer transporter if SMTP environment variables are present.
+ * Automatically cleans spaces from passwords (e.g. Google 16-char App Passwords)
+ * and uses optimized Gmail preset when host is smtp.gmail.com.
  */
 function getSmtpTransporter() {
   const host = process.env.SMTP_HOST?.trim();
   const user = process.env.SMTP_USER?.trim();
-  const pass = process.env.SMTP_PASS?.trim();
-  const port = Number(process.env.SMTP_PORT) || 587;
+  const rawPass = process.env.SMTP_PASS?.trim();
+  // Strip spaces from App Passwords (e.g. Gmail 16-char format "xxxx xxxx xxxx xxxx" -> "xxxxxxxxxxxxxxxx")
+  const pass = rawPass?.replace(/\s+/g, "");
+  const port = Number(process.env.SMTP_PORT) || 465;
   const secure = process.env.SMTP_SECURE === "true" || port === 465;
 
-  if (!host || !user || !pass) {
+  if (!user || !pass) {
+    return null;
+  }
+
+  // If host is smtp.gmail.com or user is @gmail.com, use nodemailer's optimized Gmail service
+  const isGmail = host?.includes("gmail.com") || user.endsWith("@gmail.com");
+  if (isGmail) {
+    return nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user,
+        pass,
+      },
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 15000,
+    });
+  }
+
+  if (!host) {
     return null;
   }
 
@@ -42,13 +65,26 @@ function getSmtpTransporter() {
     tls: {
       rejectUnauthorized: process.env.NODE_ENV === "production",
     },
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 15000,
   });
+}
+
+function getSmtpSenderAddress(): string {
+  const rawFrom = process.env.SMTP_FROM?.trim() || process.env.EMAIL_FROM?.trim();
+  if (rawFrom) {
+    // Strip accidental backslashes from quotes: \"Name\" -> "Name"
+    return rawFrom.replace(/\\"/g, '"');
+  }
+  const user = process.env.SMTP_USER?.trim() || "uttoronprokasoni@gmail.com";
+  return `"উত্তরণ প্রকাশনী" <${user}>`;
 }
 
 /**
  * Universal email dispatcher:
- * 1. Uses Resend REST API if RESEND_API_KEY exists (Recommended & Modern).
- * 2. Uses SMTP via Nodemailer if SMTP_HOST and credentials exist.
+ * 1. Uses SMTP via Nodemailer if SMTP_USER and SMTP_PASS exist (User Preferred).
+ * 2. Uses Resend REST API if RESEND_API_KEY exists.
  * 3. Falls back to structured console logging in dev/unconfigured environments.
  */
 export async function sendEmail({
@@ -59,11 +95,34 @@ export async function sendEmail({
 }: SendEmailOptions): Promise<EmailResult> {
   let lastError: string | undefined;
 
-  // 1. Try Resend REST API (Preferred)
+  // 1. Prioritize SMTP Transporter (Preferred: Direct Gmail / Custom SMTP)
+  const transporter = getSmtpTransporter();
+  if (transporter) {
+    const smtpFrom = getSmtpSenderAddress();
+
+    try {
+      const info = await transporter.sendMail({
+        from: smtpFrom,
+        to,
+        subject,
+        text,
+        html,
+      });
+      console.info(`[Email Service: SMTP] Email successfully delivered to ${to} (MessageId: ${info.messageId})`);
+      return {
+        success: true,
+        messageId: info.messageId,
+        provider: "smtp",
+      };
+    } catch (err) {
+      lastError = err instanceof Error ? `SMTP: ${err.message}` : "SMTP error";
+      console.error("[Email Service] SMTP delivery failed:", err);
+    }
+  }
+
+  // 2. Try Resend REST API if SMTP not configured or failed and Resend key is present
   const resendApiKey = process.env.RESEND_API_KEY?.trim();
   if (resendApiKey) {
-    // When domain is unverified, Resend requires onboarding@resend.dev.
-    // Once verified in resend.com/domains, the user can set RESEND_FROM in .env
     const resendFrom =
       process.env.RESEND_FROM?.trim() ||
       process.env.EMAIL_FROM?.trim() ||
@@ -92,7 +151,7 @@ export async function sendEmail({
       };
 
       if (res.ok && data.id) {
-        console.info(`[Email Service: Resend]  Email successfully delivered to ${to} (ID: ${data.id})`);
+        console.info(`[Email Service: Resend] Email successfully delivered to ${to} (ID: ${data.id})`);
         return {
           success: true,
           messageId: data.id,
@@ -104,57 +163,22 @@ export async function sendEmail({
         data.error?.message || data.message || `Resend HTTP ${res.status}`;
       lastError = `Resend Error: ${errMsg}`;
       console.warn(`[Email Service: Resend] Warning: ${errMsg}`);
-      if (errMsg.toLowerCase().includes("testing emails to your own email address")) {
-        console.warn(
-          "[Email Service: Resend] ⚠️ Sandbox Mode Restriction: Resend default domain (onboarding@resend.dev) can only send emails to the email address used to register the Resend account. To send to all customers, verify a custom domain in resend.com/domains."
-        );
-      }
     } catch (err) {
       lastError = err instanceof Error ? err.message : "Resend request error";
       console.error("[Email Service] Resend API request failed:", err);
     }
   }
 
-  // 2. Try SMTP Transporter (Fallback if Resend not configured)
-  const transporter = getSmtpTransporter();
-  if (transporter) {
-    const smtpFrom =
-      process.env.SMTP_FROM ||
-      process.env.EMAIL_FROM ||
-      '"উত্তরণ প্রকাশনী" <noreply@uttoronprokasoni.com>';
-
-    try {
-      const info = await transporter.sendMail({
-        from: smtpFrom,
-        to,
-        subject,
-        text,
-        html,
-      });
-      return {
-        success: true,
-        messageId: info.messageId,
-        provider: "smtp",
-      };
-    } catch (err) {
-      lastError = err instanceof Error ? `SMTP: ${err.message}` : "SMTP error";
-      console.error("[Email Service] SMTP error:", err);
-    }
-  }
-
   // 3. Fallback: Structured Dev / Mock Logger
   // Guarantees account registration and order placement never crash when offline
-  const fallbackFrom =
-    process.env.RESEND_FROM ||
-    process.env.SMTP_FROM ||
-    "উত্তরণ প্রকাশনী <onboarding@resend.dev>";
+  const fallbackFrom = getSmtpSenderAddress();
 
   console.info(
     `\n[Email Service: Mock Mode] ──────────────────────────────────────────\n` +
       `To: ${to}\n` +
       `From: ${fallbackFrom}\n` +
       `Subject: ${subject}\n` +
-      `Note: Set RESEND_API_KEY in .env to deliver live emails via Resend.\n` +
+      `Note: Configure SMTP (SMTP_USER & SMTP_PASS in .env / Vercel) to deliver live emails.\n` +
       (lastError ? `Last Error: ${lastError}\n` : "") +
       `──────────────────────────────────────────────────────────────────\n`
   );

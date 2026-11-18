@@ -57,6 +57,8 @@ export async function sendEmail({
   text,
   html,
 }: SendEmailOptions): Promise<EmailResult> {
+  let lastError: string | undefined;
+
   // 1. Try Resend REST API (Preferred)
   const resendApiKey = process.env.RESEND_API_KEY?.trim();
   if (resendApiKey) {
@@ -100,8 +102,15 @@ export async function sendEmail({
 
       const errMsg =
         data.error?.message || data.message || `Resend HTTP ${res.status}`;
+      lastError = `Resend Error: ${errMsg}`;
       console.warn(`[Email Service: Resend] Warning: ${errMsg}`);
+      if (errMsg.toLowerCase().includes("testing emails to your own email address")) {
+        console.warn(
+          "[Email Service: Resend] ⚠️ Sandbox Mode Restriction: Resend default domain (onboarding@resend.dev) can only send emails to the email address used to register the Resend account. To send to all customers, verify a custom domain in resend.com/domains."
+        );
+      }
     } catch (err) {
+      lastError = err instanceof Error ? err.message : "Resend request error";
       console.error("[Email Service] Resend API request failed:", err);
     }
   }
@@ -128,6 +137,7 @@ export async function sendEmail({
         provider: "smtp",
       };
     } catch (err) {
+      lastError = err instanceof Error ? `SMTP: ${err.message}` : "SMTP error";
       console.error("[Email Service] SMTP error:", err);
     }
   }
@@ -145,6 +155,7 @@ export async function sendEmail({
       `From: ${fallbackFrom}\n` +
       `Subject: ${subject}\n` +
       `Note: Set RESEND_API_KEY in .env to deliver live emails via Resend.\n` +
+      (lastError ? `Last Error: ${lastError}\n` : "") +
       `──────────────────────────────────────────────────────────────────\n`
   );
 
@@ -152,6 +163,7 @@ export async function sendEmail({
     success: true,
     provider: "dev_logger",
     mocked: true,
+    error: lastError,
   };
 }
 

@@ -67,15 +67,20 @@ export async function POST(request: Request) {
       };
       saveUserRecord(existing);
 
-      // Send welcome email asynchronously for first-time Google sign-ups
+      // Send welcome email for first-time Google sign-ups (waiting up to 5s for Vercel)
       const baseUrl = getSiteBaseUrl(request);
-      sendWelcomeEmail({
-        email,
-        name,
-        siteUrl: baseUrl,
-      }).catch((err) => {
+      try {
+        await Promise.race([
+          sendWelcomeEmail({
+            email,
+            name,
+            siteUrl: baseUrl,
+          }),
+          new Promise((resolve) => setTimeout(resolve, 5000)),
+        ]);
+      } catch (err) {
         console.warn("[Email] Google signup welcome email error:", err);
-      });
+      }
     } else {
       if (isTargetAdmin && existing.role !== "admin") {
         existing.role = "admin";

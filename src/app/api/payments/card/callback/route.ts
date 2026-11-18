@@ -101,9 +101,14 @@ async function handleCallback(request: Request) {
   ).catch(() => {});
 
   if (confirmedOrder) {
-    sendOrderConfirmationEmail({ order: confirmedOrder, siteUrl: baseUrl }).catch((err) => {
+    try {
+      await Promise.race([
+        sendOrderConfirmationEmail({ order: confirmedOrder, siteUrl: baseUrl }),
+        new Promise((resolve) => setTimeout(resolve, 5000)),
+      ]);
+    } catch (err) {
       console.warn("[Email] Card payment confirmation email error:", err);
-    });
+    }
   }
 
   return NextResponse.redirect(

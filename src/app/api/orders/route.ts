@@ -255,9 +255,14 @@ export async function POST(request: Request) {
 
   if (paymentMethod === "COD") {
     const baseUrl = getSiteBaseUrl(request);
-    sendOrderConfirmationEmail({ order, siteUrl: baseUrl }).catch((err) => {
+    try {
+      await Promise.race([
+        sendOrderConfirmationEmail({ order, siteUrl: baseUrl }),
+        new Promise((resolve) => setTimeout(resolve, 5000)),
+      ]);
+    } catch (err) {
       console.warn("[Email] COD order confirmation email error:", err);
-    });
+    }
     return NextResponse.json({ order }, { status: 201 });
   }
 

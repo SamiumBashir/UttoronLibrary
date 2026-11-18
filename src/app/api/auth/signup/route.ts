@@ -100,15 +100,20 @@ export async function POST(request: Request) {
 
   await setSessionCookie(newUser);
 
-  // Send welcome email asynchronously without blocking the response
+  // Send welcome email (waiting up to 5s so Vercel Serverless doesn't cancel it)
   const baseUrl = getSiteBaseUrl(request);
-  sendWelcomeEmail({
-    email: newUser.email,
-    name: newUser.name,
-    siteUrl: baseUrl,
-  }).catch((err) => {
+  try {
+    await Promise.race([
+      sendWelcomeEmail({
+        email: newUser.email,
+        name: newUser.name,
+        siteUrl: baseUrl,
+      }),
+      new Promise((resolve) => setTimeout(resolve, 5000)),
+    ]);
+  } catch (err) {
     console.warn("[Email] Welcome email dispatch warning:", err);
-  });
+  }
 
   return NextResponse.json({ user: toPublicUser(newUser) }, { status: 201 });
 }

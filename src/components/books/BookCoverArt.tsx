@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import type { CoverPalette } from "@/lib/types";
+import { type CoverPalette, normalizeCoverPalette } from "@/lib/types";
 
 interface BookCoverArtProps {
   title: string;
@@ -16,10 +16,11 @@ export default function BookCoverArt({
   title,
   authorName,
   category,
-  palette,
+  palette: rawPalette,
   compact = false,
   className = "",
 }: BookCoverArtProps) {
+  const palette = normalizeCoverPalette(rawPalette);
   return (
     <div
       className={`relative flex h-full w-full flex-col justify-between overflow-hidden select-none ${

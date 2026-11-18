@@ -1,15 +1,16 @@
 import { prisma, isDatabaseConnected } from "@/lib/prisma";
-import type {
-  Book,
-  Author,
-  Review,
-  Order,
-  CoverPalette,
-  BookCategory,
-  OrderStatus,
-  PaymentMethod,
-  PaymentStatus,
-  OrderTimelineEvent,
+import {
+  normalizeCoverPalette,
+  type Book,
+  type Author,
+  type Review,
+  type Order,
+  type CoverPalette,
+  type BookCategory,
+  type OrderStatus,
+  type PaymentMethod,
+  type PaymentStatus,
+  type OrderTimelineEvent,
 } from "@/lib/types";
 
 export { isDatabaseConnected };
@@ -37,12 +38,7 @@ function mapPrismaOrderToOrder(o: any): Order {
       unitPrice: it.unitPrice,
       quantity: it.quantity,
       lineTotal: it.lineTotal,
-      coverPalette: it.book?.coverPalette || {
-        base: "#141413",
-        accent: "#d93829",
-        spine: "#2a2a28",
-        foil: "gold",
-      },
+      coverPalette: normalizeCoverPalette(it.book?.coverPalette),
     })),
     subtotal: o.subtotal,
     deliveryCharge: o.deliveryCharge,
@@ -94,7 +90,7 @@ export async function getBooksFromDb(): Promise<Book[] | null> {
       isNewArrival: b.isNewArrival,
       isBestSeller: b.isBestSeller,
       isEditorialPick: b.isEditorialPick,
-      coverPalette: b.coverPalette as unknown as CoverPalette,
+      coverPalette: normalizeCoverPalette(b.coverPalette),
       spineColor: b.spineColor,
       createdAt: b.createdAt.toISOString(),
     }));
@@ -141,7 +137,7 @@ export async function getBookBySlugFromDb(slug: string): Promise<Book | null> {
       isNewArrival: b.isNewArrival,
       isBestSeller: b.isBestSeller,
       isEditorialPick: b.isEditorialPick,
-      coverPalette: b.coverPalette as unknown as CoverPalette,
+      coverPalette: normalizeCoverPalette(b.coverPalette),
       spineColor: b.spineColor,
       createdAt: b.createdAt.toISOString(),
     };
@@ -319,6 +315,45 @@ export async function updateOrderStatusInDb(
     return true;
   } catch (err) {
     console.error("[PostgreSQL] Failed to update order status:", err);
+    return false;
+  }
+}
+
+export async function updateOrderPaymentInDb(
+  orderNumber: string,
+  paymentStatus: PaymentStatus,
+  orderStatus: OrderStatus,
+  paymentRef?: string,
+  note?: string
+): Promise<boolean> {
+  if (!isDatabaseConnected()) return false;
+  try {
+    const order = await prisma.order.findFirst({
+      where: { orderNumber: { equals: orderNumber.trim(), mode: "insensitive" } },
+    });
+    if (!order) return false;
+
+    const timeline = (Array.isArray(order.timeline) ? order.timeline : []) as any[];
+    const nowIso = new Date().toISOString();
+    timeline.unshift({
+      status: orderStatus,
+      label: `Payment ${paymentStatus} & Order ${orderStatus}`,
+      note: note || `Payment verified. Ref: ${paymentRef || "N/A"}`,
+      timestamp: nowIso,
+    });
+
+    await prisma.order.update({
+      where: { id: order.id },
+      data: {
+        paymentStatus,
+        orderStatus,
+        updatedAt: new Date(),
+        timeline,
+      },
+    });
+    return true;
+  } catch (err) {
+    console.error("[PostgreSQL] Failed to update order payment in DB:", err);
     return false;
   }
 }

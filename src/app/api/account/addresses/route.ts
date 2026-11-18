@@ -17,7 +17,12 @@ export async function POST(request: Request) {
   if (!user) {
     return NextResponse.json({ error: "Authentication required." }, { status: 401 });
   }
-  const body = (await request.json()) as Partial<Address>;
+  let body: Partial<Address>;
+  try {
+    body = (await request.json()) as typeof body;
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON request body." }, { status: 400 });
+  }
   if (!body.fullName || !body.phone || !body.addressLine || !body.city || !body.postalCode) {
     return NextResponse.json(
       { error: "All address fields are required." },

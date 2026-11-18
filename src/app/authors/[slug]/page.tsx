@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { findAuthorBySlugOrId, readStore } from "@/lib/db";
+import { getAuthorsFromDb, getBooksFromDb } from "@/lib/db-postgres";
 import BookCard3D from "@/components/books/BookCard3D";
 import { Award, Quote } from "lucide-react";
 
@@ -13,10 +14,14 @@ export default async function AuthorDetailPage({
 }) {
   const { slug } = await params;
   const store = readStore();
-  const author = findAuthorBySlugOrId(store, slug);
+  const dbAuthors = await getAuthorsFromDb();
+  const allAuthors = dbAuthors && dbAuthors.length > 0 ? dbAuthors : store.authors;
+  const author = allAuthors.find((a) => a.slug === slug || a.id === slug) || findAuthorBySlugOrId(store, slug);
   if (!author) notFound();
 
-  const works = store.books.filter((b) => b.authorId === author.id);
+  const dbBooks = await getBooksFromDb();
+  const allBooks = dbBooks && dbBooks.length > 0 ? dbBooks : store.books;
+  const works = allBooks.filter((b) => b.authorId === author.id);
 
   return (
     <div className="paper-grain min-h-screen bg-[#f6f5f0] pb-24 pt-28 text-[#141413]">
@@ -96,4 +101,3 @@ export default async function AuthorDetailPage({
     </div>
   );
 }
-

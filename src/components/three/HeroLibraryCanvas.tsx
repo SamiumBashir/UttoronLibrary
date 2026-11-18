@@ -422,7 +422,11 @@ export default function HeroLibraryCanvas({
         true
       );
       if (hits.length > 0) {
-        const hitBook = hits[0].object.userData?.book as Book | undefined;
+        let obj: THREE.Object3D | null = hits[0].object;
+        while (obj && !obj.userData?.book) {
+          obj = obj.parent;
+        }
+        const hitBook = obj?.userData?.book as Book | undefined;
         if (hitBook) {
           onSelectRef.current(hitBook);
         }

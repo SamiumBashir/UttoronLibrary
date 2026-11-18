@@ -2,14 +2,16 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useStore } from "@/components/providers/StoreProvider";
 import type { Author, Book, BookCategory, Coupon, Order, OrderStatus } from "@/lib/types";
 import { BOOK_CATEGORIES } from "@/lib/types";
 import { formatPrice } from "@/lib/format";
-import { BookPlus, Package, ShieldAlert, Tag } from "lucide-react";
+import { BookPlus, Package, ShieldAlert, Tag, Loader2 } from "lucide-react";
 
 export default function AdminCmsPage() {
-  const { user, notify } = useStore();
+  const router = useRouter();
+  const { user, authLoading, notify } = useStore();
   const [books, setBooks] = useState<Book[]>([]);
   const [authors, setAuthors] = useState<Author[]>([]);
   const [coupons, setCoupons] = useState<Coupon[]>([]);
@@ -58,8 +60,18 @@ export default function AdminCmsPage() {
   };
 
   useEffect(() => {
+    if (authLoading) return;
+    if (!user) {
+      router.replace("/account");
+      return;
+    }
+    if (user.role !== "admin") {
+      notify("প্রবেশাধিকার সংরক্ষিত। এডমিন পোর্টাল শুধুমাত্র অনুমোদিত এডমিনের জন্য।", "error");
+      router.replace("/account");
+      return;
+    }
     void loadCms();
-  }, [user]);
+  }, [user, authLoading, router, notify]);
 
   const handleInventorySave = async (bookId: string, stock: number, price: number) => {
     const res = await fetch("/api/cms", {
@@ -136,28 +148,37 @@ export default function AdminCmsPage() {
     }
   };
 
-  if (!user || user.role !== "admin") {
+  if (authLoading || !user || user.role !== "admin") {
     return (
-      <div className="paper-grain min-h-screen bg-[#f6f5f0] pb-24 pt-28 text-[#141413]">
-        <div className="mx-auto max-w-xl px-4 text-center">
-          <div className="rounded-[2rem] border border-[#dedbd2] bg-white p-10 shadow-sm">
-            <ShieldAlert className="mx-auto h-10 w-10 text-[#d93829]" />
-            <h1 className="mt-4 font-serif text-3xl font-semibold text-[#141413]">
-              Curator / Admin Access Required
-            </h1>
-            <p className="mt-3 text-sm text-[#62605a]">
-              Sign in with an administrator account to manage books, inventory, authors,
-              coupons, and orders without editing code. (The first account registered on a
-              fresh installation—or an email matching <code>ADMIN_SETUP_EMAIL</code>—is
-              granted curator privileges.)
-            </p>
-            <Link
-              href="/account"
-              className="mt-6 inline-block rounded-full bg-[#141413] px-7 py-3 text-xs font-bold uppercase tracking-[0.18em] text-white transition hover:bg-[#d93829]"
-            >
-              Go to Account Sign In
-            </Link>
-          </div>
+      <div className="paper-grain flex min-h-screen items-center justify-center bg-[#f6f5f0] px-4 text-center">
+        <div className="rounded-[2rem] border border-[#dedbd2] bg-white p-8 sm:p-10 shadow-sm max-w-md">
+          {authLoading ? (
+            <>
+              <Loader2 className="mx-auto h-9 w-9 animate-spin text-[#d93829]" />
+              <h2 className="mt-4 font-serif text-xl font-semibold text-[#141413]">
+                যাচাই করা হচ্ছে...
+              </h2>
+              <p className="mt-1.5 text-xs text-[#62605a]">
+                দয়া করে অপেক্ষা করুন, পারমিশন চেক করা হচ্ছে...
+              </p>
+            </>
+          ) : (
+            <>
+              <ShieldAlert className="mx-auto h-10 w-10 text-[#d93829]" />
+              <h2 className="mt-4 font-serif text-xl font-semibold text-[#141413]">
+                প্রবেশাধিকার সংরক্ষিত
+              </h2>
+              <p className="mt-2 text-xs text-[#62605a] leading-relaxed">
+                এডমিন পোর্টাল শুধুমাত্র অনুমোদিত এডমিনের জন্য। আপনাকে ইউজার পোর্টালে নিয়ে যাওয়া হচ্ছে...
+              </p>
+              <Link
+                href="/account"
+                className="mt-5 inline-block rounded-full bg-[#141413] px-6 py-2.5 text-xs font-bold uppercase tracking-[0.16em] text-white transition hover:bg-[#d93829]"
+              >
+                আমার একাউন্ট (User Portal)
+              </Link>
+            </>
+          )}
         </div>
       </div>
     );

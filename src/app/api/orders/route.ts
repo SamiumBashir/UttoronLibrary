@@ -8,6 +8,7 @@ import {
 } from "@/lib/db";
 import { createOrderInDb, getOrdersFromDb } from "@/lib/db-postgres";
 import { getAuthenticatedUser } from "@/lib/auth";
+import { sendOrderConfirmationEmail } from "@/lib/email";
 import {
   getSiteBaseUrl,
   initiateBkashCheckout,
@@ -54,12 +55,21 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const body = (await request.json()) as {
+  let body: {
     customer?: Partial<OrderCustomerInfo>;
     items?: Array<{ bookId: string; quantity: number }>;
     couponCode?: string;
     paymentMethod?: PaymentMethod;
   };
+
+  try {
+    body = (await request.json()) as typeof body;
+  } catch {
+    return NextResponse.json(
+      { error: "Invalid JSON request body." },
+      { status: 400 }
+    );
+  }
 
   const customer = body.customer;
   if (
@@ -235,6 +245,10 @@ export async function POST(request: Request) {
   await createOrderInDb(order);
 
   if (paymentMethod === "COD") {
+    const baseUrl = getSiteBaseUrl(request);
+    sendOrderConfirmationEmail({ order, siteUrl: baseUrl }).catch((err) => {
+      console.warn("[Email] COD order confirmation email error:", err);
+    });
     return NextResponse.json({ order }, { status: 201 });
   }
 

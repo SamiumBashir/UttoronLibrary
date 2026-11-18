@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { updateStore } from "@/lib/db";
+import { updateOrderPaymentInDb } from "@/lib/db-postgres";
 import { getSiteBaseUrl } from "@/lib/payments";
+import { sendOrderConfirmationEmail } from "@/lib/email";
+import type { Order } from "@/lib/types";
 
 async function handleCallback(request: Request) {
   const url = new URL(request.url);
@@ -52,6 +55,14 @@ async function handleCallback(request: Request) {
   }
 
   if (!verified) {
+    await updateOrderPaymentInDb(
+      orderNumber,
+      "FAILED",
+      "CANCELLED",
+      undefined,
+      "Card payment could not be verified with the gateway."
+    ).catch(() => {});
+
     return NextResponse.redirect(
       `${baseUrl}/checkout?paymentError=${encodeURIComponent(
         "Card payment could not be verified with the gateway."
@@ -59,6 +70,7 @@ async function handleCallback(request: Request) {
     );
   }
 
+  let confirmedOrder: Order | undefined;
   updateStore((store) => {
     const order = store.orders.find((o) => o.orderNumber === orderNumber);
     if (order) {
@@ -76,8 +88,23 @@ async function handleCallback(request: Request) {
         const book = store.books.find((b) => b.id === item.bookId);
         if (book) book.soldCount += item.quantity;
       }
+      confirmedOrder = { ...order };
     }
   });
+
+  await updateOrderPaymentInDb(
+    orderNumber,
+    "PAID",
+    "CONFIRMED",
+    ref,
+    "Card Payment Verified & Order Confirmed"
+  ).catch(() => {});
+
+  if (confirmedOrder) {
+    sendOrderConfirmationEmail({ order: confirmedOrder, siteUrl: baseUrl }).catch((err) => {
+      console.warn("[Email] Card payment confirmation email error:", err);
+    });
+  }
 
   return NextResponse.redirect(
     `${baseUrl}/orders/${encodeURIComponent(orderNumber)}?paid=1`

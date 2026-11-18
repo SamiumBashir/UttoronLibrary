@@ -8,15 +8,17 @@ export async function GET() {
   const store = readStore();
   const user = await getAuthenticatedUser();
 
+  // SEC-05 Fix: Sensitive promotional coupons, customer orders, reviews, and contact inquiries
+  // are strictly restricted to authenticated administrators.
   return NextResponse.json({
     books: store.books,
     authors: store.authors,
     categories: store.categories,
     publishers: store.publishers,
-    coupons: store.coupons,
     testimonials: store.testimonials,
     ...(user?.role === "admin"
       ? {
+          coupons: store.coupons,
           orders: store.orders,
           reviews: store.reviews,
           newsletterCount: store.newsletter.length,
@@ -35,10 +37,19 @@ export async function POST(request: Request) {
     );
   }
 
-  const body = (await request.json()) as {
+  let body: {
     entity?: "author" | "coupon" | "inventory";
     payload?: Record<string, unknown>;
   };
+
+  try {
+    body = (await request.json()) as typeof body;
+  } catch {
+    return NextResponse.json(
+      { error: "Invalid JSON request body." },
+      { status: 400 }
+    );
+  }
 
   if (body.entity === "inventory" && body.payload) {
     const { bookId, stock, price } = body.payload as {
@@ -60,8 +71,11 @@ export async function POST(request: Request) {
 
   if (body.entity === "coupon" && body.payload) {
     const p = body.payload as Partial<Coupon>;
-    if (!p.code || !p.value) {
-      return NextResponse.json({ error: "Coupon code and value required." }, { status: 400 });
+    if (!p.code || p.value === undefined) {
+      return NextResponse.json(
+        { error: "Coupon code and numeric value required." },
+        { status: 400 }
+      );
     }
     const created = updateStore((store) => {
       const coupon: Coupon = {
@@ -85,7 +99,10 @@ export async function POST(request: Request) {
   if (body.entity === "author" && body.payload) {
     const p = body.payload as Partial<Author>;
     if (!p.name || !p.bio) {
-      return NextResponse.json({ error: "Author name and bio required." }, { status: 400 });
+      return NextResponse.json(
+        { error: "Author name and bio required." },
+        { status: 400 }
+      );
     }
     const created = updateStore((store) => {
       const author: Author = {
@@ -114,4 +131,3 @@ export async function POST(request: Request) {
 
   return NextResponse.json({ error: "Unsupported CMS operation." }, { status: 400 });
 }
-

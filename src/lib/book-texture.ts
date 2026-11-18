@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import type { Book } from "@/lib/types";
+import { type Book, normalizeCoverPalette } from "@/lib/types";
 
 const textureCache = new Map<string, THREE.CanvasTexture>();
 
@@ -128,7 +128,8 @@ function drawPatternMotif(
 }
 
 export function getBookCoverTexture(book: Book): THREE.CanvasTexture {
-  const key = `cover:${book.id}:${book.title}:${book.coverPalette.primary}`;
+  const palette = normalizeCoverPalette(book.coverPalette);
+  const key = `cover:${book.id}:${book.title}:${palette.primary}`;
   const cached = textureCache.get(key);
   if (cached) return cached;
 
@@ -138,8 +139,8 @@ export function getBookCoverTexture(book: Book): THREE.CanvasTexture {
   const ctx = canvas.getContext("2d")!;
 
   const grad = ctx.createLinearGradient(0, 0, 512, 768);
-  grad.addColorStop(0, book.coverPalette.primary);
-  grad.addColorStop(1, book.coverPalette.secondary);
+  grad.addColorStop(0, palette.primary);
+  grad.addColorStop(1, palette.secondary);
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, 512, 768);
 
@@ -153,7 +154,7 @@ export function getBookCoverTexture(book: Book): THREE.CanvasTexture {
   ctx.fillRect(0, 0, 28, 768);
 
   // Architectural gold foil frame
-  ctx.strokeStyle = book.coverPalette.accent;
+  ctx.strokeStyle = palette.accent;
   ctx.lineWidth = 2.5;
   ctx.strokeRect(32, 32, 512 - 64, 768 - 64);
   ctx.lineWidth = 1;
@@ -162,13 +163,13 @@ export function getBookCoverTexture(book: Book): THREE.CanvasTexture {
   ctx.globalAlpha = 1;
 
   // Category eyebrow
-  ctx.fillStyle = book.coverPalette.accent;
+  ctx.fillStyle = palette.accent;
   ctx.font = "600 16px Georgia, serif";
   ctx.textAlign = "center";
   ctx.fillText(book.category.toUpperCase(), 256, 86);
 
   // Title
-  ctx.fillStyle = book.coverPalette.text;
+  ctx.fillStyle = palette.text;
   ctx.font = "700 36px Georgia, serif";
   const lines = wrapText(ctx, book.title, 368);
   lines.slice(0, 3).forEach((line, idx) => {
@@ -176,14 +177,14 @@ export function getBookCoverTexture(book: Book): THREE.CanvasTexture {
   });
 
   // Motif
-  drawPatternMotif(ctx, book.coverPalette.pattern, book.coverPalette.accent, 512, 768);
+  drawPatternMotif(ctx, palette.pattern, palette.accent, 512, 768);
 
   // Author & Colophon at bottom
-  ctx.fillStyle = book.coverPalette.text;
+  ctx.fillStyle = palette.text;
   ctx.font = "500 21px Georgia, serif";
   ctx.fillText(book.authorName, 256, 654);
 
-  ctx.fillStyle = book.coverPalette.accent;
+  ctx.fillStyle = palette.accent;
   ctx.font = "600 13px sans-serif";
   ctx.fillText("UTTORON PROKASONI", 256, 704);
 
@@ -195,7 +196,8 @@ export function getBookCoverTexture(book: Book): THREE.CanvasTexture {
 }
 
 export function getBookSpineTexture(book: Book): THREE.CanvasTexture {
-  const key = `spine:${book.id}:${book.spineColor}`;
+  const palette = normalizeCoverPalette(book.coverPalette);
+  const key = `spine:${book.id}:${book.spineColor || palette.primary}`;
   const cached = textureCache.get(key);
   if (cached) return cached;
 
@@ -204,18 +206,18 @@ export function getBookSpineTexture(book: Book): THREE.CanvasTexture {
   canvas.height = 768;
   const ctx = canvas.getContext("2d")!;
 
-  ctx.fillStyle = book.spineColor || book.coverPalette.primary;
+  ctx.fillStyle = book.spineColor || palette.primary;
   ctx.fillRect(0, 0, 128, 768);
   drawClothGrain(ctx, 128, 768, 0.035);
 
-  ctx.fillStyle = book.coverPalette.accent;
+  ctx.fillStyle = palette.accent;
   ctx.fillRect(14, 52, 100, 3);
   ctx.fillRect(14, 712, 100, 3);
 
   ctx.save();
   ctx.translate(64, 384);
   ctx.rotate(-Math.PI / 2);
-  ctx.fillStyle = book.coverPalette.text;
+  ctx.fillStyle = palette.text;
   ctx.font = "700 22px Georgia, serif";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
@@ -224,7 +226,7 @@ export function getBookSpineTexture(book: Book): THREE.CanvasTexture {
   ctx.fillText(shortTitle, 0, 0);
   ctx.restore();
 
-  ctx.fillStyle = book.coverPalette.accent;
+  ctx.fillStyle = palette.accent;
   ctx.font = "700 14px Georgia, serif";
   ctx.textAlign = "center";
   ctx.fillText("UP", 64, 686);
@@ -236,7 +238,8 @@ export function getBookSpineTexture(book: Book): THREE.CanvasTexture {
 }
 
 export function getBookBackTexture(book: Book): THREE.CanvasTexture {
-  const key = `back:${book.id}:${book.coverPalette.primary}`;
+  const palette = normalizeCoverPalette(book.coverPalette);
+  const key = `back:${book.id}:${palette.primary}`;
   const cached = textureCache.get(key);
   if (cached) return cached;
 
@@ -245,20 +248,20 @@ export function getBookBackTexture(book: Book): THREE.CanvasTexture {
   canvas.height = 768;
   const ctx = canvas.getContext("2d")!;
 
-  ctx.fillStyle = book.coverPalette.secondary;
+  ctx.fillStyle = palette.secondary;
   ctx.fillRect(0, 0, 512, 768);
   drawClothGrain(ctx, 512, 768);
 
-  ctx.strokeStyle = book.coverPalette.accent;
+  ctx.strokeStyle = palette.accent;
   ctx.lineWidth = 2;
   ctx.strokeRect(32, 32, 512 - 64, 768 - 64);
 
-  ctx.fillStyle = book.coverPalette.accent;
+  ctx.fillStyle = palette.accent;
   ctx.font = "600 15px sans-serif";
   ctx.textAlign = "center";
   ctx.fillText(book.publisherName.toUpperCase(), 256, 98);
 
-  ctx.fillStyle = book.coverPalette.text;
+  ctx.fillStyle = palette.text;
   ctx.font = "400 20px Georgia, serif";
   const descLines = wrapText(ctx, book.description, 356);
   descLines.slice(0, 8).forEach((line, idx) => {

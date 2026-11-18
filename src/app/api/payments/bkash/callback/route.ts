@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { updateStore } from "@/lib/db";
+import { updateOrderPaymentInDb } from "@/lib/db-postgres";
 import { executeBkashPayment, getSiteBaseUrl } from "@/lib/payments";
+import { sendOrderConfirmationEmail } from "@/lib/email";
+import type { Order } from "@/lib/types";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
@@ -30,6 +33,14 @@ export async function GET(request: Request) {
         });
       }
     });
+    await updateOrderPaymentInDb(
+      orderNumber,
+      "FAILED",
+      "CANCELLED",
+      paymentID,
+      verification.statusMessage || "Transaction could not be verified."
+    ).catch(() => {});
+
     return NextResponse.redirect(
       `${baseUrl}/checkout?paymentError=${encodeURIComponent(
         verification.statusMessage || "bKash payment verification failed."
@@ -37,6 +48,7 @@ export async function GET(request: Request) {
     );
   }
 
+  let confirmedOrder: Order | undefined;
   updateStore((store) => {
     const order = store.orders.find((o) => o.orderNumber === orderNumber);
     if (order) {
@@ -54,8 +66,23 @@ export async function GET(request: Request) {
         const book = store.books.find((b) => b.id === item.bookId);
         if (book) book.soldCount += item.quantity;
       }
+      confirmedOrder = { ...order };
     }
   });
+
+  await updateOrderPaymentInDb(
+    orderNumber,
+    "PAID",
+    "CONFIRMED",
+    verification.trxID || paymentID,
+    "bKash Payment Verified & Order Confirmed"
+  ).catch(() => {});
+
+  if (confirmedOrder) {
+    sendOrderConfirmationEmail({ order: confirmedOrder, siteUrl: baseUrl }).catch((err) => {
+      console.warn("[Email] bKash confirmation email error:", err);
+    });
+  }
 
   return NextResponse.redirect(
     `${baseUrl}/orders/${encodeURIComponent(orderNumber)}?paid=1`

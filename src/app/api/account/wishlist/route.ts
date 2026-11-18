@@ -15,7 +15,13 @@ export async function POST(request: Request) {
   if (!user) {
     return NextResponse.json({ error: "Authentication required." }, { status: 401 });
   }
-  const { bookId } = (await request.json()) as { bookId?: string };
+  let body: { bookId?: string };
+  try {
+    body = (await request.json()) as typeof body;
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON request body." }, { status: 400 });
+  }
+  const bookId = body.bookId;
   if (!bookId) {
     return NextResponse.json({ error: "bookId is required." }, { status: 400 });
   }

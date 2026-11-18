@@ -29,6 +29,52 @@ export interface CoverPalette {
   pattern: "arch" | "orbital" | "botanical" | "monolith" | "horizon" | "lattice";
 }
 
+export const DEFAULT_COVER_PALETTE: CoverPalette = {
+  primary: "#141413",
+  secondary: "#2a2a28",
+  accent: "#d93829",
+  text: "#f6f5f0",
+  pattern: "arch",
+};
+
+export function normalizeCoverPalette(raw?: unknown): CoverPalette {
+  if (!raw || typeof raw !== "object") {
+    return { ...DEFAULT_COVER_PALETTE };
+  }
+  const p = raw as Record<string, unknown>;
+  const validPatterns: CoverPalette["pattern"][] = [
+    "arch",
+    "orbital",
+    "botanical",
+    "monolith",
+    "horizon",
+    "lattice",
+  ];
+  const pattern = (
+    typeof p.pattern === "string" && validPatterns.includes(p.pattern as CoverPalette["pattern"])
+      ? p.pattern
+      : "arch"
+  ) as CoverPalette["pattern"];
+
+  return {
+    primary:
+      typeof p.primary === "string" && p.primary
+        ? p.primary
+        : typeof p.base === "string" && p.base
+        ? p.base
+        : DEFAULT_COVER_PALETTE.primary,
+    secondary:
+      typeof p.secondary === "string" && p.secondary
+        ? p.secondary
+        : typeof p.spine === "string" && p.spine
+        ? p.spine
+        : DEFAULT_COVER_PALETTE.secondary,
+    accent: typeof p.accent === "string" && p.accent ? p.accent : DEFAULT_COVER_PALETTE.accent,
+    text: typeof p.text === "string" && p.text ? p.text : DEFAULT_COVER_PALETTE.text,
+    pattern,
+  };
+}
+
 export interface Book {
   id: string;
   slug: string;

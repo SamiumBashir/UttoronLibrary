@@ -2,12 +2,18 @@ import { NextResponse } from "next/server";
 import { addContactMessage } from "@/lib/db";
 
 export async function POST(request: Request) {
-  const body = (await request.json()) as {
+  let body: {
     name?: string;
     email?: string;
     subject?: string;
     message?: string;
   };
+
+  try {
+    body = (await request.json()) as typeof body;
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON request body." }, { status: 400 });
+  }
 
   if (
     !body.name?.trim() ||

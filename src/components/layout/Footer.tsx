@@ -98,7 +98,7 @@ export default function Footer() {
               <li><Link href="/categories" className="hover:text-[#d93829]">Categories</Link></li>
               <li><Link href="/authors" className="hover:text-[#d93829]">Authors</Link></li>
               <li><Link href="/about" className="hover:text-[#d93829]">About Us</Link></li>
-              <li><Link href="/admin" className="hover:text-[#d93829]">CMS Console</Link></li>
+              <li><Link href="/account" className="hover:text-[#d93829]">Reader Portal</Link></li>
             </ul>
           </div>
 

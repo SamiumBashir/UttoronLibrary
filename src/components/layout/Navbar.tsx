@@ -334,11 +334,13 @@ export default function Navbar() {
                     Shopping Bag ({cartCount})
                   </Link>
                   <Link href="/account" className="hover:text-[#141413]">
-                    {user ? `Signed in: ${user.name}` : "Reader Login"}
+                    {user ? `User Portal: ${user.name}` : "Reader Login"}
                   </Link>
-                  <Link href="/admin" className="hover:text-[#141413]">
-                    CMS Console
-                  </Link>
+                  {user?.role === "admin" && (
+                    <Link href="/admin" className="hover:text-[#141413] text-[#d93829] font-bold">
+                      CMS Console (Admin)
+                    </Link>
+                  )}
                 </div>
                 <span className="hidden sm:inline">GALLERY OPEN • DHAKA &amp; ONLINE</span>
               </div>

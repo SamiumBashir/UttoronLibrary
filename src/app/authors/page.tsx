@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { readStore } from "@/lib/db";
+import { getAuthorsFromDb, getBooksFromDb } from "@/lib/db-postgres";
 import { ArrowRight, Award } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -8,8 +9,12 @@ export const metadata = {
   title: "Authors",
 };
 
-export default function AuthorsPage() {
+export default async function AuthorsPage() {
   const store = readStore();
+  const dbAuthors = await getAuthorsFromDb();
+  const authors = dbAuthors && dbAuthors.length > 0 ? dbAuthors : store.authors;
+  const dbBooks = await getBooksFromDb();
+  const books = dbBooks && dbBooks.length > 0 ? dbBooks : store.books;
 
   return (
     <div className="paper-grain min-h-screen bg-[#f6f5f0] pb-24 pt-20 sm:pt-28 text-[#141413]">
@@ -29,8 +34,8 @@ export default function AuthorsPage() {
         </header>
 
         <div className="mt-8 sm:mt-12 grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {store.authors.map((author) => {
-            const authoredCount = store.books.filter(
+          {authors.map((author) => {
+            const authoredCount = books.filter(
               (b) => b.authorId === author.id
             ).length;
             return (
@@ -85,4 +90,3 @@ export default function AuthorsPage() {
     </div>
   );
 }
-

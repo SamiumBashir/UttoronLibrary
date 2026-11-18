@@ -1,4 +1,5 @@
 import { readStore } from "@/lib/db";
+import { getBooksFromDb } from "@/lib/db-postgres";
 import BookCatalogClient from "@/components/books/BookCatalogClient";
 
 export const dynamic = "force-dynamic";
@@ -16,6 +17,8 @@ export default async function BooksPage({
 }) {
   const sp = await searchParams;
   const store = readStore();
+  const dbBooks = await getBooksFromDb();
+  const books = dbBooks && dbBooks.length > 0 ? dbBooks : store.books;
 
   return (
     <div className="paper-grain min-h-screen bg-[#f6f5f0] pb-24 pt-28">
@@ -35,7 +38,7 @@ export default async function BooksPage({
         </header>
 
         <BookCatalogClient
-          books={store.books}
+          books={books}
           initialCategory={sp.category || "All"}
           initialQuery={sp.q || ""}
         />
@@ -43,4 +46,3 @@ export default async function BooksPage({
     </div>
   );
 }
-

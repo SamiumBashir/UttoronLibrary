@@ -88,9 +88,10 @@ export function updateStore<T>(mutator: (store: StoreData) => T): T {
 }
 
 export function calculateDeliveryCharge(subtotal: number, city: string): number {
-  if (subtotal <= 0) return 0;
-  if (subtotal >= 2000) return 0; // Free archival courier delivery above ৳2,000
-  const normalized = city.trim().toLowerCase();
+  const safeSubtotal = Number.isFinite(subtotal) ? Math.max(0, subtotal) : 0;
+  if (safeSubtotal <= 0) return 0;
+  if (safeSubtotal >= 2000) return 0; // Free archival courier delivery above ৳2,000
+  const normalized = (city || "").trim().toLowerCase();
   if (normalized === "dhaka" || normalized.includes("dhaka")) {
     return 60;
   }
@@ -101,13 +102,14 @@ export function validateCouponOnSubtotal(
   coupon: Coupon | undefined,
   subtotal: number
 ): { valid: boolean; discount: number; reason?: string } {
+  const safeSubtotal = Number.isFinite(subtotal) ? Math.max(0, subtotal) : 0;
   if (!coupon || !coupon.active) {
     return { valid: false, discount: 0, reason: "Invalid or inactive coupon code." };
   }
-  if (new Date(coupon.expiresAt).getTime() < Date.now()) {
+  if (coupon.expiresAt && new Date(coupon.expiresAt).getTime() < Date.now()) {
     return { valid: false, discount: 0, reason: "This coupon has expired." };
   }
-  if (subtotal < coupon.minOrderAmount) {
+  if (safeSubtotal < (coupon.minOrderAmount || 0)) {
     return {
       valid: false,
       discount: 0,
@@ -116,13 +118,13 @@ export function validateCouponOnSubtotal(
   }
   let discount =
     coupon.type === "percentage"
-      ? Math.round((subtotal * coupon.value) / 100)
-      : coupon.value;
+      ? Math.round((safeSubtotal * Math.max(0, coupon.value || 0)) / 100)
+      : Math.max(0, coupon.value || 0);
   if (coupon.maxDiscount && discount > coupon.maxDiscount) {
     discount = coupon.maxDiscount;
   }
-  discount = Math.min(discount, subtotal);
-  return { valid: true, discount };
+  discount = Math.min(discount, safeSubtotal);
+  return { valid: true, discount: Math.max(0, discount) };
 }
 
 export function findBookBySlugOrId(store: StoreData, key: string): Book | undefined {

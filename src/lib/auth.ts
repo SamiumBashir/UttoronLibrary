@@ -4,6 +4,7 @@ import os from "os";
 import path from "path";
 import { cookies } from "next/headers";
 import { readStore } from "@/lib/db";
+import { isDatabaseConnected, prisma } from "@/lib/prisma";
 import type { PublicUser, UserRecord } from "@/lib/types";
 
 export const SESSION_COOKIE_NAME = "uttoron_session";
@@ -110,9 +111,20 @@ export function verifySessionToken(token: string): SessionPayload | null {
   }
 }
 
+export function resolveUserRole(email: string, storedRole?: string): "customer" | "admin" {
+  const adminEmail = process.env.ADMIN_SETUP_EMAIL?.trim().toLowerCase();
+  if (adminEmail) {
+    return email.trim().toLowerCase() === adminEmail ? "admin" : "customer";
+  }
+  return storedRole === "admin" ? "admin" : "customer";
+}
+
 export function toPublicUser(user: UserRecord): PublicUser {
   const { passwordHash: _p, resetTokenHash: _r, resetTokenExpiresAt: _e, ...rest } = user;
-  return rest;
+  return {
+    ...rest,
+    role: resolveUserRole(user.email, user.role),
+  };
 }
 
 export async function getAuthenticatedUser(): Promise<UserRecord | null> {
@@ -122,12 +134,56 @@ export async function getAuthenticatedUser(): Promise<UserRecord | null> {
   const payload = verifySessionToken(token);
   if (!payload) return null;
   const store = readStore();
-  return store.users.find((u) => u.id === payload.userId) ?? null;
+  let user = store.users.find((u) => u.id === payload.userId);
+
+  // If not found in file store and database is connected, check PostgreSQL
+  if (!user && isDatabaseConnected()) {
+    try {
+      const dbUser = await prisma.user.findUnique({
+        where: { id: payload.userId },
+        include: { addresses: true },
+      });
+      if (dbUser) {
+        user = {
+          id: dbUser.id,
+          name: dbUser.name,
+          email: dbUser.email,
+          phone: dbUser.phone || "",
+          passwordHash: dbUser.passwordHash || "",
+          role: dbUser.role as "customer" | "admin",
+          wishlist: dbUser.wishlist || [],
+          addresses: (dbUser.addresses || []).map((a) => ({
+            id: a.id,
+            label: a.label,
+            fullName: a.fullName,
+            phone: a.phone,
+            addressLine: a.addressLine,
+            city: a.city,
+            postalCode: a.postalCode,
+            isDefault: a.isDefault,
+          })),
+          createdAt: dbUser.createdAt.toISOString(),
+        };
+      }
+    } catch {
+      // ignore
+    }
+  }
+
+  if (user) {
+    user.role = resolveUserRole(user.email, user.role);
+  }
+
+  return user ?? null;
 }
 
 export async function setSessionCookie(user: UserRecord): Promise<void> {
   const cookieStore = await cookies();
-  const token = signSessionToken(user);
+  const effectiveUser = {
+    ...user,
+    role: resolveUserRole(user.email, user.role),
+  };
+  const token = signSessionToken(effectiveUser);
   cookieStore.set(SESSION_COOKIE_NAME, token, {
     httpOnly: true,
     sameSite: "lax",
@@ -140,5 +196,5 @@ export async function setSessionCookie(user: UserRecord): Promise<void> {
 export async function clearSessionCookie(): Promise<void> {
   const cookieStore = await cookies();
   cookieStore.delete(SESSION_COOKIE_NAME);
+  cookieStore.delete("uttoron_user");
 }
-

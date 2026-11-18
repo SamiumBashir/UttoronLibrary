@@ -3,10 +3,22 @@ import crypto from "crypto";
 import { updateStore } from "@/lib/db";
 
 export async function POST(request: Request) {
-  const body = (await request.json()) as { email?: string };
+  let body: { email?: string };
+  try {
+    body = (await request.json()) as typeof body;
+  } catch {
+    return NextResponse.json(
+      { error: "Invalid JSON request body." },
+      { status: 400 }
+    );
+  }
+
   const email = body.email?.trim().toLowerCase() || "";
-  if (!email) {
-    return NextResponse.json({ error: "Email address is required." }, { status: 400 });
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return NextResponse.json(
+      { error: "Please enter a valid email address." },
+      { status: 400 }
+    );
   }
 
   let devToken: string | undefined;
@@ -31,4 +43,3 @@ export async function POST(request: Request) {
     ...(devToken ? { devResetToken: devToken } : {}),
   });
 }
-

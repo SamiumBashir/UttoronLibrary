@@ -62,13 +62,13 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 transition-all duration-400 ${
+        className={`fixed inset-x-0 top-0 z-50 h-16 transition-all duration-300 ${
           solidHeader
-            ? "border-b border-[#dedbd2] bg-[#f6f5f0]/95 py-3 shadow-[0_8px_30px_rgba(20,20,19,0.06)] backdrop-blur-xl"
-            : "bg-gradient-to-b from-[#f6f5f0]/90 via-[#f6f5f0]/55 to-transparent py-4"
+            ? "border-b border-[#dedbd2] bg-[#f6f5f0]/95 shadow-[0_8px_30px_rgba(20,20,19,0.06)] backdrop-blur-xl"
+            : "bg-gradient-to-b from-[#f6f5f0]/95 via-[#f6f5f0]/70 to-transparent"
         }`}
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* Brand Logo */}
           <Link href="/" className="group flex items-center gap-2 sm:gap-3 focus:outline-none">
             <span className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-xl border border-[#141413]/15 bg-white text-[#141413] shadow-xs transition group-hover:border-[#d93829]">
@@ -109,18 +109,78 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* Menu Icon Trigger Button */}
-          <div className="flex items-center">
+          {/* Right Action Icons: Clean, uniform circular buttons */}
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            {/* Search Trigger */}
+            <button
+              type="button"
+              aria-label="Search collection"
+              onClick={() => {
+                setBlindOpen(false);
+                setSearchOpen(true);
+              }}
+              className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/90 text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
+              title="Search Books"
+            >
+              <Search className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            </button>
+
+            {/* Wishlist Link */}
+            <Link
+              href="/account?tab=wishlist"
+              aria-label={`Wishlist (${wishlist.length} items)`}
+              className="relative hidden sm:flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/90 text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
+              title="Wishlist"
+            >
+              <Heart className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              {wishlist.length > 0 && (
+                <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#d93829] px-1 text-[10px] font-bold text-white shadow-xs">
+                  {wishlist.length}
+                </span>
+              )}
+            </Link>
+
+            {/* Shopping Cart Trigger */}
+            <button
+              type="button"
+              aria-label={`Shopping cart (${cartCount} items)`}
+              onClick={() => {
+                setBlindOpen(false);
+                setCartOpen(true);
+              }}
+              className="relative flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/90 text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
+              title="Shopping Cart"
+            >
+              <ShoppingBag className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              {cartCount > 0 && (
+                <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#d93829] px-1 text-[10px] font-bold text-white shadow-xs">
+                  {cartCount}
+                </span>
+              )}
+            </button>
+
+            {/* Reader Account Link */}
+            <Link
+              href="/account"
+              aria-label={user ? `Account (${user.name})` : "Reader Sign In"}
+              className="hidden sm:flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/90 text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
+              title={user ? `Signed in as ${user.name}` : "Reader Sign In / Account"}
+            >
+              <User className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+            </Link>
+
+            {/* Signature Paper-Blind Menu Toggle */}
             <button
               type="button"
               aria-label={blindOpen ? "Close Navigation Menu" : "Open Navigation Menu"}
               onClick={() => setBlindOpen((v) => !v)}
-              className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-[#dedbd2] bg-white text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
+              className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
+              title={blindOpen ? "Close Menu" : "Open Menu"}
             >
               {blindOpen ? (
-                <X className="h-4 w-4 sm:h-5 sm:w-5" />
+                <X className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
               ) : (
-                <Menu className="h-4 w-4 sm:h-5 sm:w-5" />
+                <Menu className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
               )}
             </button>
           </div>
@@ -138,7 +198,7 @@ export default function Navbar() {
             animate={{ y: 0 }}
             exit={{ y: "-100%" }}
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-x-0 top-[53px] sm:top-[61px] z-40 max-h-[calc(100dvh-53px)] sm:max-h-[calc(100dvh-61px)] overflow-y-auto overscroll-contain border-b border-[#dedbd2] bg-[#f6f5f0] pb-10 shadow-[0_32px_64px_rgba(20,20,19,0.16)]"
+            className="fixed inset-x-0 top-16 z-40 max-h-[calc(100dvh-64px)] overflow-y-auto overscroll-contain border-b border-[#dedbd2] bg-[#f6f5f0] pb-10 shadow-[0_32px_64px_rgba(20,20,19,0.16)]"
           >
             {/* Paper blind horizontal slat lines */}
             <div

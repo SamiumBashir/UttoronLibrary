@@ -49,7 +49,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const onResize = () => {
-      if (window.innerWidth >= 768) {
+      if (window.innerWidth >= 1024) {
         setBlindOpen(false);
       }
     };
@@ -95,8 +95,8 @@ export default function Navbar() {
             </div>
           </Link>
 
-          {/* Inline Navigation (Visible on Tablet & Desktop >= 768px) */}
-          <nav aria-label="Primary Navigation" className="hidden items-center gap-3 md:flex lg:gap-6">
+          {/* Desktop Inline Navigation (Visible only on Desktop >= 1024px) */}
+          <nav aria-label="Primary Navigation" className="hidden items-center gap-6 lg:flex">
             {NAV_LINKS.map((item) => {
               const active =
                 item.href === "/"
@@ -106,7 +106,7 @@ export default function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`relative text-[11px] font-semibold uppercase tracking-[0.11em] transition lg:text-xs lg:tracking-[0.14em] ${
+                  className={`relative text-xs font-semibold uppercase tracking-[0.14em] transition ${
                     active ? "text-[#141413]" : "text-[#62605a] hover:text-[#141413]"
                   }`}
                 >
@@ -119,9 +119,9 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* Right Action Icons: Clean, uniform circular buttons */}
+          {/* Right Action Controls: Desktop shows icons, Mobile/Tablet shows only Hamburger Menu */}
           <div className="flex items-center gap-1.5 sm:gap-2">
-            {/* Search Trigger */}
+            {/* Desktop Only: Search Trigger */}
             <button
               type="button"
               aria-label="Search collection"
@@ -129,20 +129,20 @@ export default function Navbar() {
                 setBlindOpen(false);
                 setSearchOpen(true);
               }}
-              className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/90 text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
+              className="hidden lg:flex h-9 w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/90 text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
               title="Search Books"
             >
-              <Search className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              <Search className="h-4 w-4" />
             </button>
 
-            {/* Wishlist Link */}
+            {/* Desktop Only: Wishlist Link */}
             <Link
               href="/account?tab=wishlist"
               aria-label={`Wishlist (${wishlist.length} items)`}
-              className="relative hidden sm:flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/90 text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
+              className="relative hidden lg:flex h-9 w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/90 text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
               title="Wishlist"
             >
-              <Heart className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              <Heart className="h-4 w-4" />
               {wishlist.length > 0 && (
                 <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#d93829] px-1 text-[10px] font-bold text-white shadow-xs">
                   {wishlist.length}
@@ -150,7 +150,7 @@ export default function Navbar() {
               )}
             </Link>
 
-            {/* Shopping Cart Trigger */}
+            {/* Desktop Only: Shopping Cart Trigger */}
             <button
               type="button"
               aria-label={`Shopping cart (${cartCount} items)`}
@@ -158,10 +158,10 @@ export default function Navbar() {
                 setBlindOpen(false);
                 setCartOpen(true);
               }}
-              className="relative flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/90 text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
+              className="relative hidden lg:flex h-9 w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/90 text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
               title="Shopping Cart"
             >
-              <ShoppingBag className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              <ShoppingBag className="h-4 w-4" />
               {cartCount > 0 && (
                 <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#d93829] px-1 text-[10px] font-bold text-white shadow-xs">
                   {cartCount}
@@ -169,22 +169,22 @@ export default function Navbar() {
               )}
             </button>
 
-            {/* Reader Account Link */}
+            {/* Desktop Only: Reader Account Link */}
             <Link
               href="/account"
               aria-label={user ? `Account (${user.name})` : "Reader Sign In"}
-              className="hidden sm:flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/90 text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
+              className="hidden lg:flex h-9 w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/90 text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
               title={user ? `Signed in as ${user.name}` : "Reader Sign In / Account"}
             >
-              <User className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              <User className="h-4 w-4" />
             </Link>
 
-            {/* Mobile-Only Menu Toggle (Hidden from 768px / md:hidden) */}
+            {/* Responsive Mobile & Tablet Menu Toggle (Only visible < 1024px) */}
             <button
               type="button"
               aria-label={blindOpen ? "Close Navigation Menu" : "Open Navigation Menu"}
               onClick={() => setBlindOpen((v) => !v)}
-              className="flex md:hidden h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
+              className="flex lg:hidden h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
               title={blindOpen ? "Close Menu" : "Open Menu"}
             >
               {blindOpen ? (
@@ -197,7 +197,7 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* MINIMAZE SIGNATURE PULL-DOWN PAPER BLIND MENU (MOBILE ONLY < 768px) */}
+      {/* MINIMAZE SIGNATURE PULL-DOWN PAPER BLIND MENU (MOBILE & TABLET ONLY < 1024px) */}
       <AnimatePresence>
         {blindOpen && (
           <motion.div
@@ -208,7 +208,7 @@ export default function Navbar() {
             animate={{ y: 0 }}
             exit={{ y: "-100%" }}
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-x-0 top-16 z-40 max-h-[calc(100dvh-64px)] overflow-y-auto overscroll-contain border-b border-[#dedbd2] bg-[#f6f5f0] pb-10 shadow-[0_32px_64px_rgba(20,20,19,0.16)] md:hidden"
+            className="fixed inset-x-0 top-16 z-40 max-h-[calc(100dvh-64px)] overflow-y-auto overscroll-contain border-b border-[#dedbd2] bg-[#f6f5f0] pb-10 shadow-[0_32px_64px_rgba(20,20,19,0.16)] lg:hidden"
           >
             {/* Paper blind horizontal slat lines */}
             <div

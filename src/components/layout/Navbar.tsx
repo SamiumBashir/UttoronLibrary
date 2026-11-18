@@ -47,6 +47,16 @@ export default function Navbar() {
     setBlindOpen(false);
   }, [pathname]);
 
+  useEffect(() => {
+    const onResize = () => {
+      if (window.innerWidth >= 1024) {
+        setBlindOpen(false);
+      }
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
   const handleBlindPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     const rect = blindRef.current?.getBoundingClientRect();
     if (!rect) return;
@@ -169,12 +179,12 @@ export default function Navbar() {
               <User className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </Link>
 
-            {/* Signature Paper-Blind Menu Toggle */}
+            {/* Responsive Mobile/Tablet Menu Toggle (Hidden on Desktop) */}
             <button
               type="button"
               aria-label={blindOpen ? "Close Navigation Menu" : "Open Navigation Menu"}
               onClick={() => setBlindOpen((v) => !v)}
-              className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
+              className="flex lg:hidden h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
               title={blindOpen ? "Close Menu" : "Open Menu"}
             >
               {blindOpen ? (
@@ -187,7 +197,7 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* MINIMAZE SIGNATURE PULL-DOWN PAPER BLIND MENU WITH CURSOR-TRACKING RED DOT */}
+      {/* MINIMAZE SIGNATURE PULL-DOWN PAPER BLIND MENU WITH CURSOR-TRACKING RED DOT (MOBILE/TABLET ONLY) */}
       <AnimatePresence>
         {blindOpen && (
           <motion.div
@@ -198,7 +208,7 @@ export default function Navbar() {
             animate={{ y: 0 }}
             exit={{ y: "-100%" }}
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-x-0 top-16 z-40 max-h-[calc(100dvh-64px)] overflow-y-auto overscroll-contain border-b border-[#dedbd2] bg-[#f6f5f0] pb-10 shadow-[0_32px_64px_rgba(20,20,19,0.16)]"
+            className="fixed inset-x-0 top-16 z-40 max-h-[calc(100dvh-64px)] overflow-y-auto overscroll-contain border-b border-[#dedbd2] bg-[#f6f5f0] pb-10 shadow-[0_32px_64px_rgba(20,20,19,0.16)] lg:hidden"
           >
             {/* Paper blind horizontal slat lines */}
             <div

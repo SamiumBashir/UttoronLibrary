@@ -39,13 +39,22 @@ export async function GET() {
   const fileOrders =
     user.role === "admin"
       ? store.orders
-      : store.orders.filter((o) => o.userId === user.id || o.customer.email === user.email);
+      : store.orders.filter(
+          (o) =>
+            o.userId === user.id ||
+            (o.customer?.email &&
+              o.customer.email.toLowerCase() === user.email.toLowerCase())
+        );
 
   // Merge unique by orderNumber
   const mergedMap = new Map<string, Order>();
-  for (const o of fileOrders) mergedMap.set(o.orderNumber, o);
+  for (const o of fileOrders) {
+    if (o.orderNumber) mergedMap.set(o.orderNumber.toUpperCase(), o);
+  }
   if (dbOrders) {
-    for (const o of dbOrders) mergedMap.set(o.orderNumber, o);
+    for (const o of dbOrders) {
+      if (o.orderNumber) mergedMap.set(o.orderNumber.toUpperCase(), o);
+    }
   }
   const orders = Array.from(mergedMap.values()).sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()

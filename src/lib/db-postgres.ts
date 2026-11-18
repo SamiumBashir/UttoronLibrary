@@ -1,4 +1,5 @@
 import { prisma, isDatabaseConnected } from "@/lib/prisma";
+import { readStore } from "@/lib/db";
 import {
   normalizeCoverPalette,
   type Book,
@@ -172,11 +173,128 @@ export async function createOrderInDb(order: Order): Promise<boolean> {
   if (!isDatabaseConnected()) return false;
   try {
     await prisma.$transaction(async (tx) => {
+      // 1. Resolve valid userId in PostgreSQL to prevent foreign key violations
+      let targetUserId: string | null = null;
+      if (order.userId) {
+        const userById = await tx.user.findUnique({
+          where: { id: order.userId },
+          select: { id: true },
+        });
+        if (userById) {
+          targetUserId = userById.id;
+        }
+      }
+      if (!targetUserId && order.customer?.email) {
+        const userByEmail = await tx.user.findFirst({
+          where: { email: { equals: order.customer.email.trim(), mode: "insensitive" } },
+          select: { id: true },
+        });
+        if (userByEmail) {
+          targetUserId = userByEmail.id;
+        }
+      }
+
+      // 2. Ensure each ordered book exists in PostgreSQL so foreign key constraint is satisfied
+      const store = readStore();
+      const resolvedItems: Array<{
+        id: string;
+        bookId: string;
+        title: string;
+        slug: string;
+        quantity: number;
+        unitPrice: number;
+        lineTotal: number;
+      }> = [];
+
+      for (const item of order.items) {
+        let dbBook = await tx.book.findFirst({
+          where: { OR: [{ id: item.bookId }, { slug: item.slug }] },
+          select: { id: true },
+        });
+
+        if (!dbBook) {
+          const localBook = store.books.find(
+            (b) => b.id === item.bookId || b.slug === item.slug
+          );
+          if (localBook) {
+            const localAuthor = store.authors.find(
+              (a) => a.id === localBook.authorId || a.slug === localBook.authorId
+            );
+            if (localAuthor) {
+              await tx.author.upsert({
+                where: { slug: localAuthor.slug },
+                update: { name: localAuthor.name },
+                create: {
+                  id: localAuthor.id,
+                  slug: localAuthor.slug,
+                  name: localAuthor.name,
+                  roleTitle: localAuthor.roleTitle,
+                  nationality: localAuthor.nationality,
+                  portraitColors: [...localAuthor.portraitColors],
+                  bio: localAuthor.bio,
+                  longBio: localAuthor.longBio,
+                  quote: localAuthor.quote,
+                  awards: [...localAuthor.awards],
+                  featured: localAuthor.featured,
+                },
+              });
+            }
+
+            dbBook = await tx.book.create({
+              data: {
+                id: localBook.id,
+                slug: localBook.slug,
+                title: localBook.title,
+                subtitle: localBook.subtitle || null,
+                authorId: localBook.authorId,
+                authorName: localBook.authorName,
+                publisherId: localBook.publisherId,
+                publisherName: localBook.publisherName,
+                isbn: localBook.isbn,
+                category: localBook.category,
+                tags: [...localBook.tags],
+                description: localBook.description,
+                longDescription: localBook.longDescription,
+                price: localBook.price,
+                originalPrice: localBook.originalPrice,
+                stock: localBook.stock,
+                soldCount: localBook.soldCount,
+                rating: localBook.rating,
+                reviewCount: localBook.reviewCount,
+                pages: localBook.pages,
+                language: localBook.language,
+                binding: localBook.binding,
+                dimensions: localBook.dimensions,
+                publicationDate: localBook.publicationDate,
+                edition: localBook.edition,
+                spineColor: localBook.spineColor,
+                coverPalette: localBook.coverPalette as object,
+                isNewArrival: localBook.isNewArrival,
+                isBestSeller: localBook.isBestSeller,
+                isEditorialPick: localBook.isEditorialPick,
+              },
+              select: { id: true },
+            });
+          }
+        }
+
+        const validBookId = dbBook ? dbBook.id : item.bookId;
+        resolvedItems.push({
+          id: `item-${validBookId}-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+          bookId: validBookId,
+          title: item.title,
+          slug: item.slug,
+          quantity: item.quantity,
+          unitPrice: item.unitPrice,
+          lineTotal: item.lineTotal,
+        });
+      }
+
       await tx.order.create({
         data: {
           id: order.id,
           orderNumber: order.orderNumber,
-          userId: order.userId ?? null,
+          userId: targetUserId,
           customerName: order.customer.fullName,
           customerPhone: order.customer.phone,
           customerEmail: order.customer.email,
@@ -195,21 +313,13 @@ export async function createOrderInDb(order: Order): Promise<boolean> {
           estimatedDelivery: order.estimatedDelivery,
           timeline: order.timeline as object,
           items: {
-            create: order.items.map((item) => ({
-              id: `item-${item.bookId}-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
-              bookId: item.bookId,
-              title: item.title,
-              slug: item.slug,
-              quantity: item.quantity,
-              unitPrice: item.unitPrice,
-              lineTotal: item.lineTotal,
-            })),
+            create: resolvedItems,
           },
         },
       });
 
       // Atomically decrement stock in PostgreSQL
-      for (const item of order.items) {
+      for (const item of resolvedItems) {
         await tx.book.updateMany({
           where: { id: item.bookId },
           data: {
@@ -261,8 +371,28 @@ export async function getOrdersFromDb(filter?: {
     const where: any = {};
     if (!filter?.isAdmin) {
       const conditions: any[] = [];
-      if (filter?.userId) conditions.push({ userId: filter.userId });
-      if (filter?.email) conditions.push({ customerEmail: { equals: filter.email, mode: "insensitive" } });
+      if (filter?.userId) {
+        conditions.push({ userId: filter.userId });
+      }
+      if (filter?.email) {
+        const cleanEmail = filter.email.trim();
+        conditions.push({
+          customerEmail: { equals: cleanEmail, mode: "insensitive" },
+        });
+
+        // Also check if user exists in User table with this email, and grab their ID
+        try {
+          const dbUser = await prisma.user.findFirst({
+            where: { email: { equals: cleanEmail, mode: "insensitive" } },
+            select: { id: true },
+          });
+          if (dbUser && dbUser.id !== filter?.userId) {
+            conditions.push({ userId: dbUser.id });
+          }
+        } catch {
+          // ignore
+        }
+      }
       if (conditions.length > 0) {
         where.OR = conditions;
       }

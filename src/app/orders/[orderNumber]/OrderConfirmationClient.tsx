@@ -143,6 +143,12 @@ export default function OrderConfirmationClient({
               <span className="mt-2 inline-block rounded-full bg-[#141413] px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-white">
                 {statusLabel}
               </span>
+              <Link
+                href="/account?tab=orders"
+                className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-[#62605a] hover:text-[#d93829] transition"
+              >
+                অর্ডার হিস্টোরি দেখুন →
+              </Link>
             </div>
           </div>
 

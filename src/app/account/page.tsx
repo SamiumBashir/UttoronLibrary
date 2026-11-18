@@ -9,13 +9,17 @@ import { formatPrice } from "@/lib/format";
 import BookCard3D from "@/components/books/BookCard3D";
 import { signInWithGoogle } from "@/lib/firebase/client";
 import {
+  ChevronRight,
+  Clock,
   Heart,
   KeyRound,
   LogOut,
   MapPin,
   Package,
+  RotateCw,
   Shield,
   Trash2,
+  Truck,
   User as UserIcon,
 } from "lucide-react";
 
@@ -39,6 +43,7 @@ function AccountContent() {
 
   // Account data
   const [orders, setOrders] = useState<Order[]>([]);
+  const [ordersLoading, setOrdersLoading] = useState(false);
   const [allBooks, setAllBooks] = useState<Book[]>([]);
   const [addrForm, setAddrForm] = useState({
     label: "Home",
@@ -61,14 +66,39 @@ function AccountContent() {
       .then((r) => r.json())
       .then((d: { books: Book[] }) => setAllBooks(d.books || []))
       .catch(() => {});
+  }, []);
 
-    if (user) {
-      fetch("/api/auth/me")
-        .then((r) => r.json())
-        .then((d: { orders?: Order[] }) => setOrders(d.orders || []))
-        .catch(() => {});
+  const fetchUserOrders = React.useCallback(async () => {
+    if (!user) return;
+    setOrdersLoading(true);
+    try {
+      const res = await fetch("/api/orders", { cache: "no-store" });
+      if (res.ok) {
+        const data = (await res.json()) as { orders?: Order[] };
+        if (Array.isArray(data.orders)) {
+          setOrders(data.orders);
+          return;
+        }
+      }
+      const meRes = await fetch("/api/auth/me", { cache: "no-store" });
+      if (meRes.ok) {
+        const meData = (await meRes.json()) as { orders?: Order[] };
+        if (Array.isArray(meData.orders)) {
+          setOrders(meData.orders);
+        }
+      }
+    } catch {
+      // ignore
+    } finally {
+      setOrdersLoading(false);
     }
   }, [user]);
+
+  useEffect(() => {
+    if (user) {
+      void fetchUserOrders();
+    }
+  }, [user, tab, fetchUserOrders]);
 
   const wishlistedBooks = allBooks.filter((b) => wishlist.includes(b.id));
 
@@ -622,38 +652,168 @@ function AccountContent() {
 
               {tab === "orders" && (
                 <div className="space-y-4">
-                  {orders.length === 0 ? (
+                  <div className="flex items-center justify-between pb-2">
+                    <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#141413]">
+                      অর্ডার হিস্টোরি (Order History)
+                    </h2>
+                    <button
+                      type="button"
+                      onClick={() => void fetchUserOrders()}
+                      disabled={ordersLoading}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-[#dedbd2] bg-white px-3.5 py-1.5 text-xs font-medium text-[#62605a] transition hover:border-[#141413] hover:text-[#141413] disabled:opacity-50"
+                      title="রিফ্রেশ করুন"
+                    >
+                      <RotateCw className={`h-3.5 w-3.5 ${ordersLoading ? "animate-spin text-[#d93829]" : ""}`} />
+                      <span>{ordersLoading ? "আপডেট হচ্ছে..." : "রিফ্রেশ"}</span>
+                    </button>
+                  </div>
+
+                  {ordersLoading && orders.length === 0 ? (
                     <div className="rounded-[2rem] border border-[#dedbd2] bg-white p-12 text-center">
-                      <p className="font-serif text-2xl text-[#141413]">
-                        No orders placed yet
+                      <RotateCw className="mx-auto h-8 w-8 animate-spin text-[#d93829]" />
+                      <p className="mt-3 font-serif text-lg text-[#141413]">
+                        অর্ডার তথ্য লোড হচ্ছে...
                       </p>
                     </div>
-                  ) : (
-                    orders.map((ord) => (
+                  ) : orders.length === 0 ? (
+                    <div className="rounded-[2rem] border border-[#dedbd2] bg-white p-12 text-center">
+                      <Package className="mx-auto h-12 w-12 text-[#9e9b91]" />
+                      <p className="mt-4 font-serif text-2xl text-[#141413]">
+                        এখনও কোনো অর্ডার দেওয়া হয়নি
+                      </p>
+                      <p className="mt-2 text-sm text-[#62605a]">
+                        উত্তরণ প্রকাশনীর বইসমগ্র ঘুরে দেখুন এবং আপনার পছন্দের বই সংগ্রহ করুন।
+                      </p>
                       <Link
-                        key={ord.id}
-                        href={`/orders/${ord.orderNumber}`}
-                        className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-[#dedbd2] bg-white p-5 transition hover:border-[#141413]"
+                        href="/books"
+                        className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#141413] px-6 py-3 text-xs font-semibold text-white transition hover:bg-[#d93829]"
                       >
-                        <div>
-                          <p className="font-mono text-sm font-bold text-[#141413]">
-                            {ord.orderNumber}
-                          </p>
-                          <p className="text-xs text-[#62605a]">
-                            {new Date(ord.createdAt).toLocaleDateString()} •{" "}
-                            {ord.items.length} title(s)
-                          </p>
-                        </div>
-                        <div className="text-right">
-                          <span className="rounded-full bg-[#eceae3] px-3 py-1 text-[10px] font-semibold uppercase text-[#141413]">
-                            {ord.orderStatus}
-                          </span>
-                          <p className="mt-1 font-serif text-xl font-bold text-[#141413]">
-                            {formatPrice(ord.total)}
-                          </p>
-                        </div>
+                        বইসমগ্র ব্রাউজ করুন →
                       </Link>
-                    ))
+                    </div>
+                  ) : (
+                    orders.map((ord) => {
+                      const isConfirmed = ord.orderStatus === "CONFIRMED";
+                      const isDelivered = ord.orderStatus === "DELIVERED";
+                      const isCancelled = ord.orderStatus === "CANCELLED";
+                      const isShipped = ord.orderStatus === "SHIPPED";
+
+                      const badgeBg = isDelivered
+                        ? "bg-emerald-50 text-emerald-800 border-emerald-200"
+                        : isConfirmed
+                        ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                        : isShipped
+                        ? "bg-indigo-50 text-indigo-700 border-indigo-200"
+                        : isCancelled
+                        ? "bg-rose-50 text-rose-700 border-rose-200"
+                        : "bg-amber-50 text-amber-700 border-amber-200";
+
+                      return (
+                        <div
+                          key={ord.id}
+                          className="overflow-hidden rounded-2xl border border-[#dedbd2] bg-white shadow-sm transition hover:border-[#141413]"
+                        >
+                          {/* Order Header */}
+                          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#dedbd2] bg-[#faf9f5] px-5 py-4">
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <span className="font-mono text-sm font-bold text-[#141413]">
+                                  #{ord.orderNumber}
+                                </span>
+                                <span
+                                  className={`rounded-full border px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${badgeBg}`}
+                                >
+                                  {ord.orderStatus}
+                                </span>
+                              </div>
+                              <p className="mt-0.5 flex items-center gap-1.5 text-xs text-[#62605a]">
+                                <Clock className="h-3 w-3" />
+                                {new Date(ord.createdAt).toLocaleDateString("bn-BD", {
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
+                                })}
+                                {" • "}
+                                {new Date(ord.createdAt).toLocaleTimeString([], {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                })}
+                              </p>
+                            </div>
+                            <div className="text-right">
+                              <p className="text-[11px] uppercase tracking-wider text-[#62605a]">
+                                সর্বমোট পরিশোধযোগ্য
+                              </p>
+                              <p className="font-serif text-xl font-bold text-[#d93829]">
+                                {formatPrice(ord.total)}
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Order Content */}
+                          <div className="p-5">
+                            {/* Items List */}
+                            <div className="space-y-2.5 divide-y divide-[#f0eee6]">
+                              {ord.items.map((it, idx) => (
+                                <div
+                                  key={`${it.bookId}-${idx}`}
+                                  className="flex items-center justify-between pt-2.5 first:pt-0 text-sm"
+                                >
+                                  <div className="min-w-0 pr-4">
+                                    <Link
+                                      href={`/books/${it.slug}`}
+                                      className="font-serif font-semibold text-[#141413] hover:text-[#d93829] line-clamp-1"
+                                    >
+                                      {it.title}
+                                    </Link>
+                                    <p className="text-xs text-[#62605a]">
+                                      পরিমাণ: {it.quantity} × {formatPrice(it.unitPrice)}
+                                    </p>
+                                  </div>
+                                  <span className="shrink-0 font-medium text-[#141413]">
+                                    {formatPrice(it.lineTotal)}
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+
+                            {/* Delivery & Payment Meta */}
+                            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-[#dedbd2] pt-4 text-xs text-[#62605a]">
+                              <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+                                <span>
+                                  <strong className="text-[#141413]">পেমেন্ট:</strong>{" "}
+                                  {ord.paymentMethod === "COD"
+                                    ? "ক্যাশ অন ডেলিভারি (COD)"
+                                    : ord.paymentMethod}
+                                  {ord.paymentStatus === "PAID" ? " (পরিশোধিত)" : ""}
+                                </span>
+                                <span>
+                                  <strong className="text-[#141413]">ডেলিভারি ঠিকানা:</strong>{" "}
+                                  {ord.customer.city}, {ord.customer.address}
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Action Buttons */}
+                            <div className="mt-5 flex flex-wrap items-center justify-end gap-2.5 border-t border-[#dedbd2] pt-4">
+                              <Link
+                                href={`/track?order=${encodeURIComponent(ord.orderNumber)}`}
+                                className="inline-flex items-center gap-1.5 rounded-full border border-[#dedbd2] bg-white px-4 py-2 text-xs font-semibold text-[#141413] transition hover:border-[#141413]"
+                              >
+                                <Truck className="h-3.5 w-3.5 text-[#62605a]" />
+                                লাইভ ট্র্যাকিং
+                              </Link>
+                              <Link
+                                href={`/orders/${encodeURIComponent(ord.orderNumber)}`}
+                                className="inline-flex items-center gap-1.5 rounded-full bg-[#141413] px-4 py-2 text-xs font-semibold text-white transition hover:bg-[#d93829]"
+                              >
+                                অর্ডার বিবরণ ও চালান <ChevronRight className="h-3.5 w-3.5" />
+                              </Link>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })
                   )}
                 </div>
               )}

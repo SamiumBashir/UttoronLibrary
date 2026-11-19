@@ -405,35 +405,123 @@ export default function MinimazeGalleryCanvas({
     interiorFillLight.position.set(28.0, 1.0, -18.5);
     scene.add(interiorFillLight);
 
-    // Bookshelf on North Wall
-    const shelfFrame = new THREE.Mesh(new THREE.BoxGeometry(9.2, 4.6, 0.6), darkWoodMat);
-    shelfFrame.position.set(24.5, 0.1, -22.1);
-    shelfFrame.receiveShadow = true;
-    scene.add(shelfFrame);
+    // Architectural Walnut Library Bookshelf on North Wall (Open, multi-tiered bookcase)
+    const bookcaseGroup = new THREE.Group();
+    scene.add(bookcaseGroup);
 
-    const shelfBookColors = [0x8b261e, 0x1d3557, 0x2d4a3e, 0x593d2b, 0xc49b45, 0x222222];
-    for (let shelfIdx = 0; shelfIdx < 3; shelfIdx++) {
-      const shelfY = -1.2 + shelfIdx * 1.35;
-      const shelfBoard = new THREE.Mesh(new THREE.BoxGeometry(8.8, 0.08, 0.55), trimMat);
-      shelfBoard.position.set(24.5, shelfY, -22.1);
-      scene.add(shelfBoard);
+    // 1. Back panel (thin, flush against wall)
+    const shelfBack = new THREE.Mesh(new THREE.BoxGeometry(9.4, 4.7, 0.06), darkWoodMat);
+    shelfBack.position.set(24.5, 0.15, -22.42);
+    shelfBack.receiveShadow = true;
+    bookcaseGroup.add(shelfBack);
 
-      let bx = 20.6;
-      let colorIdx = shelfIdx;
-      while (bx < 28.4) {
-        const bW = 0.08 + (Math.sin(bx * 7 + shelfIdx) * 0.5 + 0.5) * 0.07;
-        const bH = 0.85 + (Math.cos(bx * 5 + shelfIdx) * 0.5 + 0.5) * 0.28;
-        const bMat = new THREE.MeshStandardMaterial({
-          color: shelfBookColors[colorIdx % shelfBookColors.length],
-          roughness: 0.6,
-        });
-        const bookMesh = new THREE.Mesh(new THREE.BoxGeometry(bW, bH, 0.42), bMat);
-        bookMesh.position.set(bx + bW / 2, shelfY + bH / 2, -22.05);
-        scene.add(bookMesh);
-        bx += bW + 0.02;
-        colorIdx++;
-      }
-    }
+    // 2. Outer side uprights (left & right gables)
+    const shelfGableLeft = new THREE.Mesh(new THREE.BoxGeometry(0.12, 4.7, 0.62), darkWoodMat);
+    shelfGableLeft.position.set(19.85, 0.15, -22.12);
+    bookcaseGroup.add(shelfGableLeft);
+
+    const shelfGableRight = new THREE.Mesh(new THREE.BoxGeometry(0.12, 4.7, 0.62), darkWoodMat);
+    shelfGableRight.position.set(29.15, 0.15, -22.12);
+    bookcaseGroup.add(shelfGableRight);
+
+    // 3. Top cornice & bottom base plinth
+    const shelfCornice = new THREE.Mesh(new THREE.BoxGeometry(9.6, 0.16, 0.7), darkWoodMat);
+    shelfCornice.position.set(24.5, 2.45, -22.1);
+    bookcaseGroup.add(shelfCornice);
+
+    const shelfPlinth = new THREE.Mesh(new THREE.BoxGeometry(9.4, 0.22, 0.64), darkWoodMat);
+    shelfPlinth.position.set(24.5, -2.1, -22.12);
+    bookcaseGroup.add(shelfPlinth);
+
+    // 4. Vertical internal bay dividers (creating 3 architectural bays)
+    [22.95, 26.05].forEach((vx) => {
+      const divider = new THREE.Mesh(new THREE.BoxGeometry(0.08, 4.4, 0.58), darkWoodMat);
+      divider.position.set(vx, 0.1, -22.13);
+      bookcaseGroup.add(divider);
+    });
+
+    // 5. Horizontal shelves (4 tiers)
+    const shelfLevels = [-1.35, -0.45, 0.45, 1.35, 2.25];
+    shelfLevels.forEach((sy) => {
+      const board = new THREE.Mesh(new THREE.BoxGeometry(9.2, 0.07, 0.58), trimMat);
+      board.position.set(24.5, sy, -22.13);
+      board.receiveShadow = true;
+      bookcaseGroup.add(board);
+
+      // Brass front edge lip
+      const lip = new THREE.Mesh(new THREE.BoxGeometry(9.2, 0.03, 0.02), brassMat);
+      lip.position.set(24.5, sy - 0.02, -21.83);
+      bookcaseGroup.add(lip);
+    });
+
+    // 6. Populate every shelf level with books
+    const shelfBookColors = [
+      0x722f37, // Burgundy
+      0x1d3557, // Deep Navy
+      0x2d4a3e, // Forest Green
+      0xc49b45, // Archival Gold
+      0x593d2b, // Leather Amber
+      0x252525, // Charcoal
+      0x8b3a44, // Crimson
+      0x3d405b, // Slate
+      0xa84b38, // Terracotta
+      0xd4af37, // Warm Brass
+    ];
+
+    [-1.35, -0.45, 0.45, 1.35].forEach((shelfY, tierIdx) => {
+      const bays = [
+        [20.05, 22.85],
+        [23.15, 25.95],
+        [26.25, 29.05],
+      ];
+
+      bays.forEach(([minX, maxX], bayIdx) => {
+        let bx = minX;
+        let cIdx = tierIdx * 3 + bayIdx * 5;
+
+        // Occasional horizontal stack in some bays
+        if ((tierIdx + bayIdx) % 3 === 1) {
+          const stackW = 0.48;
+          for (let s = 0; s < 3; s++) {
+            const stackBook = new THREE.Mesh(
+              new THREE.BoxGeometry(stackW - s * 0.04, 0.07, 0.42),
+              new THREE.MeshStandardMaterial({
+                color: shelfBookColors[(cIdx + s) % shelfBookColors.length],
+                roughness: 0.55,
+              })
+            );
+            stackBook.position.set(bx + stackW / 2, shelfY + 0.035 + s * 0.075, -22.06);
+            bookcaseGroup.add(stackBook);
+          }
+          bx += stackW + 0.06;
+        }
+
+        while (bx < maxX - 0.12) {
+          const bW = 0.06 + (Math.sin(bx * 9 + tierIdx) * 0.5 + 0.5) * 0.08;
+          const bH = 0.62 + (Math.cos(bx * 7 + tierIdx) * 0.5 + 0.5) * 0.22;
+          const bMat = new THREE.MeshStandardMaterial({
+            color: shelfBookColors[cIdx % shelfBookColors.length],
+            roughness: 0.55,
+          });
+          const bookMesh = new THREE.Mesh(new THREE.BoxGeometry(bW, bH, 0.44), bMat);
+
+          if (bx > maxX - 0.28) {
+            bookMesh.rotation.z = -0.16;
+            bookMesh.position.set(bx + bW / 2 + 0.04, shelfY + bH / 2, -22.06);
+          } else {
+            bookMesh.position.set(bx + bW / 2, shelfY + bH / 2 + 0.035, -22.06);
+          }
+          bookcaseGroup.add(bookMesh);
+          bx += bW + 0.02;
+          cIdx++;
+        }
+      });
+    });
+
+    // Bookshelf warm accent lighting
+    const shelfWarmLight = new THREE.PointLight(0xffeed6, 2.2, 12);
+    shelfWarmLight.position.set(24.5, 2.1, -21.4);
+    bookcaseGroup.add(shelfWarmLight);
 
     // Manuscript drafting table on South Wall
     const tableTop = new THREE.Mesh(new THREE.BoxGeometry(5.8, 0.12, 1.8), darkWoodMat);
@@ -466,24 +554,107 @@ export default function MinimazeGalleryCanvas({
     deskLampMesh.position.set(26.2, -0.7, -15.4);
     scene.add(deskLampMesh);
 
-    // East Wall Clerestory Sunlit Window
-    const windowFrame = new THREE.Mesh(new THREE.BoxGeometry(0.12, 3.8, 4.6), trimMat);
-    windowFrame.position.set(31.8, 0.8, -18.5);
-    scene.add(windowFrame);
+    // East Wall: Framed Gallery Photograph (User's 3rd Picture: Bengali Literary Exhibition)
+    const galleryPhotoGroup = new THREE.Group();
+    scene.add(galleryPhotoGroup);
 
-    const windowGlass = new THREE.Mesh(
-      new THREE.PlaneGeometry(4.2, 3.4),
-      new THREE.MeshBasicMaterial({ color: 0xfffaea })
+    // 1. Outer Deep Architectural Beveled Frame
+    const photoFrame = new THREE.Mesh(
+      new THREE.BoxGeometry(0.14, 3.52, 4.62),
+      darkWoodMat
     );
-    windowGlass.rotation.y = -Math.PI / 2;
-    windowGlass.position.set(31.72, 0.8, -18.5);
-    scene.add(windowGlass);
+    photoFrame.position.set(31.86, 0.8, -18.5);
+    photoFrame.receiveShadow = true;
+    galleryPhotoGroup.add(photoFrame);
 
-    const windowLight = new THREE.DirectionalLight(0xfff3d6, 1.2);
-    windowLight.position.set(33.0, 3.0, -18.5);
-    windowLight.target.position.set(18.0, 0.0, -18.5);
-    scene.add(windowLight);
-    scene.add(windowLight.target);
+    // 2. Brass inner frame rim
+    const photoFrameRim = new THREE.Mesh(
+      new THREE.BoxGeometry(0.16, 3.32, 4.42),
+      brassMat
+    );
+    photoFrameRim.position.set(31.83, 0.8, -18.5);
+    galleryPhotoGroup.add(photoFrameRim);
+
+    // 3. Archival Passe-Partout (Mat Board)
+    const matBoard = new THREE.Mesh(
+      new THREE.PlaneGeometry(4.38, 3.28),
+      new THREE.MeshStandardMaterial({ color: 0xf8f7f3, roughness: 0.85 })
+    );
+    matBoard.rotation.y = -Math.PI / 2;
+    matBoard.position.set(31.75, 0.8, -18.5);
+    galleryPhotoGroup.add(matBoard);
+
+    // 4. Exhibition Photograph Print (User's 3rd Picture: Bengali Books in Wicker Basket)
+    const texLoader = new THREE.TextureLoader();
+    const photoTexture = texLoader.load("/images/gallery/exhibition-books.jpg");
+    photoTexture.colorSpace = THREE.SRGBColorSpace;
+
+    const photoPrintMat = new THREE.MeshStandardMaterial({
+      map: photoTexture,
+      roughness: 0.32,
+      metalness: 0.04,
+    });
+    // Natural aspect ratio: 4.1m width x 3.03m height (~1.35)
+    const photoPrint = new THREE.Mesh(
+      new THREE.PlaneGeometry(4.1, 3.03),
+      photoPrintMat
+    );
+    photoPrint.rotation.y = -Math.PI / 2;
+    photoPrint.position.set(31.74, 0.8, -18.5);
+    galleryPhotoGroup.add(photoPrint);
+
+    // 5. Overhead Gallery Picture Lamp
+    const pictureLampFixture = new THREE.Mesh(
+      new THREE.BoxGeometry(0.48, 0.06, 1.4),
+      brassMat
+    );
+    pictureLampFixture.position.set(31.35, 2.7, -18.5);
+    galleryPhotoGroup.add(pictureLampFixture);
+
+    const pictureLampArm = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.015, 0.015, 0.5),
+      brassMat
+    );
+    pictureLampArm.rotation.z = Math.PI / 4;
+    pictureLampArm.position.set(31.55, 2.65, -18.5);
+    galleryPhotoGroup.add(pictureLampArm);
+
+    // Warm gallery picture light casting down onto the photograph
+    const pictureSpotLight = new THREE.SpotLight(0xfff5dd, 4.5, 8, Math.PI / 4, 0.45);
+    pictureSpotLight.position.set(30.6, 2.8, -18.5);
+    pictureSpotLight.target.position.set(31.74, 0.8, -18.5);
+    galleryPhotoGroup.add(pictureSpotLight);
+    galleryPhotoGroup.add(pictureSpotLight.target);
+
+    // 6. Museum Plaque under the frame
+    const museumPlaqueCanvas = document.createElement("canvas");
+    museumPlaqueCanvas.width = 512;
+    museumPlaqueCanvas.height = 128;
+    const mpCtx = museumPlaqueCanvas.getContext("2d")!;
+    mpCtx.fillStyle = "#ffffff";
+    mpCtx.fillRect(0, 0, 512, 128);
+    mpCtx.strokeStyle = "#DDD9D1";
+    mpCtx.lineWidth = 4;
+    mpCtx.strokeRect(2, 2, 508, 124);
+    mpCtx.fillStyle = "#722F37";
+    mpCtx.font = "bold 20px 'Hind Siliguri', sans-serif";
+    mpCtx.fillText("উত্তরণ সাহিত্য প্রদর্শনী", 32, 48);
+    mpCtx.fillStyle = "#252525";
+    mpCtx.font = "600 14px monospace";
+    mpCtx.fillText("BENGALI LITERARY ARCHIVE & FOLIO", 32, 78);
+    mpCtx.fillStyle = "#77736D";
+    mpCtx.font = "12px sans-serif";
+    mpCtx.fillText("Curated Rare Editions & Living Bookcraft", 32, 102);
+
+    const museumPlaqueTex = new THREE.CanvasTexture(museumPlaqueCanvas);
+    museumPlaqueTex.colorSpace = THREE.SRGBColorSpace;
+    const museumPlaque = new THREE.Mesh(
+      new THREE.PlaneGeometry(1.2, 0.3),
+      new THREE.MeshBasicMaterial({ map: museumPlaqueTex })
+    );
+    museumPlaque.rotation.y = -Math.PI / 2;
+    museumPlaque.position.set(31.73, -1.18, -18.5);
+    galleryPhotoGroup.add(museumPlaque);
 
     // Architectural Ceiling Light Coves (glowing minimalist strips continuing into inner room)
     const coveMat = new THREE.MeshBasicMaterial({ color: 0xffffff });

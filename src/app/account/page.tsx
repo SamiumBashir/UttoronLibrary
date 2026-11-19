@@ -18,6 +18,7 @@ import {
   Package,
   RotateCw,
   Shield,
+  ShoppingCart,
   Trash2,
   Truck,
   User as UserIcon,
@@ -28,7 +29,7 @@ type AccountTab = "profile" | "addresses" | "wishlist" | "orders";
 
 function AccountContent() {
   const searchParams = useSearchParams();
-  const { user, wishlist, refreshAuth, logout, notify } = useStore();
+  const { user, wishlist, clearWishlist, addToCart, refreshAuth, logout, notify } = useStore();
 
   const [authMode, setAuthMode] = useState<AuthMode>("login");
   const [tab, setTab] = useState<AccountTab>("profile");
@@ -45,6 +46,7 @@ function AccountContent() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [ordersLoading, setOrdersLoading] = useState(false);
   const [allBooks, setAllBooks] = useState<Book[]>([]);
+  const [booksLoading, setBooksLoading] = useState(true);
   const [addrForm, setAddrForm] = useState({
     label: "Home",
     fullName: "",
@@ -65,7 +67,8 @@ function AccountContent() {
     fetch("/api/books")
       .then((r) => r.json())
       .then((d: { books: Book[] }) => setAllBooks(d.books || []))
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setBooksLoading(false));
   }, []);
 
   const fetchUserOrders = React.useCallback(async () => {
@@ -100,7 +103,9 @@ function AccountContent() {
     }
   }, [user, tab, fetchUserOrders]);
 
-  const wishlistedBooks = allBooks.filter((b) => wishlist.includes(b.id));
+  const wishlistedBooks = allBooks.filter(
+    (b) => wishlist.includes(b.id) || wishlist.includes(b.slug)
+  );
 
   const handleAuthSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -627,21 +632,72 @@ function AccountContent() {
               )}
 
               {tab === "wishlist" && (
-                <div>
-                  {wishlistedBooks.length === 0 ? (
+                <div className="space-y-6">
+                  {/* Wishlist Header & Actions */}
+                  <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#dedbd2] pb-4">
+                    <div>
+                      <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#141413]">
+                        পছন্দের তালিকা (Wishlist)
+                      </h2>
+                      <p className="mt-0.5 text-xs text-[#62605a]">
+                        সংরক্ষিত বইসমূহ: {wishlistedBooks.length} টি
+                      </p>
+                    </div>
+
+                    {wishlistedBooks.length > 0 && (
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            for (const b of wishlistedBooks) {
+                              addToCart(b, 1, false);
+                            }
+                            notify(
+                              `সবগুলো বই (${wishlistedBooks.length}টি) কার্টে যোগ করা হয়েছে।`,
+                              "success"
+                            );
+                          }}
+                          className="inline-flex items-center gap-1.5 rounded-full border border-[#141413] bg-[#141413] px-4 py-2 text-xs font-semibold text-white transition hover:bg-[#d93829]"
+                        >
+                          <ShoppingCart className="h-3.5 w-3.5" /> সব কার্টে যোগ করুন
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => void clearWishlist()}
+                          className="inline-flex items-center gap-1 rounded-full border border-[#dedbd2] bg-white px-3.5 py-2 text-xs font-medium text-[#62605a] transition hover:border-[#141413] hover:text-[#d93829]"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" /> তালিকা মুছুন
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  {booksLoading && wishlist.length > 0 ? (
                     <div className="rounded-[2rem] border border-[#dedbd2] bg-white p-12 text-center">
-                      <p className="font-serif text-2xl text-[#141413]">
-                        Your wishlist is empty
+                      <RotateCw className="mx-auto h-8 w-8 animate-spin text-[#d93829]" />
+                      <p className="mt-3 font-serif text-lg text-[#141413]">
+                        পছন্দের বইগুলো প্রস্তুত করা হচ্ছে...
+                      </p>
+                    </div>
+                  ) : wishlistedBooks.length === 0 ? (
+                    <div className="rounded-[2rem] border border-[#dedbd2] bg-white p-12 text-center">
+                      <Heart className="mx-auto h-12 w-12 text-[#9e9b91]" />
+                      <p className="mt-4 font-serif text-2xl text-[#141413]">
+                        আপনার পছন্দের তালিকা এখনো ফাঁকা
+                      </p>
+                      <p className="mt-2 text-sm text-[#62605a]">
+                        যেকোনো বইয়ের ওপর থাকা হার্ট (Heart) আইকনে ক্লিক করে বইগুলো এখানে সংরক্ষণ করতে পারেন।
                       </p>
                       <Link
                         href="/books"
-                        className="mt-4 inline-block rounded-full bg-[#141413] px-6 py-2.5 text-xs font-semibold uppercase tracking-[0.16em] text-white transition hover:bg-[#d93829]"
+                        className="mt-6 inline-block rounded-full bg-[#141413] px-6 py-2.5 text-xs font-semibold uppercase tracking-[0.16em] text-white transition hover:bg-[#d93829]"
                       >
-                        Discover Books
+                        বইসমগ্র ঘুরে দেখুন &rarr;
                       </Link>
                     </div>
                   ) : (
-                    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                    <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
                       {wishlistedBooks.map((book) => (
                         <BookCard3D key={book.id} book={book} />
                       ))}

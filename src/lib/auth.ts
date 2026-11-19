@@ -172,6 +172,26 @@ export async function getAuthenticatedUser(): Promise<UserRecord | null> {
 
   if (user) {
     user.role = resolveUserRole(user.email, user.role);
+
+    // Keep wishlist synchronized from PostgreSQL if connected
+    if (isDatabaseConnected()) {
+      try {
+        const dbUser = await prisma.user.findFirst({
+          where: {
+            OR: [
+              { id: user.id },
+              { email: { equals: user.email, mode: "insensitive" } },
+            ],
+          },
+          select: { wishlist: true },
+        });
+        if (dbUser && Array.isArray(dbUser.wishlist)) {
+          user.wishlist = dbUser.wishlist;
+        }
+      } catch {
+        // ignore
+      }
+    }
   }
 
   return user ?? null;

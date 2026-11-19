@@ -18,7 +18,7 @@ export default function BookCard3D({ book }: BookCard3DProps) {
   const [tilt, setTilt] = useState({ rx: 0, ry: -10 });
   const [hovered, setHovered] = useState(false);
 
-  const wishlisted = isInWishlist(book.id);
+  const wishlisted = isInWishlist(book.id, book.slug);
   const discount = getDiscountPercent(book.originalPrice, book.price);
   const stockBadge = getStockBadge(book.stock);
 
@@ -84,7 +84,11 @@ export default function BookCard3D({ book }: BookCard3DProps) {
           <button
             type="button"
             aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
-            onClick={() => void toggleWishlist(book.id, book.title)}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              void toggleWishlist(book.id, book.title);
+            }}
             className={`flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full border transition ${
               wishlisted
                 ? "border-[#d93829] bg-[#d93829] text-white"

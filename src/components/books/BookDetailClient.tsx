@@ -58,7 +58,7 @@ export default function BookDetailClient({
   const [reviewComment, setReviewComment] = useState("");
   const [submittingReview, setSubmittingReview] = useState(false);
 
-  const wishlisted = isInWishlist(book.id);
+  const wishlisted = isInWishlist(book.id, book.slug);
   const discount = getDiscountPercent(book.originalPrice, book.price);
   const stockBadge = getStockBadge(book.stock);
 

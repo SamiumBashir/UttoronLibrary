@@ -34,7 +34,8 @@ interface StoreContextValue {
   updateQuantity: (bookId: string, quantity: number) => void;
   clearCart: () => void;
   toggleWishlist: (bookId: string, title?: string) => Promise<void>;
-  isInWishlist: (bookId: string) => boolean;
+  clearWishlist: () => Promise<void>;
+  isInWishlist: (bookId: string, slug?: string) => boolean;
   refreshAuth: () => Promise<void>;
   logout: () => Promise<void>;
   notify: (text: string, type?: ToastMessage["type"]) => void;
@@ -70,7 +71,32 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         const data = (await res.json()) as { user: PublicUser | null };
         setUser(data.user);
         if (data.user) {
-          setWishlist(data.user.wishlist || []);
+          // Read local wishlist from storage
+          let localWishlist: string[] = [];
+          try {
+            const rawWish = localStorage.getItem(WISHLIST_STORAGE_KEY);
+            if (rawWish) {
+              const parsed = JSON.parse(rawWish) as string[];
+              if (Array.isArray(parsed)) localWishlist = parsed;
+            }
+          } catch {}
+
+          const serverWishlist = data.user.wishlist || [];
+          // Merge local wishlist items with server wishlist items
+          const merged = Array.from(new Set([...serverWishlist, ...localWishlist]));
+          setWishlist(merged);
+          try {
+            localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(merged));
+          } catch {}
+
+          // If local items exist that aren't on server yet, sync to server
+          if (localWishlist.length > 0 && localWishlist.some((id) => !serverWishlist.includes(id))) {
+            void fetch("/api/account/wishlist", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ wishlist: merged, action: "sync" }),
+            });
+          }
         }
       }
     } catch {
@@ -109,13 +135,13 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   }, [cart, hydrated]);
 
   useEffect(() => {
-    if (!hydrated || user) return;
+    if (!hydrated) return;
     try {
       localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(wishlist));
     } catch {
       // ignore
     }
-  }, [wishlist, hydrated, user]);
+  }, [wishlist, hydrated]);
 
   const addToCart = useCallback(
     (book: Book, quantity = 1, openDrawer = true) => {
@@ -210,47 +236,82 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
 
   const toggleWishlist = useCallback(
     async (bookId: string, title?: string) => {
+      const cleanId = (bookId || "").trim();
+      if (!cleanId) return;
+
+      let willAdd = false;
+      let nextWishlist: string[] = [];
+
+      // 1. Optimistic UI update instantly
+      setWishlist((prev) => {
+        const exists = prev.includes(cleanId);
+        willAdd = !exists;
+        nextWishlist = exists ? prev.filter((id) => id !== cleanId) : [...prev, cleanId];
+        return nextWishlist;
+      });
+
+      notify(
+        willAdd
+          ? `Saved ${title ? `"${title}"` : "volume"} to your wishlist.`
+          : `Removed ${title ? `"${title}"` : "volume"} from wishlist.`,
+        "info"
+      );
+
+      // 2. Persist to localStorage immediately
+      try {
+        localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(nextWishlist));
+      } catch {}
+
+      // 3. If user is logged in, sync to server (PostgreSQL & fallback store)
       if (user) {
         try {
           const res = await fetch("/api/account/wishlist", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ bookId }),
+            body: JSON.stringify({ bookId: cleanId, action: willAdd ? "add" : "remove" }),
           });
           if (res.ok) {
-            const data = (await res.json()) as { wishlist: string[] };
-            setWishlist(data.wishlist);
-            const added = data.wishlist.includes(bookId);
-            notify(
-              added
-                ? `Saved ${title ? `"${title}"` : "edition"} to your wishlist.`
-                : `Removed ${title ? `"${title}"` : "edition"} from wishlist.`,
-              "info"
-            );
-            return;
+            const data = (await res.json()) as { wishlist?: string[] };
+            if (Array.isArray(data.wishlist)) {
+              setWishlist(data.wishlist);
+              try {
+                localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(data.wishlist));
+              } catch {}
+            }
           }
         } catch {
-          // fallback below
+          // retain optimistic state
         }
       }
-
-      setWishlist((prev) => {
-        const exists = prev.includes(bookId);
-        const next = exists ? prev.filter((id) => id !== bookId) : [...prev, bookId];
-        notify(
-          !exists
-            ? `Saved ${title ? `"${title}"` : "edition"} to your wishlist.`
-            : `Removed ${title ? `"${title}"` : "edition"} from wishlist.`,
-          "info"
-        );
-        return next;
-      });
     },
     [notify, user]
   );
 
+  const clearWishlist = useCallback(async () => {
+    setWishlist([]);
+    try {
+      localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify([]));
+    } catch {}
+    if (user) {
+      try {
+        await fetch("/api/account/wishlist", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "clear" }),
+        });
+      } catch {}
+    }
+    notify("Wishlist has been cleared.", "info");
+  }, [user, notify]);
+
   const isInWishlist = useCallback(
-    (bookId: string) => wishlist.includes(bookId),
+    (bookId: string, slug?: string) => {
+      if (!bookId && !slug) return false;
+      return (
+        (bookId ? wishlist.includes(bookId) : false) ||
+        (slug ? wishlist.includes(slug) : false)
+      );
+    },
     [wishlist]
   );
 
@@ -288,6 +349,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         updateQuantity,
         clearCart,
         toggleWishlist,
+        clearWishlist,
         isInWishlist,
         refreshAuth,
         logout,

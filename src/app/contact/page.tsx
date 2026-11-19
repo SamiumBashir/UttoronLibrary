@@ -72,52 +72,51 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="paper-grain min-h-screen bg-[#f6f5f0] pb-24 pt-28 text-[#141413]">
+    <div className="paper-grain min-h-screen bg-[#F8F7F3] pb-24 pt-28 text-[#252525]">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <header className="flex flex-wrap items-end justify-between gap-4">
           <div className="max-w-2xl">
-            <p className="inline-flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.26em] text-[#62605a]">
-              <span className="h-2 w-2 rounded-full bg-[#d93829]" />
+            <p className="inline-flex items-center gap-2 font-mono text-[11px] font-semibold uppercase tracking-[0.26em] text-[#77736D]">
+              <span className="h-2 w-2 rounded-full bg-[#722F37]" />
               Editorial Salon &amp; Support
             </p>
-            <h1 className="mt-2 font-serif text-4xl font-semibold text-[#141413] sm:text-5xl">
-              Contact Uttoron Prokasoni
+            <h1 className="mt-2 font-serif text-3xl sm:text-4xl lg:text-5xl font-semibold text-[#252525]">
+              Contact Uttoron Publication
             </h1>
-            <p className="mt-3 text-base text-[#62605a]">
+            <p className="mt-3 text-sm sm:text-base text-[#77736D]">
               Select your inquiry parameters below to reach our Dhaka publishing house.
             </p>
           </div>
 
-          {/* Minimaze Signature Local Time Display */}
-          <div className="rounded-2xl border border-[#dedbd2] bg-white px-5 py-3 font-mono text-xs">
-            <span className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] text-[#62605a]">
-              <Clock className="h-3.5 w-3.5 text-[#d93829]" />
-              Dhaka Salon Local Time
+          {/* Local Time Display */}
+          <div className="rounded-2xl border border-[#DDD9D1] bg-white px-5 py-3 font-mono text-xs shadow-xs">
+            <span className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] text-[#77736D]">
+              <Clock className="h-3.5 w-3.5 text-[#722F37]" />
+              Dhaka Office Local Time
             </span>
-            <span className="mt-0.5 block text-lg font-bold text-[#141413]">
+            <span className="mt-0.5 block text-lg font-bold text-[#252525]">
               {dhakaTime || "--:--:--"} BST
             </span>
           </div>
         </header>
 
         <div className="mt-12 grid gap-10 lg:grid-cols-12">
-          <div className="space-y-6 rounded-3xl border border-[#dedbd2] bg-white p-8 lg:col-span-5">
-            <h2 className="font-serif text-3xl font-semibold">Dhaka Reading Salon</h2>
-            <p className="text-sm leading-relaxed text-[#62605a]">
-              Visit our sunlit gallery showroom in Dhanmondi to inspect clothbound
-              editions in person or collect pre-ordered volumes.
+          <div className="space-y-6 rounded-2xl border border-[#DDD9D1] bg-white p-8 shadow-xs lg:col-span-5">
+            <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-[#252525]">Dhaka Reading Salon</h2>
+            <p className="text-sm leading-relaxed text-[#77736D]">
+              Visit our showroom to inspect physical editions in person or collect pre-ordered volumes.
             </p>
-            <div className="space-y-4 pt-2 text-sm text-[#141413]">
+            <div className="space-y-4 pt-2 text-sm text-[#252525]">
               <p className="flex items-start gap-3">
-                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#d93829]" />
+                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#722F37]" />
                 <span>House 42, Road 11, Dhanmondi Literary Quarter, Dhaka 1209</span>
               </p>
               <p className="flex items-center gap-3">
-                <Phone className="h-4 w-4 shrink-0 text-[#d93829]" />
+                <Phone className="h-4 w-4 shrink-0 text-[#722F37]" />
                 <span>+880 1711-000942 (10 AM – 8 PM BST)</span>
               </p>
               <p className="flex items-center gap-3">
-                <Mail className="h-4 w-4 shrink-0 text-[#d93829]" />
+                <Mail className="h-4 w-4 shrink-0 text-[#722F37]" />
                 <span>uttoronprokasoni@gmail.com</span>
               </p>
             </div>
@@ -125,11 +124,11 @@ export default function ContactPage() {
 
           <form
             onSubmit={handleSubmit}
-            className="space-y-5 rounded-3xl border border-[#dedbd2] bg-white p-8 lg:col-span-7"
+            className="space-y-5 rounded-2xl border border-[#DDD9D1] bg-white p-8 shadow-xs lg:col-span-7"
           >
-            {/* Minimaze Tick-Box Parameter Selector */}
+            {/* Inquiry Parameter Selector */}
             <div>
-              <span className="block font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-[#62605a]">
+              <span className="block font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-[#77736D]">
                 Inquiry Parameters
               </span>
               <div className="mt-2.5 flex flex-wrap gap-2">
@@ -140,13 +139,13 @@ export default function ContactPage() {
                       key={topic}
                       type="button"
                       onClick={() => toggleTopic(topic)}
-                      className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold transition ${checked
-                        ? "border-[#141413] bg-[#141413] text-white"
-                        : "border-[#dedbd2] bg-[#f6f5f0] text-[#141413] hover:border-[#141413]"
+                      className={`cursor-pointer inline-flex items-center gap-2 rounded-full border px-4 py-2 font-mono text-xs font-semibold transition ${checked
+                        ? "border-[#252525] bg-[#252525] text-white"
+                        : "border-[#DDD9D1] bg-[#F8F7F3] text-[#252525] hover:border-[#252525]"
                         }`}
                     >
                       <span
-                        className={`flex h-4 w-4 items-center justify-center rounded-full ${checked ? "bg-[#d93829] text-white" : "border border-[#b5b2a8]"
+                        className={`flex h-4 w-4 items-center justify-center rounded-full ${checked ? "bg-[#722F37] text-white" : "border border-[#A69B89]"
                           }`}
                       >
                         {checked && <Check className="h-2.5 w-2.5" />}
@@ -160,7 +159,7 @@ export default function ContactPage() {
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label className="block text-xs font-semibold text-[#141413]">
+                <label className="block text-xs font-semibold text-[#252525]">
                   Full Name *
                 </label>
                 <input
@@ -168,11 +167,11 @@ export default function ContactPage() {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="mt-1.5 w-full rounded-xl border border-[#dedbd2] bg-[#f6f5f0] px-4 py-3 text-sm focus:border-[#141413] focus:bg-white focus:outline-none"
+                  className="mt-1.5 w-full rounded-xl border border-[#DDD9D1] bg-[#F8F7F3] px-4 py-3 text-sm text-[#252525] focus:border-[#252525] focus:bg-white focus:outline-none"
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-[#141413]">
+                <label className="block text-xs font-semibold text-[#252525]">
                   Email Address *
                 </label>
                 <input
@@ -180,13 +179,13 @@ export default function ContactPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="mt-1.5 w-full rounded-xl border border-[#dedbd2] bg-[#f6f5f0] px-4 py-3 text-sm focus:border-[#141413] focus:bg-white focus:outline-none"
+                  className="mt-1.5 w-full rounded-xl border border-[#DDD9D1] bg-[#F8F7F3] px-4 py-3 text-sm text-[#252525] focus:border-[#252525] focus:outline-none"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-[#141413]">
+              <label className="block text-xs font-semibold text-[#252525]">
                 Message *
               </label>
               <textarea
@@ -195,14 +194,14 @@ export default function ContactPage() {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Write your note here..."
-                className="mt-1.5 w-full rounded-xl border border-[#dedbd2] bg-[#f6f5f0] px-4 py-3 text-sm focus:border-[#141413] focus:bg-white focus:outline-none"
+                className="mt-1.5 w-full rounded-xl border border-[#DDD9D1] bg-[#F8F7F3] px-4 py-3 text-sm text-[#252525] focus:border-[#252525] focus:bg-white focus:outline-none"
               />
             </div>
 
             <button
               type="submit"
               disabled={sending}
-              className="inline-flex items-center gap-2 rounded-full bg-[#141413] px-8 py-3.5 text-xs font-bold uppercase tracking-[0.18em] text-white transition hover:bg-[#d93829]"
+              className="cursor-pointer inline-flex items-center gap-2 rounded-full bg-[#252525] px-8 py-3.5 font-mono text-xs font-bold uppercase tracking-[0.18em] text-white transition hover:bg-[#722F37] disabled:cursor-not-allowed disabled:opacity-50"
             >
               <Send className="h-4 w-4" />
               {sending ? "Sending..." : "Send Message"}

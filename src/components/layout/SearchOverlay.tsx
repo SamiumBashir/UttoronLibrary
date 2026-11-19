@@ -67,23 +67,23 @@ export default function SearchOverlay() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -12, scale: 0.98 }}
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-2xl overflow-hidden rounded-[2rem] border border-[#dedbd2] bg-[#f6f5f0] shadow-2xl"
+            className="w-full max-w-2xl overflow-hidden rounded-2xl border border-[#DDD9D1] bg-[#F8F7F3] shadow-2xl"
           >
-            <div className="flex items-center gap-3 border-b border-[#dedbd2] bg-white px-5 py-4">
-              <Search className="h-5 w-5 text-[#d93829]" />
+            <div className="flex items-center gap-3 border-b border-[#DDD9D1] bg-white px-5 py-4">
+              <Search className="h-5 w-5 text-[#722F37]" />
               <input
                 type="search"
                 autoFocus
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search by book title, author, ISBN, or category..."
-                className="flex-1 bg-transparent text-base text-[#141413] placeholder:text-[#62605a]/70 focus:outline-none"
+                className="flex-1 bg-transparent text-base text-[#252525] placeholder:text-[#77736D]/70 focus:outline-none"
               />
               <button
                 type="button"
                 aria-label="Close search"
                 onClick={() => setSearchOpen(false)}
-                className="rounded-full p-1.5 text-[#62605a] hover:bg-[#eceae3] hover:text-[#141413]"
+                className="rounded-full p-1.5 text-[#77736D] hover:bg-[#E9E6DF] hover:text-[#252525]"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -91,11 +91,11 @@ export default function SearchOverlay() {
 
             <div className="max-h-[60vh] overflow-y-auto p-4">
               {loading ? (
-                <p className="py-8 text-center text-sm text-[#62605a]">
-                  Searching the Uttoron gallery archive...
+                <p className="py-8 text-center text-sm text-[#77736D]">
+                  Searching the Uttoron catalog...
                 </p>
               ) : results.length === 0 ? (
-                <p className="py-8 text-center text-sm text-[#62605a]">
+                <p className="py-8 text-center text-sm text-[#77736D]">
                   No volumes matched &ldquo;{query}&rdquo;. Try another title, author, or ISBN.
                 </p>
               ) : (
@@ -105,7 +105,7 @@ export default function SearchOverlay() {
                       key={book.id}
                       href={`/books/${book.slug}`}
                       onClick={() => setSearchOpen(false)}
-                      className="flex items-center gap-4 rounded-2xl border border-transparent bg-white/75 p-2.5 transition hover:border-[#dedbd2] hover:bg-white"
+                      className="flex items-center gap-4 rounded-xl border border-transparent bg-white p-2.5 transition hover:border-[#DDD9D1] hover:shadow-xs"
                     >
                       <div className="h-16 w-11 shrink-0 overflow-hidden rounded-r shadow-md">
                         <BookCoverArt
@@ -117,18 +117,18 @@ export default function SearchOverlay() {
                         />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#d93829]">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#722F37]">
                           {book.category} • {book.isbn}
                         </p>
-                        <h4 className="truncate font-serif text-lg font-semibold text-[#141413]">
+                        <h4 className="truncate font-serif text-lg font-semibold text-[#252525]">
                           {book.title}
                         </h4>
-                        <p className="truncate text-xs text-[#62605a]">
+                        <p className="truncate text-xs text-[#77736D]">
                           {book.authorName}
                         </p>
                       </div>
                       <div className="text-right">
-                        <span className="font-serif text-base font-bold text-[#141413]">
+                        <span className="font-mono text-base font-bold text-[#252525]">
                           {formatPrice(book.price)}
                         </span>
                       </div>

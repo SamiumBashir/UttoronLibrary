@@ -73,29 +73,29 @@ export default function Navbar() {
     <>
       <header
         className={`fixed inset-x-0 top-0 z-50 h-16 transition-all duration-300 ${solidHeader
-          ? "border-b border-[#dedbd2] bg-[#f6f5f0]/95 shadow-[0_8px_30px_rgba(20,20,19,0.06)] backdrop-blur-xl"
-          : "bg-gradient-to-b from-[#f6f5f0]/95 via-[#f6f5f0]/70 to-transparent"
+          ? "border-b border-[#DDD9D1] bg-[#F8F7F3]/95 shadow-[0_4px_20px_rgba(37,37,37,0.04)] backdrop-blur-md"
+          : "bg-gradient-to-b from-[#F8F7F3]/95 via-[#F8F7F3]/70 to-transparent"
           }`}
       >
         <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* Brand Logo */}
-          <Link href="/" className="group flex items-center gap-2 sm:gap-3 focus:outline-none">
-            <span className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-xl border border-[#141413]/15 bg-white text-[#141413] shadow-xs transition group-hover:border-[#d93829]">
+          <Link href="/" className="group flex items-center gap-2.5 sm:gap-3 focus:outline-none">
+            <span className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-lg border border-[#DDD9D1] bg-white text-[#252525] shadow-xs transition group-hover:border-[#722F37]">
               <BookOpen className="h-4 w-4" />
             </span>
             <div>
-              <span className="flex items-center gap-1.5 font-serif text-base sm:text-xl font-bold tracking-tight text-[#141413]">
+              <span className="flex items-center gap-1.5 font-serif text-base sm:text-xl font-bold tracking-tight text-[#252525]">
                 Uttoron Prokasoni
-                <span className="h-1.5 w-1.5 rounded-full bg-[#d93829]" />
+                <span className="h-1.5 w-1.5 rounded-full bg-[#722F37]" />
               </span>
-              <span className="hidden xs:block font-mono text-[9px] uppercase tracking-[0.24em] text-[#62605a]">
-                3D Gallery &amp; Press
+              <span className="hidden xs:block font-mono text-[9px] uppercase tracking-[0.24em] text-[#77736D]">
+                Publishing House &amp; Bindery
               </span>
             </div>
           </Link>
 
           {/* Desktop Inline Navigation (Visible only on Desktop >= 1024px) */}
-          <nav aria-label="Primary Navigation" className="hidden items-center gap-6 lg:flex">
+          <nav aria-label="Primary Navigation" className="hidden items-center gap-7 lg:flex">
             {NAV_LINKS.map((item) => {
               const active =
                 item.href === "/"
@@ -105,12 +105,12 @@ export default function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`relative text-xs font-semibold uppercase tracking-[0.14em] transition ${active ? "text-[#141413]" : "text-[#62605a] hover:text-[#141413]"
+                  className={`relative text-xs font-semibold uppercase tracking-[0.15em] transition duration-200 ${active ? "text-[#252525]" : "text-[#77736D] hover:text-[#252525]"
                     }`}
                 >
                   {item.label}
                   {active && (
-                    <span className="absolute -bottom-1.5 left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-[#d93829]" />
+                    <span className="absolute -bottom-1.5 left-1/2 h-1 w-4 -translate-x-1/2 rounded-full bg-[#722F37]" />
                   )}
                 </Link>
               );
@@ -127,7 +127,7 @@ export default function Navbar() {
                 setBlindOpen(false);
                 setSearchOpen(true);
               }}
-              className="hidden lg:flex h-9 w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/90 text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
+              className="hidden lg:flex h-9 w-9 items-center justify-center rounded-full border border-[#DDD9D1] bg-white text-[#252525] shadow-xs transition hover:border-[#252525] hover:bg-[#252525] hover:text-[#F8F7F3] focus:outline-none"
               title="Search Books"
             >
               <Search className="h-4 w-4" />
@@ -137,12 +137,12 @@ export default function Navbar() {
             <Link
               href="/account?tab=wishlist"
               aria-label={`Wishlist (${wishlist.length} items)`}
-              className="relative hidden lg:flex h-9 w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/90 text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
+              className="relative hidden lg:flex h-9 w-9 items-center justify-center rounded-full border border-[#DDD9D1] bg-white text-[#252525] shadow-xs transition hover:border-[#252525] hover:bg-[#252525] hover:text-[#F8F7F3] focus:outline-none"
               title="Wishlist"
             >
               <Heart className="h-4 w-4" />
               {wishlist.length > 0 && (
-                <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#d93829] px-1 text-[10px] font-bold text-white shadow-xs">
+                <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#722F37] px-1 text-[10px] font-bold text-white shadow-xs">
                   {wishlist.length}
                 </span>
               )}
@@ -156,12 +156,12 @@ export default function Navbar() {
                 setBlindOpen(false);
                 setCartOpen(true);
               }}
-              className="relative hidden lg:flex h-9 w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/90 text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
+              className="relative hidden lg:flex h-9 w-9 items-center justify-center rounded-full border border-[#DDD9D1] bg-white text-[#252525] shadow-xs transition hover:border-[#252525] hover:bg-[#252525] hover:text-[#F8F7F3] focus:outline-none"
               title="Shopping Cart"
             >
               <ShoppingBag className="h-4 w-4" />
               {cartCount > 0 && (
-                <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#d93829] px-1 text-[10px] font-bold text-white shadow-xs">
+                <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#722F37] px-1 text-[10px] font-bold text-white shadow-xs">
                   {cartCount}
                 </span>
               )}
@@ -171,7 +171,7 @@ export default function Navbar() {
             <Link
               href="/account"
               aria-label={user ? `Account (${user.name})` : "Reader Sign In"}
-              className="hidden lg:flex h-9 w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/90 text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
+              className="hidden lg:flex h-9 w-9 items-center justify-center rounded-full border border-[#DDD9D1] bg-white text-[#252525] shadow-xs transition hover:border-[#252525] hover:bg-[#252525] hover:text-[#F8F7F3] focus:outline-none"
               title={user ? `Signed in as ${user.name}` : "Reader Sign In / Account"}
             >
               <User className="h-4 w-4" />
@@ -182,7 +182,7 @@ export default function Navbar() {
               type="button"
               aria-label={blindOpen ? "Close Navigation Menu" : "Open Navigation Menu"}
               onClick={() => setBlindOpen((v) => !v)}
-              className="flex lg:hidden h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
+              className="flex lg:hidden h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-[#DDD9D1] bg-white text-[#252525] shadow-xs transition hover:border-[#252525] hover:bg-[#252525] hover:text-[#F8F7F3] focus:outline-none"
               title={blindOpen ? "Close Menu" : "Open Menu"}
             >
               {blindOpen ? (
@@ -206,35 +206,35 @@ export default function Navbar() {
             animate={{ y: 0 }}
             exit={{ y: "-100%" }}
             transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-x-0 top-16 z-40 max-h-[calc(100dvh-64px)] overflow-y-auto overscroll-contain border-b border-[#dedbd2] bg-[#f6f5f0] pb-10 shadow-[0_32px_64px_rgba(20,20,19,0.16)] lg:hidden"
+            className="fixed inset-x-0 top-16 z-40 max-h-[calc(100dvh-64px)] overflow-y-auto overscroll-contain border-b border-[#DDD9D1] bg-[#F8F7F3] pb-10 shadow-[0_24px_48px_rgba(37,37,37,0.08)] lg:hidden"
           >
             {/* Paper blind horizontal slat lines */}
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute inset-0 opacity-35"
+              className="pointer-events-none absolute inset-0 opacity-25"
               style={{
                 backgroundImage:
-                  "repeating-linear-gradient(180deg, transparent 0px, transparent 55px, #dedbd2 55px, #dedbd2 56px)",
+                  "repeating-linear-gradient(180deg, transparent 0px, transparent 55px, #DDD9D1 55px, #DDD9D1 56px)",
               }}
             />
 
-            {/* Cursor-tracking gallery red dot */}
+            {/* Cursor-tracking gallery dot */}
             {dotPos.visible && (
               <motion.div
                 aria-hidden="true"
-                animate={{ x: dotPos.x - 7, y: dotPos.y - 7 }}
+                animate={{ x: dotPos.x - 6, y: dotPos.y - 6 }}
                 transition={{ type: "spring", stiffness: 450, damping: 28 }}
-                className="pointer-events-none absolute z-20 hidden h-3.5 w-3.5 rounded-full bg-[#d93829] md:block"
+                className="pointer-events-none absolute z-20 hidden h-3 w-3 rounded-full bg-[#722F37] md:block"
               />
             )}
 
             <div className="relative z-10 mx-auto max-w-7xl px-4 py-6 sm:py-8 sm:px-6 lg:px-8">
               {/* Menu Header Utility Bar: Reader Login / Account + Search & Bag Triggers */}
-              <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border-b border-[#dedbd2] pb-5">
+              <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border-b border-[#DDD9D1] pb-5">
                 <Link
                   href="/account"
                   onClick={() => setBlindOpen(false)}
-                  className="inline-flex items-center gap-2 rounded-full border border-[#141413] bg-[#141413] px-3.5 sm:px-4 py-1.5 sm:py-2 text-xs font-semibold text-[#f6f5f0] shadow-xs transition hover:bg-[#2a2a28]"
+                  className="inline-flex items-center gap-2 rounded-full border border-[#252525] bg-[#252525] px-3.5 sm:px-4 py-1.5 sm:py-2 text-xs font-semibold text-[#F8F7F3] shadow-xs transition hover:bg-[#3d3d3d]"
                 >
                   <User className="h-3.5 w-3.5" />
                   <span>{user ? `Signed in as ${user.name}` : "Reader Sign In / Account"}</span>
@@ -247,9 +247,9 @@ export default function Navbar() {
                       setBlindOpen(false);
                       setSearchOpen(true);
                     }}
-                    className="flex items-center gap-1.5 rounded-full border border-[#dedbd2] bg-white px-3 py-1.5 text-xs font-semibold text-[#141413] transition hover:border-[#141413]"
+                    className="flex items-center gap-1.5 rounded-full border border-[#DDD9D1] bg-white px-3 py-1.5 text-xs font-semibold text-[#252525] transition hover:border-[#252525]"
                   >
-                    <Search className="h-3.5 w-3.5 text-[#62605a]" />
+                    <Search className="h-3.5 w-3.5 text-[#77736D]" />
                     <span>Search</span>
                   </button>
 
@@ -259,12 +259,12 @@ export default function Navbar() {
                       setBlindOpen(false);
                       setCartOpen(true);
                     }}
-                    className="flex items-center gap-1.5 rounded-full border border-[#dedbd2] bg-white px-3 py-1.5 text-xs font-semibold text-[#141413] transition hover:border-[#141413]"
+                    className="flex items-center gap-1.5 rounded-full border border-[#DDD9D1] bg-white px-3 py-1.5 text-xs font-semibold text-[#252525] transition hover:border-[#252525]"
                   >
-                    <ShoppingBag className="h-3.5 w-3.5 text-[#62605a]" />
+                    <ShoppingBag className="h-3.5 w-3.5 text-[#77736D]" />
                     <span>Bag</span>
                     {cartCount > 0 && (
-                      <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-[#d93829] px-1 text-[10px] font-bold text-white">
+                      <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-[#722F37] px-1 text-[10px] font-bold text-white">
                         {cartCount}
                       </span>
                     )}
@@ -273,12 +273,12 @@ export default function Navbar() {
                   <Link
                     href="/account?tab=wishlist"
                     onClick={() => setBlindOpen(false)}
-                    className="flex items-center gap-1.5 rounded-full border border-[#dedbd2] bg-white px-3 py-1.5 text-xs font-semibold text-[#141413] transition hover:border-[#141413]"
+                    className="flex items-center gap-1.5 rounded-full border border-[#DDD9D1] bg-white px-3 py-1.5 text-xs font-semibold text-[#252525] transition hover:border-[#252525]"
                   >
-                    <Heart className="h-3.5 w-3.5 text-[#62605a]" />
+                    <Heart className="h-3.5 w-3.5 text-[#77736D]" />
                     <span>Wishlist</span>
                     {wishlist.length > 0 && (
-                      <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-[#d93829] px-1 text-[10px] font-bold text-white">
+                      <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-[#722F37] px-1 text-[10px] font-bold text-white">
                         {wishlist.length}
                       </span>
                     )}
@@ -297,21 +297,21 @@ export default function Navbar() {
                     <Link
                       key={item.href}
                       href={item.href}
-                      className="group flex items-baseline justify-between rounded-2xl border border-[#dedbd2]/80 bg-white/85 px-4 py-3.5 sm:px-6 sm:py-5 transition hover:border-[#141413] hover:bg-white"
+                      className="group flex items-baseline justify-between rounded-xl border border-[#DDD9D1] bg-white px-4 py-3.5 sm:px-6 sm:py-5 transition hover:border-[#252525] hover:bg-[#F8F7F3]"
                     >
                       <div>
-                        <span className="font-mono text-[10px] sm:text-[11px] font-semibold text-[#d93829]">
+                        <span className="font-mono text-[10px] sm:text-[11px] font-semibold text-[#722F37]">
                           {item.code}
                         </span>
-                        <h3 className="mt-0.5 sm:mt-1 font-serif text-xl sm:text-3xl font-semibold text-[#141413] transition group-hover:translate-x-1">
+                        <h3 className="mt-0.5 sm:mt-1 font-serif text-xl sm:text-2xl font-semibold text-[#252525] transition group-hover:translate-x-1">
                           {item.label}
                         </h3>
-                        <p className="mt-0.5 text-[11px] sm:text-xs text-[#62605a]">{item.note}</p>
+                        <p className="mt-0.5 text-[11px] sm:text-xs text-[#77736D]">{item.note}</p>
                       </div>
                       <span
-                        className={`h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full transition ${active
-                          ? "bg-[#d93829]"
-                          : "bg-[#dedbd2] group-hover:bg-[#d93829]"
+                        className={`h-2 w-2 rounded-full transition ${active
+                          ? "bg-[#722F37]"
+                          : "bg-[#DDD9D1] group-hover:bg-[#722F37]"
                           }`}
                       />
                     </Link>
@@ -319,27 +319,27 @@ export default function Navbar() {
                 })}
               </div>
 
-              <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-[#dedbd2] pt-5 font-mono text-xs text-[#62605a]">
+              <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-[#DDD9D1] pt-5 font-mono text-xs text-[#77736D]">
                 <div className="flex flex-wrap gap-3 sm:gap-5">
-                  <Link href="/account?tab=wishlist" className="hover:text-[#141413]">
+                  <Link href="/account?tab=wishlist" className="hover:text-[#252525]">
                     Wishlist ({wishlist.length})
                   </Link>
-                  <Link href="/track" className="hover:text-[#141413]">
+                  <Link href="/track" className="hover:text-[#252525]">
                     Track Order
                   </Link>
-                  <Link href="/cart" className="hover:text-[#141413]">
+                  <Link href="/cart" className="hover:text-[#252525]">
                     Shopping Bag ({cartCount})
                   </Link>
-                  <Link href="/account" className="hover:text-[#141413]">
+                  <Link href="/account" className="hover:text-[#252525]">
                     {user ? `User Portal: ${user.name}` : "Reader Login"}
                   </Link>
                   {user?.role === "admin" && (
-                    <Link href="/admin" className="hover:text-[#141413] text-[#d93829] font-bold">
+                    <Link href="/admin" className="hover:text-[#252525] text-[#722F37] font-bold">
                       CMS Console (Admin)
                     </Link>
                   )}
                 </div>
-                <span className="hidden sm:inline">GALLERY OPEN • DHAKA &amp; ONLINE</span>
+                <span className="hidden sm:inline">UTTORON PUBLICATION • EDITORIAL PRESS</span>
               </div>
             </div>
           </motion.div>

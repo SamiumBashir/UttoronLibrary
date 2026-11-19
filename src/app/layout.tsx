@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-[#f6f5f0] text-[#141413] antialiased selection:bg-[#141413] selection:text-[#f6f5f0]">
+      <body className="min-h-screen bg-[#F8F7F3] text-[#252525] antialiased selection:bg-[#722F37] selection:text-[#F8F7F3]">
         <StoreProvider>
           <Navbar />
           <SearchOverlay />

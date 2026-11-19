@@ -177,10 +177,10 @@ export default function HomeExperience({
   const exitProgress = Math.max(0, Math.min(1, (walkProgress - 0.78) / 0.22));
 
   return (
-    <div className="bg-[#f6f5f0] text-[#141413] overflow-x-clip">
+    <div className="bg-[#F8F7F3] text-[#252525] overflow-x-clip">
       {/* 1. MINIMAZE-LIGHT 3D VIRTUAL GALLERY CORRIDOR WALKTHROUGH */}
       <section ref={galleryTrackRef} className="relative h-[180vh] md:h-[320vh] w-full">
-        <div className="sticky top-0 h-[100dvh] w-full overflow-hidden bg-[#f5f4ef]">
+        <div className="sticky top-0 h-[100dvh] w-full overflow-hidden bg-[#F8F7F3]">
           {/* Full-screen 3D Light Gallery Canvas with smooth forward zoom upon entering */}
           <div
             className="absolute inset-0 z-0 origin-center transition-transform duration-150 ease-out"
@@ -205,7 +205,7 @@ export default function HomeExperience({
               }}
               aria-hidden="true"
             >
-              <div className="h-[92%] w-[88%] rounded-t-[140px] border-[14px] sm:border-[26px] border-[#eceae3]/65 shadow-[inset_0_0_80px_rgba(20,20,19,0.06)]" />
+              <div className="h-[92%] w-[88%] rounded-t-[140px] border-[14px] sm:border-[26px] border-[#DDD9D1]/65 shadow-[inset_0_0_80px_rgba(37,37,37,0.06)]" />
             </div>
           )}
 
@@ -214,7 +214,7 @@ export default function HomeExperience({
             className="pointer-events-none absolute inset-0 z-10 transition-opacity duration-200"
             style={{
               opacity: walkProgress >= 0.82 ? Math.min(1, (walkProgress - 0.82) / 0.17) : 0,
-              background: `radial-gradient(circle at 50% 50%, rgba(255, 248, 235, 0.45) 0%, rgba(246, 245, 240, 0.88) 65%, rgba(246, 245, 240, 1) 100%)`,
+              background: `radial-gradient(circle at 50% 50%, rgba(255, 248, 235, 0.45) 0%, rgba(248, 247, 243, 0.88) 65%, rgba(248, 247, 243, 1) 100%)`,
             }}
             aria-hidden="true"
           />
@@ -227,8 +227,8 @@ export default function HomeExperience({
               transform: `translateY(${walkProgress * 20}px)`,
             }}
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#dedbd2] bg-white/90 px-4 py-2 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-[#141413] shadow-lg backdrop-blur-md">
-              <span className="h-2 w-2 animate-ping rounded-full bg-[#d93829]" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#DDD9D1] bg-white/95 px-4 py-2 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-[#252525] shadow-lg backdrop-blur-md">
+              <span className="h-2 w-2 animate-ping rounded-full bg-[#722F37]" />
               Scroll to explore gallery ↓
             </div>
           </div>
@@ -241,20 +241,20 @@ export default function HomeExperience({
               transform: `translateY(${Math.max(0, (1 - walkProgress) * 20)}px)`,
             }}
           >
-            <div className="inline-flex items-center gap-2.5 rounded-full border border-[#dedbd2] bg-white/95 px-4 sm:px-5 py-2 sm:py-2.5 font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.2em] text-[#141413] shadow-2xl backdrop-blur-md">
-              <span className="h-2 w-2 animate-ping rounded-full bg-[#d93829]" />
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-[#DDD9D1] bg-white/95 px-4 sm:px-5 py-2 sm:py-2.5 font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.2em] text-[#252525] shadow-2xl backdrop-blur-md">
+              <span className="h-2 w-2 animate-ping rounded-full bg-[#722F37]" />
               <span>
                 {walkProgress >= 0.90
                   ? "Stepping Inside • The Publishing House"
                   : "Approaching Archway • Editorial Hall"}
               </span>
-              <ArrowRight className="h-3.5 w-3.5 text-[#d93829]" />
+              <ArrowRight className="h-3.5 w-3.5 text-[#722F37]" />
             </div>
           </div>
         </div>
       </section>
 
-      {/* ZOOM-IN GALLERY EXHIBIT MODAL (Minimaze "Zoom-in Project View" + E-Commerce) */}
+      {/* ZOOM-IN GALLERY EXHIBIT MODAL */}
       <AnimatePresence>
         {zoomedBook && (
           <motion.div
@@ -262,20 +262,20 @@ export default function HomeExperience({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setZoomedBook(null)}
-            className="fixed inset-0 z-[70] flex items-center justify-center bg-[#141413]/55 p-4 backdrop-blur-md"
+            className="fixed inset-0 z-[70] flex items-center justify-center bg-[#252525]/60 p-4 backdrop-blur-md"
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.92, opacity: 0, y: 12 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative grid w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-3xl border border-[#dedbd2] bg-[#f6f5f0] shadow-2xl md:grid-cols-12"
+              className="relative grid w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl border border-[#DDD9D1] bg-[#F8F7F3] shadow-2xl md:grid-cols-12"
             >
               <button
                 type="button"
                 aria-label="Close exhibition preview"
                 onClick={() => setZoomedBook(null)}
-                className="absolute right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white text-[#141413] hover:border-[#141413]"
+                className="absolute right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-[#DDD9D1] bg-white text-[#252525] hover:border-[#252525]"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -298,29 +298,29 @@ export default function HomeExperience({
 
               <div className="flex flex-col justify-between p-5 sm:p-7 md:col-span-7">
                 <div>
-                  <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-[#62605a]">
-                    <span className="h-2 w-2 rounded-full bg-[#d93829]" />
+                  <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-[#77736D]">
+                    <span className="h-2 w-2 rounded-full bg-[#722F37]" />
                     <span>{zoomedBook.category}</span>
                     <span>•</span>
                     <span>ISBN {zoomedBook.isbn}</span>
                   </div>
-                  <h2 className="mt-2 font-serif text-3xl font-semibold text-[#141413]">
+                  <h2 className="mt-2 font-serif text-3xl font-semibold text-[#252525]">
                     {zoomedBook.title}
                   </h2>
-                  <p className="mt-1 text-sm font-medium text-[#62605a]">
+                  <p className="mt-1 text-sm font-medium text-[#77736D]">
                     {zoomedBook.authorName}
                   </p>
-                  <p className="mt-4 text-sm leading-relaxed text-[#141413]/80">
+                  <p className="mt-4 text-sm leading-relaxed text-[#252525]/85">
                     {zoomedBook.description}
                   </p>
                 </div>
 
-                <div className="mt-6 border-t border-[#dedbd2] pt-5">
+                <div className="mt-6 border-t border-[#DDD9D1] pt-5">
                   <div className="mb-4 flex items-baseline justify-between">
-                    <span className="font-mono text-2xl font-bold text-[#141413]">
+                    <span className="font-mono text-2xl font-bold text-[#252525]">
                       {formatPrice(zoomedBook.price)}
                     </span>
-                    <span className="font-mono text-xs text-[#62605a]">
+                    <span className="font-mono text-xs text-[#77736D]">
                       {zoomedBook.stock > 0
                         ? `${zoomedBook.stock} copies in bindery`
                         : "Out of stock"}
@@ -334,16 +334,16 @@ export default function HomeExperience({
                         addToCart(zoomedBook, 1);
                         setZoomedBook(null);
                       }}
-                      className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-[#141413] px-5 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#d93829] disabled:opacity-40"
+                      className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-[#252525] px-5 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#722F37] disabled:opacity-40"
                     >
                       <ShoppingBag className="h-3.5 w-3.5" /> Add to Bag
                     </button>
                     <Link
                       href={`/books/${zoomedBook.slug}`}
                       onClick={rememberSpotAndNavigate}
-                      className="inline-flex items-center justify-center gap-1.5 rounded-full border border-[#dedbd2] bg-white px-5 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-[#141413] hover:border-[#141413]"
+                      className="inline-flex items-center justify-center gap-1.5 rounded-full border border-[#DDD9D1] bg-white px-5 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-[#252525] hover:border-[#252525]"
                     >
-                      Full 3D View <ArrowRight className="h-3.5 w-3.5" />
+                      Full Details <ArrowRight className="h-3.5 w-3.5" />
                     </Link>
                   </div>
                 </div>
@@ -353,8 +353,8 @@ export default function HomeExperience({
         )}
       </AnimatePresence>
 
-      {/* 2. ABOUT THE PUBLISHING HOUSE (SUNLIT ARCHITECTURAL MANIFESTO) */}
-      <section className="paper-grain border-y border-[#dedbd2] bg-white py-14 sm:py-20 lg:py-28">
+      {/* 2. ABOUT THE PUBLISHING HOUSE (EDITORIAL MANIFESTO) */}
+      <section className="paper-grain border-y border-[#DDD9D1] bg-white py-14 sm:py-20 lg:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid items-center gap-8 sm:gap-12 lg:grid-cols-12">
             <motion.div
@@ -364,28 +364,27 @@ export default function HomeExperience({
               transition={{ duration: 0.6 }}
               className="lg:col-span-6"
             >
-              <p className="inline-flex items-center gap-2 font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.24em] text-[#62605a]">
-                <span className="h-2 w-2 rounded-full bg-[#d93829]" />
+              <p className="inline-flex items-center gap-2 font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.24em] text-[#77736D]">
+                <span className="h-2 w-2 rounded-full bg-[#722F37]" />
                 The Publishing House • Est. 1998
               </p>
-              <h2 className="mt-3 font-serif text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-[#141413]">
+              <h2 className="mt-3 font-serif text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-[#252525]">
                 Where sunlit architecture meets enduring literature.
               </h2>
-              <p className="mt-4 sm:mt-6 text-sm sm:text-base leading-relaxed text-[#62605a]">
-                Founded in Dhaka in 1998, Uttoron Prokasoni exists on a simple conviction:
-                a book is not disposable content—it is a permanent room built of paper,
-                ink, and memory.
+              <p className="mt-4 sm:mt-6 text-sm sm:text-base leading-relaxed text-[#77736D]">
+                Uttoron Prokasoni exists on a simple conviction: a book is not disposable
+                content—it is a permanent room built of paper, ink, and memory.
               </p>
-              <p className="mt-3 sm:mt-4 text-sm sm:text-base leading-relaxed text-[#62605a]">
+              <p className="mt-3 sm:mt-4 text-sm sm:text-base leading-relaxed text-[#77736D]">
                 From luminous literary fiction and monsoon poetry to rigorous treatises on
                 delta hydrology and humane computing, every volume is edited with patience
-                and bound for collectors.
+                and bound for readers and collectors alike.
               </p>
               <Link
                 href="/about"
-                className="mt-6 sm:mt-8 inline-flex items-center gap-2 border-b border-[#141413] pb-1 font-mono text-xs font-bold uppercase tracking-[0.18em] text-[#141413] transition hover:border-[#d93829] hover:text-[#d93829]"
+                className="mt-6 sm:mt-8 inline-flex items-center gap-2 border-b border-[#252525] pb-1 font-mono text-xs font-bold uppercase tracking-[0.18em] text-[#252525] transition hover:border-[#722F37] hover:text-[#722F37]"
               >
-                Explore Our Interactive Studio <ArrowRight className="h-3.5 w-3.5" />
+                Explore Our Studio &amp; Craft <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </motion.div>
 
@@ -398,33 +397,33 @@ export default function HomeExperience({
             >
               {[
                 {
-                  metric: "28 Yrs",
-                  label: "Literary Heritage",
-                  note: "Independent publishing across South Asia",
+                  title: "Smyth-Sewn",
+                  label: "Archival Binding",
+                  note: "Stitched signatures on acid-free paper that open flat and endure",
                 },
                 {
-                  metric: "420+",
-                  label: "Archival Titles",
-                  note: "Smyth-sewn cloth & acid-free editions",
+                  title: "Curated",
+                  label: "Literary Selection",
+                  note: "Singular South Asian voices across fiction, history, and science",
                 },
                 {
-                  metric: "94",
-                  label: "Authors & Fellows",
-                  note: "Novelists, scientists, poets & archivists",
+                  title: "Direct Press",
+                  label: "Studio to Reader",
+                  note: "Wrapped in protective kraft sleeves and dispatched nationwide",
                 },
-              ].map((stat) => (
+              ].map((item) => (
                 <div
-                  key={stat.label}
-                  className="rounded-2xl sm:rounded-3xl border border-[#dedbd2] bg-[#f6f5f0] p-4 sm:p-6"
+                  key={item.label}
+                  className="rounded-xl border border-[#DDD9D1] bg-[#F8F7F3] p-4 sm:p-6"
                 >
-                  <p className="font-serif text-3xl sm:text-4xl font-bold text-[#141413]">
-                    {stat.metric}
+                  <p className="font-serif text-2xl sm:text-3xl font-bold text-[#252525]">
+                    {item.title}
                   </p>
-                  <p className="mt-1.5 sm:mt-2 font-mono text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.18em] text-[#d93829]">
-                    {stat.label}
+                  <p className="mt-1.5 sm:mt-2 font-mono text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.18em] text-[#722F37]">
+                    {item.label}
                   </p>
-                  <p className="mt-1.5 sm:mt-2 text-xs leading-relaxed text-[#62605a]">
-                    {stat.note}
+                  <p className="mt-1.5 sm:mt-2 text-xs leading-relaxed text-[#77736D]">
+                    {item.note}
                   </p>
                 </div>
               ))}
@@ -433,15 +432,15 @@ export default function HomeExperience({
         </div>
       </section>
 
-      {/* 3. NEW ARRIVALS — HORIZONTAL INTERACTIVE 3D SHOWCASE */}
-      <section id="publications-archive" className="border-b border-[#dedbd2] bg-[#eceae3]/55 py-14 sm:py-20">
+      {/* 3. NEW ARRIVALS — HORIZONTAL INTERACTIVE SHOWCASE */}
+      <section id="publications-archive" className="border-b border-[#DDD9D1] bg-[#E9E6DF]/40 py-14 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.24em] text-[#62605a]">
+              <p className="font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.24em] text-[#77736D]">
                 Fresh From the Bindery
               </p>
-              <h2 className="mt-1.5 sm:mt-2 font-serif text-2xl sm:text-4xl font-semibold text-[#141413]">
+              <h2 className="mt-1.5 sm:mt-2 font-serif text-2xl sm:text-4xl font-semibold text-[#252525]">
                 New Arrivals
               </h2>
             </div>
@@ -450,7 +449,7 @@ export default function HomeExperience({
                 type="button"
                 aria-label="Scroll new arrivals left"
                 onClick={() => scrollArrivals(-1)}
-                className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-[#dedbd2] bg-white text-[#141413] transition hover:border-[#141413]"
+                className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-[#DDD9D1] bg-white text-[#252525] transition hover:border-[#252525]"
               >
                 <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
               </button>
@@ -458,7 +457,7 @@ export default function HomeExperience({
                 type="button"
                 aria-label="Scroll new arrivals right"
                 onClick={() => scrollArrivals(1)}
-                className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-[#dedbd2] bg-white text-[#141413] transition hover:border-[#141413]"
+                className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-[#DDD9D1] bg-white text-[#252525] transition hover:border-[#252525]"
               >
                 <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
               </button>
@@ -481,21 +480,21 @@ export default function HomeExperience({
         </div>
       </section>
 
-      {/* 4. INTERACTIVE BOOK COLLECTION (3D GRID + MINIMAZE HOVER-COVER INDEX) */}
-      <section className="paper-grain bg-[#f6f5f0] py-14 sm:py-20 lg:py-24">
+      {/* 4. INTERACTIVE BOOK COLLECTION */}
+      <section className="paper-grain bg-[#F8F7F3] py-14 sm:py-20 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-6 sm:mb-10 flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.24em] text-[#62605a]">
-                Interactive Collection &amp; Work Index
+              <p className="font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.24em] text-[#77736D]">
+                Complete Catalogue
               </p>
-              <h2 className="mt-1.5 sm:mt-2 font-serif text-2xl sm:text-4xl lg:text-5xl font-semibold text-[#141413]">
+              <h2 className="mt-1.5 sm:mt-2 font-serif text-2xl sm:text-4xl lg:text-5xl font-semibold text-[#252525]">
                 Explore the Archive
               </h2>
             </div>
             <Link
               href="/books"
-              className="inline-flex items-center gap-2 rounded-full border border-[#dedbd2] bg-white px-4 sm:px-5 py-2 sm:py-2.5 font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-[0.14em] text-[#141413] transition hover:border-[#141413]"
+              className="inline-flex items-center gap-2 rounded-full border border-[#DDD9D1] bg-white px-4 sm:px-5 py-2 sm:py-2.5 font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-[0.14em] text-[#252525] transition hover:border-[#252525]"
             >
               Full Catalog <ArrowRight className="h-3.5 w-3.5" />
             </Link>
@@ -506,15 +505,15 @@ export default function HomeExperience({
       </section>
 
       {/* 5. BEST SELLERS & EDITORIAL PICKS */}
-      <section className="border-y border-[#dedbd2] bg-white py-14 sm:py-20 lg:py-24">
+      <section className="border-y border-[#DDD9D1] bg-white py-14 sm:py-20 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-10 lg:gap-14 lg:grid-cols-2">
             {/* Best Sellers */}
             <div>
-              <p className="font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.24em] text-[#d93829]">
+              <p className="font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.24em] text-[#722F37]">
                 Reader Favorites
               </p>
-              <h2 className="mt-1.5 sm:mt-2 font-serif text-2xl sm:text-4xl font-semibold text-[#141413]">
+              <h2 className="mt-1.5 sm:mt-2 font-serif text-2xl sm:text-4xl font-semibold text-[#252525]">
                 Best Sellers
               </h2>
               <div className="mt-6 sm:mt-8 grid gap-3 sm:gap-4 grid-cols-1 xs:grid-cols-2">
@@ -522,23 +521,23 @@ export default function HomeExperience({
                   <Link
                     key={book.id}
                     href={`/books/${book.slug}`}
-                    className="group flex flex-col justify-between rounded-2xl border border-[#dedbd2] bg-[#f6f5f0] p-4 sm:p-5 transition hover:-translate-y-0.5 hover:border-[#141413] hover:bg-white"
+                    className="group flex flex-col justify-between rounded-xl border border-[#DDD9D1] bg-[#F8F7F3] p-4 sm:p-5 transition hover:-translate-y-0.5 hover:border-[#252525] hover:bg-white"
                   >
                     <div>
-                      <span className="font-mono text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.18em] text-[#62605a]">
-                        {book.category} • {book.soldCount} sold
+                      <span className="font-mono text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.18em] text-[#77736D]">
+                        {book.category}
                       </span>
-                      <h3 className="mt-1.5 sm:mt-2 font-serif text-base sm:text-xl font-semibold leading-snug text-[#141413] group-hover:text-[#d93829] line-clamp-2">
+                      <h3 className="mt-1.5 sm:mt-2 font-serif text-base sm:text-lg font-semibold leading-snug text-[#252525] group-hover:text-[#722F37] line-clamp-2">
                         {book.title}
                       </h3>
-                      <p className="mt-1 text-xs text-[#62605a] truncate">{book.authorName}</p>
+                      <p className="mt-1 text-xs text-[#77736D] truncate">{book.authorName}</p>
                     </div>
-                    <div className="mt-4 sm:mt-5 flex items-center justify-between border-t border-[#dedbd2] pt-2.5 sm:pt-3">
-                      <span className="font-mono text-sm sm:text-base font-bold text-[#141413]">
+                    <div className="mt-4 sm:mt-5 flex items-center justify-between border-t border-[#DDD9D1] pt-2.5 sm:pt-3">
+                      <span className="font-mono text-sm sm:text-base font-bold text-[#252525]">
                         {formatPrice(book.price)}
                       </span>
-                      <span className="inline-flex items-center gap-1 font-mono text-[10px] sm:text-[11px] text-[#62605a] group-hover:text-[#141413]">
-                        Inspect 3D <ArrowRight className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+                      <span className="inline-flex items-center gap-1 font-mono text-[10px] sm:text-[11px] text-[#77736D] group-hover:text-[#252525]">
+                        View Book <ArrowRight className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                       </span>
                     </div>
                   </Link>
@@ -548,10 +547,10 @@ export default function HomeExperience({
 
             {/* Editorial Picks */}
             <div>
-              <p className="font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.24em] text-[#62605a]">
+              <p className="font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.24em] text-[#77736D]">
                 Curated by Our Editors
               </p>
-              <h2 className="mt-1.5 sm:mt-2 font-serif text-2xl sm:text-4xl font-semibold text-[#141413]">
+              <h2 className="mt-1.5 sm:mt-2 font-serif text-2xl sm:text-4xl font-semibold text-[#252525]">
                 Editorial Picks
               </h2>
               <div className="mt-6 sm:mt-8 space-y-3 sm:space-y-4">
@@ -559,25 +558,25 @@ export default function HomeExperience({
                   <Link
                     key={book.id}
                     href={`/books/${book.slug}`}
-                    className="group flex items-center justify-between gap-3 sm:gap-4 rounded-2xl border border-[#dedbd2] bg-[#f6f5f0] p-4 sm:p-5 transition hover:border-[#141413] hover:bg-white"
+                    className="group flex items-center justify-between gap-3 sm:gap-4 rounded-xl border border-[#DDD9D1] bg-[#F8F7F3] p-4 sm:p-5 transition hover:border-[#252525] hover:bg-white"
                   >
                     <div className="min-w-0 flex-1">
-                      <p className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.18em] text-[#62605a]">
+                      <p className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.18em] text-[#77736D]">
                         {book.publisherName} • {book.edition}
                       </p>
-                      <h3 className="mt-1 font-serif text-base sm:text-xl font-semibold text-[#141413] group-hover:text-[#d93829] line-clamp-1">
+                      <h3 className="mt-1 font-serif text-base sm:text-lg font-semibold text-[#252525] group-hover:text-[#722F37] line-clamp-1">
                         {book.title}
                       </h3>
-                      <p className="mt-0.5 line-clamp-1 text-xs text-[#62605a]">
+                      <p className="mt-0.5 line-clamp-1 text-xs text-[#77736D]">
                         {book.description}
                       </p>
                     </div>
                     <div className="shrink-0 text-right">
-                      <span className="block font-mono text-sm sm:text-base font-bold text-[#141413]">
+                      <span className="block font-mono text-sm sm:text-base font-bold text-[#252525]">
                         {formatPrice(book.price)}
                       </span>
-                      <span className="mt-1 inline-flex items-center gap-1 font-mono text-[10px] text-[#d93829]">
-                        Open <ArrowRight className="h-3 w-3" />
+                      <span className="mt-1 inline-flex items-center gap-1 font-mono text-[10px] text-[#722F37]">
+                        Read <ArrowRight className="h-3 w-3" />
                       </span>
                     </div>
                   </Link>
@@ -588,21 +587,21 @@ export default function HomeExperience({
         </div>
       </section>
 
-      {/* 6. FEATURED AUTHORS — PORTRAIT FRAMES UNDER INTERACTIVE GALLERY LAMPS */}
-      <section className="bg-[#f6f5f0] py-14 sm:py-20 lg:py-24">
+      {/* 6. FEATURED AUTHORS */}
+      <section className="bg-[#F8F7F3] py-14 sm:py-20 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.24em] text-[#62605a]">
-                Hover a Portrait Frame to Illuminate
+              <p className="font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.24em] text-[#77736D]">
+                Voices in Residence
               </p>
-              <h2 className="mt-1.5 sm:mt-2 font-serif text-2xl sm:text-4xl lg:text-5xl font-semibold text-[#141413]">
+              <h2 className="mt-1.5 sm:mt-2 font-serif text-2xl sm:text-4xl lg:text-5xl font-semibold text-[#252525]">
                 Featured Authors
               </h2>
             </div>
             <Link
               href="/authors"
-              className="inline-flex items-center gap-2 font-mono text-[11px] sm:text-xs font-bold uppercase tracking-[0.16em] text-[#141413] hover:text-[#d93829]"
+              className="inline-flex items-center gap-2 font-mono text-[11px] sm:text-xs font-bold uppercase tracking-[0.16em] text-[#252525] hover:text-[#722F37]"
             >
               All Authors <ArrowRight className="h-3.5 w-3.5" />
             </Link>
@@ -617,25 +616,12 @@ export default function HomeExperience({
                   href={`/authors/${author.slug}`}
                   onMouseEnter={() => setLitAuthorId(author.id)}
                   onMouseLeave={() => setLitAuthorId(null)}
-                  className="group relative flex flex-col justify-between overflow-hidden rounded-2xl sm:rounded-3xl border border-[#dedbd2] bg-white p-4 sm:p-6 pt-6 sm:pt-8 transition hover:-translate-y-1 hover:border-[#141413] hover:shadow-xl"
+                  className="group relative flex flex-col justify-between overflow-hidden rounded-xl border border-[#DDD9D1] bg-white p-4 sm:p-6 pt-6 sm:pt-8 transition hover:-translate-y-1 hover:border-[#252525] hover:shadow-lg"
                 >
-                  {/* Overhead Gallery Lamp Fixture + Warm Cone */}
-                  <div className="pointer-events-none absolute inset-x-0 top-0 flex flex-col items-center">
-                    <div className="h-1.5 w-14 rounded-b-full bg-[#141413]" />
-                    <div
-                      className="h-20 sm:h-24 w-36 sm:w-44 transition-opacity duration-300"
-                      style={{
-                        opacity: isLit ? 0.55 : 0.14,
-                        background:
-                          "radial-gradient(ellipse at top, rgba(255, 224, 150, 0.7), transparent 72%)",
-                      }}
-                    />
-                  </div>
-
                   <div className="relative z-10">
                     <div className="flex items-center gap-3 sm:gap-4">
                       <div
-                        className="flex h-12 w-12 sm:h-16 sm:w-16 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl border border-[#dedbd2] font-serif text-lg sm:text-2xl font-bold shadow-inner"
+                        className="flex h-12 w-12 sm:h-14 sm:w-14 shrink-0 items-center justify-center rounded-lg border border-[#DDD9D1] font-serif text-lg sm:text-xl font-bold shadow-xs"
                         style={{
                           background: `linear-gradient(135deg, ${author.portraitColors[0]}, ${author.portraitColors[1]})`,
                           color: author.portraitColors[2],
@@ -648,27 +634,27 @@ export default function HomeExperience({
                           .join("")}
                       </div>
                       <div>
-                        <h3 className="font-serif text-lg sm:text-2xl font-semibold text-[#141413] group-hover:text-[#d93829]">
+                        <h3 className="font-serif text-lg sm:text-xl font-semibold text-[#252525] group-hover:text-[#722F37]">
                           {author.name}
                         </h3>
-                        <p className="font-mono text-[10px] sm:text-[11px] font-medium text-[#62605a]">
+                        <p className="font-mono text-[10px] sm:text-[11px] font-medium text-[#77736D]">
                           {author.roleTitle}
                         </p>
                       </div>
                     </div>
-                    <p className="mt-3 sm:mt-4 text-xs sm:text-sm leading-relaxed text-[#62605a] line-clamp-3 sm:line-clamp-none">
+                    <p className="mt-3 sm:mt-4 text-xs sm:text-sm leading-relaxed text-[#77736D] line-clamp-3">
                       {author.bio}
                     </p>
                   </div>
 
-                  <div className="relative z-10 mt-4 sm:mt-5 border-t border-[#eceae3] pt-3 sm:pt-4">
+                  <div className="relative z-10 mt-4 sm:mt-5 border-t border-[#E9E6DF] pt-3 sm:pt-4">
                     {author.awards[0] && (
-                      <p className="flex items-center gap-1.5 font-mono text-[10px] sm:text-[11px] text-[#62605a] truncate">
-                        <Award className="h-3.5 w-3.5 shrink-0 text-[#d93829]" />
+                      <p className="flex items-center gap-1.5 font-mono text-[10px] sm:text-[11px] text-[#77736D] truncate">
+                        <Award className="h-3.5 w-3.5 shrink-0 text-[#722F37]" />
                         <span className="truncate">{author.awards[0]}</span>
                       </p>
                     )}
-                    <span className="mt-1.5 sm:mt-2 inline-flex items-center gap-1 text-[11px] sm:text-xs font-semibold text-[#141413] group-hover:text-[#d93829]">
+                    <span className="mt-1.5 sm:mt-2 inline-flex items-center gap-1 text-[11px] sm:text-xs font-semibold text-[#252525] group-hover:text-[#722F37]">
                       Author Biography <ArrowRight className="h-3.5 w-3.5" />
                     </span>
                   </div>
@@ -679,26 +665,26 @@ export default function HomeExperience({
         </div>
       </section>
 
-      {/* 7. PUBLISHING JOURNEY — SCROLL TIMELINE */}
-      <section ref={journeyRef} className="border-t border-[#dedbd2] bg-[#eceae3]/55 py-14 sm:py-20 lg:py-28">
+      {/* 7. PUBLISHING JOURNEY */}
+      <section ref={journeyRef} className="border-t border-[#DDD9D1] bg-[#E9E6DF]/40 py-14 sm:py-20 lg:py-28">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <p className="font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.26em] text-[#62605a]">
-              From Manuscript to Heirloom
+            <p className="font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.26em] text-[#77736D]">
+              From Manuscript to Clothbound
             </p>
-            <h2 className="mt-1.5 sm:mt-2 font-serif text-2xl sm:text-4xl lg:text-5xl font-semibold text-[#141413]">
+            <h2 className="mt-1.5 sm:mt-2 font-serif text-2xl sm:text-4xl lg:text-5xl font-semibold text-[#252525]">
               The Publishing Journey
             </h2>
           </div>
 
           <div className="relative mt-10 sm:mt-14 pl-7 sm:pl-12">
-            <div className="absolute bottom-4 left-2.5 top-4 w-[2px] bg-[#dedbd2] sm:left-5" />
+            <div className="absolute bottom-4 left-2.5 top-4 w-[2px] bg-[#DDD9D1] sm:left-5" />
             <motion.div
               style={{ scaleY: journeyScaleY, transformOrigin: "top" }}
-              className="absolute bottom-4 left-2.5 top-4 w-[2px] bg-[#d93829] sm:left-5"
+              className="absolute bottom-4 left-2.5 top-4 w-[2px] bg-[#722F37] sm:left-5"
             />
 
-            <div className="space-y-4 sm:space-y-8">
+            <div className="space-y-4 sm:space-y-6">
               {JOURNEY_STEPS.map((item) => {
                 const Icon = item.icon;
                 return (
@@ -708,20 +694,20 @@ export default function HomeExperience({
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, amount: 0.4 }}
                     transition={{ duration: 0.5 }}
-                    className="relative rounded-2xl sm:rounded-3xl border border-[#dedbd2] bg-white p-4 sm:p-8 shadow-xs"
+                    className="relative rounded-xl border border-[#DDD9D1] bg-white p-4 sm:p-7 shadow-xs"
                   >
-                    <span className="absolute -left-[29px] top-5 sm:top-7 flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center rounded-full border border-[#141413] bg-[#141413] font-mono text-[9px] sm:text-[10px] font-bold text-white sm:-left-[41px]">
+                    <span className="absolute -left-[29px] top-5 sm:top-6 flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center rounded-full border border-[#252525] bg-[#252525] font-mono text-[9px] sm:text-[10px] font-bold text-white sm:-left-[41px]">
                       {item.step}
                     </span>
                     <div className="flex items-start gap-3 sm:gap-4">
-                      <div className="hidden h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-[#dedbd2] bg-[#f6f5f0] text-[#141413] sm:flex">
+                      <div className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[#DDD9D1] bg-[#F8F7F3] text-[#722F37] sm:flex">
                         <Icon className="h-5 w-5" />
                       </div>
                       <div>
-                        <h3 className="font-serif text-lg sm:text-2xl font-semibold text-[#141413]">
+                        <h3 className="font-serif text-lg sm:text-xl font-semibold text-[#252525]">
                           {item.title}
                         </h3>
-                        <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm leading-relaxed text-[#62605a]">
+                        <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm leading-relaxed text-[#77736D]">
                           {item.desc}
                         </p>
                       </div>
@@ -735,13 +721,13 @@ export default function HomeExperience({
       </section>
 
       {/* 8. TESTIMONIALS */}
-      <section className="bg-white py-14 sm:py-20">
+      <section className="bg-white py-14 sm:py-20 border-t border-[#DDD9D1]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <p className="font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.24em] text-[#62605a]">
-              Critical &amp; Reader Praise
+            <p className="font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.24em] text-[#77736D]">
+              Reader Reflections
             </p>
-            <h2 className="mt-1.5 sm:mt-2 font-serif text-2xl sm:text-4xl font-semibold text-[#141413]">
+            <h2 className="mt-1.5 sm:mt-2 font-serif text-2xl sm:text-4xl font-semibold text-[#252525]">
               Words From Our Readers
             </h2>
           </div>
@@ -750,18 +736,18 @@ export default function HomeExperience({
             {testimonials.map((t) => (
               <blockquote
                 key={t.id}
-                className="flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-[#dedbd2] bg-[#f6f5f0] p-5 sm:p-7"
+                className="flex flex-col justify-between rounded-xl border border-[#DDD9D1] bg-[#F8F7F3] p-5 sm:p-7"
               >
                 <div>
-                  <Quote className="h-5 w-5 sm:h-6 sm:w-6 text-[#d93829]" />
-                  <p className="mt-3 sm:mt-4 font-serif text-base sm:text-xl italic leading-relaxed text-[#141413]">
+                  <Quote className="h-5 w-5 sm:h-6 sm:w-6 text-[#722F37]" />
+                  <p className="mt-3 sm:mt-4 font-serif text-base sm:text-lg italic leading-relaxed text-[#252525]">
                     &ldquo;{t.quote}&rdquo;
                   </p>
                 </div>
-                <footer className="mt-5 sm:mt-6 border-t border-[#dedbd2] pt-3 sm:pt-4">
-                  <p className="text-sm sm:text-base font-semibold text-[#141413]">{t.name}</p>
-                  <p className="text-xs text-[#62605a]">{t.role}</p>
-                  <p className="mt-1 font-mono text-[9px] sm:text-[10px] font-medium uppercase text-[#d93829]">
+                <footer className="mt-5 sm:mt-6 border-t border-[#DDD9D1] pt-3 sm:pt-4">
+                  <p className="text-sm sm:text-base font-semibold text-[#252525]">{t.name}</p>
+                  <p className="text-xs text-[#77736D]">{t.role}</p>
+                  <p className="mt-1 font-mono text-[9px] sm:text-[10px] font-medium uppercase text-[#722F37]">
                     On {t.bookTitle}
                   </p>
                 </footer>
@@ -772,17 +758,17 @@ export default function HomeExperience({
       </section>
 
       {/* 9. NEWSLETTER INVITATION */}
-      <section className="border-t border-[#dedbd2] bg-[#141413] py-14 sm:py-20 text-[#f6f5f0]">
+      <section className="border-t border-[#DDD9D1] bg-[#252525] py-14 sm:py-20 text-[#F8F7F3]">
         <div className="mx-auto max-w-4xl px-4 text-center sm:px-6">
-          <p className="font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.28em] text-[#d93829]">
-            Seasonal Literary Letter
+          <p className="font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.28em] text-[#A69B89]">
+            Publishing Letter
           </p>
           <h2 className="mt-2 sm:mt-3 font-serif text-2xl sm:text-4xl lg:text-5xl font-semibold">
-            Receive First Editions &amp; Gallery Salons.
+            Receive First Editions &amp; Literary Dispatches.
           </h2>
-          <p className="mx-auto mt-3 sm:mt-4 max-w-xl text-xs sm:text-sm leading-relaxed text-[#f6f5f0]/70">
+          <p className="mx-auto mt-3 sm:mt-4 max-w-xl text-xs sm:text-sm leading-relaxed text-[#F8F7F3]/75">
             Join readers receiving quiet dispatches on forthcoming clothbound editions,
-            signed collector prints, and evening book launches in Dhaka.
+            author conversations, and releases in Dhaka.
           </p>
 
           <form
@@ -796,12 +782,12 @@ export default function HomeExperience({
               onChange={(e) => setNewsletterEmail(e.target.value)}
               placeholder="Your email address"
               aria-label="Email address for newsletter"
-              className="flex-1 rounded-full border border-white/20 bg-white/10 px-5 sm:px-6 py-3 sm:py-3.5 text-xs sm:text-sm text-white placeholder:text-white/50 focus:border-[#d93829] focus:outline-none"
+              className="flex-1 rounded-full border border-white/20 bg-white/10 px-5 sm:px-6 py-3 sm:py-3.5 text-xs sm:text-sm text-white placeholder:text-white/50 focus:border-[#722F37] focus:outline-none"
             />
             <button
               type="submit"
               disabled={newsletterLoading}
-              className="rounded-full bg-[#d93829] px-6 sm:px-8 py-3 sm:py-3.5 text-xs font-bold uppercase tracking-[0.18em] text-white transition hover:bg-[#b72d20] disabled:opacity-60"
+              className="rounded-full bg-[#722F37] px-6 sm:px-8 py-3 sm:py-3.5 text-xs font-bold uppercase tracking-[0.18em] text-white transition hover:bg-[#8B3A44] disabled:opacity-60"
             >
               {newsletterLoading ? "Joining..." : "Subscribe"}
             </button>

@@ -60,24 +60,24 @@ export default function BookCard3D({ book }: BookCard3DProps) {
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="group relative flex h-full w-full flex-col rounded-2xl border border-[#dedbd2] bg-white p-3 sm:p-4 transition-all duration-300 hover:-translate-y-1.5 hover:border-[#141413] hover:shadow-[0_24px_48px_-16px_rgba(20,20,19,0.14)]"
+      className="group relative flex h-full w-full flex-col rounded-xl border border-[#DDD9D1] bg-white p-3 sm:p-4 transition-all duration-300 hover:border-[#252525] hover:shadow-[0_10px_24px_rgba(37,37,37,0.08)] cursor-pointer"
     >
       {/* Top plaque metadata & Wishlist */}
       <div className="mb-2 sm:mb-3 flex h-7 sm:h-8 items-center justify-between gap-1.5 sm:gap-2 shrink-0">
         <span
           className={`inline-flex items-center gap-1 sm:gap-1.5 rounded-full px-1.5 sm:px-2.5 py-0.5 font-mono text-[9px] sm:text-[10px] font-medium uppercase ${stockBadge.tone === "out"
-            ? "bg-red-50 text-red-700"
+            ? "bg-[#E9E6DF] text-[#77736D]"
             : stockBadge.tone === "low"
-              ? "bg-amber-50 text-amber-800"
-              : "bg-[#eceae3] text-[#141413]"
+              ? "bg-amber-50 text-amber-900 border border-amber-200"
+              : "bg-[#E9E6DF] text-[#252525]"
             }`}
         >
           <span
             className={`h-1.5 w-1.5 rounded-full ${stockBadge.tone === "out"
-              ? "bg-red-600"
+              ? "bg-[#77736D]"
               : stockBadge.tone === "low"
                 ? "bg-amber-600"
-                : "bg-[#1b6b46]"
+                : "bg-[#2d6a4f]"
               }`}
           />
           {stockBadge.label}
@@ -85,7 +85,7 @@ export default function BookCard3D({ book }: BookCard3DProps) {
 
         <div className="flex items-center gap-1 sm:gap-1.5">
           {discount > 0 && (
-            <span className="rounded-full bg-[#d93829]/10 px-1.5 sm:px-2 py-0.5 font-mono text-[9px] sm:text-[10px] font-bold text-[#d93829]">
+            <span className="rounded-full bg-[#722F37]/10 px-1.5 sm:px-2 py-0.5 font-mono text-[9px] sm:text-[10px] font-bold text-[#722F37]">
               -{discount}%
             </span>
           )}
@@ -97,9 +97,9 @@ export default function BookCard3D({ book }: BookCard3DProps) {
               e.stopPropagation();
               void toggleWishlist(book.id, book.title);
             }}
-            className={`flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full border transition ${wishlisted
-              ? "border-[#d93829] bg-[#d93829] text-white"
-              : "border-[#dedbd2] bg-[#f6f5f0] text-[#62605a] hover:border-[#141413] hover:text-[#141413]"
+            className={`flex h-7 w-7 sm:h-8 sm:w-8 cursor-pointer items-center justify-center rounded-full border transition ${wishlisted
+              ? "border-[#722F37] bg-[#722F37] text-white"
+              : "border-[#DDD9D1] bg-[#F8F7F3] text-[#77736D] hover:border-[#252525] hover:text-[#252525]"
               }`}
           >
             <Heart className={`h-3 w-3 sm:h-3.5 sm:w-3.5 ${wishlisted ? "fill-current" : ""}`} />
@@ -107,18 +107,18 @@ export default function BookCard3D({ book }: BookCard3DProps) {
         </div>
       </div>
 
-      {/* Sunlit Museum Alcove 3D Book Mockup Stage */}
+      {/* Sunlit Alcove 3D Book Mockup Stage */}
       <Link
         href={`/books/${book.slug}`}
-        className="perspective-1200 relative mx-auto my-1 flex h-48 sm:h-56 w-full shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#f6f5f0]"
+        className="perspective-1200 relative mx-auto my-1 flex h-48 sm:h-56 w-full shrink-0 items-center justify-center overflow-hidden rounded-lg bg-[#F8F7F3]"
       >
         {/* Floor Cast Shadow */}
         <div
           aria-hidden="true"
-          className="absolute bottom-2 sm:bottom-3 h-4 sm:h-5 w-24 sm:w-36 rounded-full bg-black/20 blur-md transition-all duration-500"
+          className="absolute bottom-2 sm:bottom-3 h-4 sm:h-5 w-24 sm:w-36 rounded-full bg-black/15 blur-md transition-all duration-500"
           style={{
             transform: hovered ? "scale(1.1) translateX(6px)" : "scale(0.95)",
-            opacity: hovered ? 0.3 : 0.16,
+            opacity: hovered ? 0.25 : 0.12,
           }}
         />
 
@@ -190,28 +190,28 @@ export default function BookCard3D({ book }: BookCard3DProps) {
 
       {/* Book Plaque Metadata */}
       <div className="mt-2.5 sm:mt-4 flex flex-1 flex-col">
-        <div className="flex h-4 items-center justify-between gap-1.5 font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.14em] sm:tracking-[0.16em] text-[#62605a]">
+        <div className="flex h-4 items-center justify-between gap-1.5 font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.14em] sm:tracking-[0.16em] text-[#77736D]">
           <span className="truncate">{book.category}</span>
           <span className="shrink-0">{book.pages} PP</span>
         </div>
 
         <Link href={`/books/${book.slug}`} className="mt-1 sm:mt-1.5 block">
-          <h3 className="font-serif text-xs xs:text-sm sm:text-base font-semibold leading-snug text-[#141413] transition group-hover:text-[#d93829] line-clamp-2 h-[2.5rem] sm:h-[2.85rem] flex items-start">
+          <h3 className="font-serif text-xs xs:text-sm sm:text-base font-semibold leading-snug text-[#252525] transition group-hover:text-[#722F37] line-clamp-2 h-[2.5rem] sm:h-[2.85rem] flex items-start">
             {book.title}
           </h3>
         </Link>
-        <p className="mt-0.5 h-4 text-[10px] sm:text-xs font-medium text-[#62605a] truncate">
+        <p className="mt-0.5 h-4 text-[10px] sm:text-xs font-medium text-[#77736D] truncate">
           {book.authorName}
         </p>
 
         {/* Price & Actions */}
         <div className="mt-auto pt-2.5 sm:pt-4">
           <div className="mb-2 sm:mb-3 flex h-6 sm:h-7 items-baseline gap-1.5 sm:gap-2">
-            <span className="font-mono text-xs xs:text-sm sm:text-lg font-bold text-[#141413]">
+            <span className="font-mono text-xs xs:text-sm sm:text-lg font-bold text-[#252525]">
               {formatPrice(book.price)}
             </span>
             {book.originalPrice > book.price && (
-              <span className="font-mono text-[10px] sm:text-xs text-[#62605a]/65 line-through">
+              <span className="font-mono text-[10px] sm:text-xs text-[#77736D]/70 line-through">
                 {formatPrice(book.originalPrice)}
               </span>
             )}
@@ -226,7 +226,7 @@ export default function BookCard3D({ book }: BookCard3DProps) {
                 e.stopPropagation();
                 addToCart(book, 1);
               }}
-              className="inline-flex flex-1 items-center justify-center gap-1 sm:gap-1.5 rounded-full bg-[#141413] px-2 sm:px-3 py-2 sm:py-2.5 text-[10px] xs:text-xs font-semibold text-white transition hover:bg-[#2e2d2a] disabled:cursor-not-allowed disabled:opacity-45"
+              className="inline-flex flex-1 cursor-pointer items-center justify-center gap-1 sm:gap-1.5 rounded-full bg-[#252525] px-2 sm:px-3 py-2 sm:py-2.5 text-[10px] xs:text-xs font-semibold text-white transition hover:bg-[#3d3d3d] disabled:cursor-not-allowed disabled:opacity-45"
             >
               <ShoppingBag className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
               <span className="truncate">{book.stock > 0 ? "Add to Bag" : "Sold Out"}</span>
@@ -236,7 +236,7 @@ export default function BookCard3D({ book }: BookCard3DProps) {
               disabled={book.stock <= 0}
               onClick={handleBuyNow}
               aria-label={`Buy ${book.title} now`}
-              className="inline-flex items-center justify-center gap-1 sm:gap-1.5 rounded-full border border-[#d93829] bg-[#d93829] px-2.5 sm:px-3.5 py-2 sm:py-2.5 text-[10px] xs:text-xs font-semibold text-white transition hover:bg-[#b82d20] hover:border-[#b82d20] disabled:cursor-not-allowed disabled:opacity-45"
+              className="inline-flex cursor-pointer items-center justify-center gap-1 sm:gap-1.5 rounded-full border border-[#722F37] bg-[#722F37] px-2.5 sm:px-3.5 py-2 sm:py-2.5 text-[10px] xs:text-xs font-semibold text-white transition hover:bg-[#8B3A44] hover:border-[#8B3A44] disabled:cursor-not-allowed disabled:opacity-45"
             >
               <Zap className="h-3 w-3 sm:h-3.5 sm:w-3.5 fill-current" />
               <span>Buy</span>

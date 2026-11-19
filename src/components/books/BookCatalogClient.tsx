@@ -73,23 +73,23 @@ export default function BookCatalogClient({
   return (
     <div>
       {/* Search + Sort + Grid/Index View Switcher */}
-      <div className="flex flex-col gap-3 rounded-2xl border border-[#dedbd2] bg-white p-3.5 shadow-xs md:flex-row md:items-center md:justify-between">
+      <div className="flex flex-col gap-3 rounded-xl border border-[#DDD9D1] bg-white p-3.5 shadow-xs md:flex-row md:items-center md:justify-between">
         <div className="relative flex-1">
-          <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#62605a]" />
+          <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#77736D]" />
           <input
             type="search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by title, author, ISBN, or category..."
             aria-label="Search book catalog"
-            className="w-full rounded-xl border border-[#dedbd2] bg-[#f6f5f0] py-2.5 pl-10 pr-9 text-sm text-[#141413] placeholder:text-[#62605a] focus:border-[#141413] focus:bg-white focus:outline-none"
+            className="w-full rounded-lg border border-[#DDD9D1] bg-[#F8F7F3] py-2.5 pl-10 pr-9 text-sm text-[#252525] placeholder:text-[#77736D] focus:border-[#252525] focus:bg-white focus:outline-none"
           />
           {searchQuery && (
             <button
               type="button"
               aria-label="Clear search"
               onClick={() => setSearchQuery("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#62605a] hover:text-[#141413]"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#77736D] hover:text-[#252525]"
             >
               <X className="h-4 w-4" />
             </button>
@@ -98,15 +98,15 @@ export default function BookCatalogClient({
 
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-2">
-            <ArrowUpDown className="h-4 w-4 text-[#d93829]" />
-            <label htmlFor="catalog-sort" className="font-mono text-xs text-[#62605a]">
+            <ArrowUpDown className="h-4 w-4 text-[#722F37]" />
+            <label htmlFor="catalog-sort" className="font-mono text-xs text-[#77736D]">
               SORT:
             </label>
             <select
               id="catalog-sort"
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as SortOption)}
-              className="rounded-xl border border-[#dedbd2] bg-[#f6f5f0] px-3 py-2 text-xs font-semibold text-[#141413] focus:border-[#141413] focus:outline-none"
+              className="rounded-lg border border-[#DDD9D1] bg-[#F8F7F3] px-3 py-2 text-xs font-semibold text-[#252525] focus:border-[#252525] focus:outline-none"
             >
               <option value="newest">Newest</option>
               <option value="bestselling">Best Selling</option>
@@ -115,15 +115,15 @@ export default function BookCatalogClient({
             </select>
           </div>
 
-          {/* Minimaze Grid vs Work Index Toggle */}
-          <div className="inline-flex rounded-xl border border-[#dedbd2] bg-[#f6f5f0] p-1">
+          {/* Grid vs Index Toggle */}
+          <div className="inline-flex rounded-lg border border-[#DDD9D1] bg-[#F8F7F3] p-1">
             <button
               type="button"
               onClick={() => setViewMode("grid")}
               aria-label="3D Grid View"
-              className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition ${viewMode === "grid"
-                ? "bg-[#141413] text-white"
-                : "text-[#62605a] hover:text-[#141413]"
+              className={`inline-flex items-center gap-1.5 rounded px-3 py-1.5 text-xs font-semibold transition ${viewMode === "grid"
+                ? "bg-[#252525] text-white"
+                : "text-[#77736D] hover:text-[#252525]"
                 }`}
             >
               <LayoutGrid className="h-3.5 w-3.5" />
@@ -132,10 +132,10 @@ export default function BookCatalogClient({
             <button
               type="button"
               onClick={() => setViewMode("index")}
-              aria-label="Gallery Index View"
-              className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition ${viewMode === "index"
-                ? "bg-[#141413] text-white"
-                : "text-[#62605a] hover:text-[#141413]"
+              aria-label="Catalog Index View"
+              className={`inline-flex items-center gap-1.5 rounded px-3 py-1.5 text-xs font-semibold transition ${viewMode === "index"
+                ? "bg-[#252525] text-white"
+                : "text-[#77736D] hover:text-[#252525]"
                 }`}
             >
               <List className="h-3.5 w-3.5" />
@@ -161,8 +161,8 @@ export default function BookCatalogClient({
               type="button"
               onClick={() => setSelectedCategory(cat)}
               className={`shrink-0 rounded-full px-3.5 sm:px-4 py-1.5 sm:py-2 font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.12em] transition ${active
-                ? "bg-[#141413] text-white shadow-sm"
-                : "border border-[#dedbd2] bg-white text-[#62605a] hover:border-[#141413] hover:text-[#141413]"
+                ? "bg-[#252525] text-white shadow-xs"
+                : "border border-[#DDD9D1] bg-white text-[#77736D] hover:border-[#252525] hover:text-[#252525]"
                 }`}
             >
               {cat}
@@ -173,12 +173,12 @@ export default function BookCatalogClient({
 
       {/* Results */}
       {filteredBooks.length === 0 ? (
-        <div className="mt-12 rounded-3xl border border-[#dedbd2] bg-white px-6 py-16 text-center">
-          <p className="font-serif text-2xl font-semibold text-[#141413]">
+        <div className="mt-12 rounded-2xl border border-[#DDD9D1] bg-white px-6 py-16 text-center">
+          <p className="font-serif text-2xl font-semibold text-[#252525]">
             No volumes matched your filter
           </p>
-          <p className="mt-2 text-sm text-[#62605a]">
-            Reset the category or search query to browse our complete archive.
+          <p className="mt-2 text-sm text-[#77736D]">
+            Reset the category or search query to browse our complete collection.
           </p>
           <button
             type="button"
@@ -186,7 +186,7 @@ export default function BookCatalogClient({
               setSelectedCategory("All");
               setSearchQuery("");
             }}
-            className="mt-5 rounded-full bg-[#141413] px-6 py-2.5 text-xs font-semibold uppercase tracking-[0.16em] text-white"
+            className="mt-5 rounded-full bg-[#252525] px-6 py-2.5 text-xs font-semibold uppercase tracking-[0.16em] text-white transition hover:bg-[#722F37]"
           >
             Reset Filters
           </button>
@@ -198,36 +198,36 @@ export default function BookCatalogClient({
           ))}
         </div>
       ) : (
-        /* Minimaze-Inspired Index List with Live Hover Cover Preview */
+        /* Index List with Live Hover Cover Preview */
         <div className="relative mt-6 sm:mt-8 grid gap-8 lg:grid-cols-12">
-          <div className="divide-y divide-[#dedbd2] rounded-3xl border border-[#dedbd2] bg-white lg:col-span-8">
+          <div className="divide-y divide-[#DDD9D1] rounded-2xl border border-[#DDD9D1] bg-white lg:col-span-8">
             {filteredBooks.map((book, idx) => {
               const badge = getStockBadge(book.stock);
               return (
                 <div
                   key={book.id}
                   onMouseEnter={() => setHoveredRowBook(book)}
-                  className="group flex flex-wrap items-center justify-between gap-3 sm:gap-4 px-4 sm:px-5 py-3.5 sm:py-4 transition hover:bg-[#f6f5f0]"
+                  className="group flex flex-wrap items-center justify-between gap-3 sm:gap-4 px-4 sm:px-5 py-3.5 sm:py-4 transition hover:bg-[#F8F7F3]"
                 >
                   <div className="flex min-w-0 items-baseline gap-3 sm:gap-4">
-                    <span className="font-mono text-xs text-[#d93829]">
+                    <span className="font-mono text-xs text-[#722F37]">
                       {String(idx + 1).padStart(2, "0")}
                     </span>
                     <div className="min-w-0">
                       <Link
                         href={`/books/${book.slug}`}
-                        className="block truncate font-serif text-base sm:text-2xl font-semibold text-[#141413] group-hover:text-[#d93829]"
+                        className="block truncate font-serif text-base sm:text-xl font-semibold text-[#252525] group-hover:text-[#722F37]"
                       >
                         {book.title}
                       </Link>
-                      <p className="font-mono text-[10px] sm:text-[11px] text-[#62605a]">
+                      <p className="font-mono text-[10px] sm:text-[11px] text-[#77736D]">
                         {book.authorName} • {book.category} • {badge.label}
                       </p>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <span className="font-mono text-sm font-bold text-[#141413]">
+                    <span className="font-mono text-sm font-bold text-[#252525]">
                       {formatPrice(book.price)}
                     </span>
                     <button
@@ -235,14 +235,14 @@ export default function BookCatalogClient({
                       disabled={book.stock <= 0}
                       onClick={() => addToCart(book, 1)}
                       aria-label={`Add ${book.title} to bag`}
-                      className="rounded-full border border-[#dedbd2] bg-white p-2 text-[#141413] transition hover:border-[#141413] hover:bg-[#141413] hover:text-white disabled:opacity-40"
+                      className="rounded-full border border-[#DDD9D1] bg-white p-2 text-[#252525] transition hover:border-[#252525] hover:bg-[#252525] hover:text-white disabled:opacity-40"
                     >
                       <ShoppingBag className="h-3.5 w-3.5" />
                     </button>
                     <Link
                       href={`/books/${book.slug}`}
                       aria-label={`Open ${book.title}`}
-                      className="rounded-full bg-[#141413] p-2 text-white transition hover:bg-[#d93829]"
+                      className="rounded-full bg-[#252525] p-2 text-white transition hover:bg-[#722F37]"
                     >
                       <ArrowUpRight className="h-3.5 w-3.5" />
                     </Link>
@@ -254,15 +254,15 @@ export default function BookCatalogClient({
 
           {/* Sticky Hover Cover Preview Stage */}
           <aside className="hidden lg:col-span-4 lg:block">
-            <div className="sticky top-28 rounded-3xl border border-[#dedbd2] bg-white p-6 text-center">
+            <div className="sticky top-28 rounded-2xl border border-[#DDD9D1] bg-white p-6 text-center">
               {(() => {
                 const preview = hoveredRowBook || filteredBooks[0];
                 return (
                   <>
-                    <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#62605a]">
-                      Archive Cover Preview
+                    <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#77736D]">
+                      Cover Preview
                     </p>
-                    <div className="perspective-1200 mx-auto my-6 flex h-72 items-center justify-center rounded-2xl bg-[#f6f5f0]">
+                    <div className="perspective-1200 mx-auto my-6 flex h-72 items-center justify-center rounded-xl bg-[#F8F7F3]">
                       <div
                         className="h-56 w-38 overflow-hidden rounded-r shadow-2xl transition-transform duration-300"
                         style={{ transform: "rotateY(-14deg) rotateX(4deg)" }}
@@ -275,15 +275,15 @@ export default function BookCatalogClient({
                         />
                       </div>
                     </div>
-                    <h3 className="font-serif text-2xl font-semibold text-[#141413]">
+                    <h3 className="font-serif text-2xl font-semibold text-[#252525]">
                       {preview.title}
                     </h3>
-                    <p className="mt-1 text-xs text-[#62605a]">{preview.authorName}</p>
+                    <p className="mt-1 text-xs text-[#77736D]">{preview.authorName}</p>
                     <Link
                       href={`/books/${preview.slug}`}
-                      className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-[#141413] px-5 py-2.5 text-xs font-semibold text-white hover:bg-[#d93829]"
+                      className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-[#252525] px-5 py-2.5 text-xs font-semibold text-white transition hover:bg-[#722F37]"
                     >
-                      Inspect 3D Edition <ArrowUpRight className="h-3.5 w-3.5" />
+                      Book Details <ArrowUpRight className="h-3.5 w-3.5" />
                     </Link>
                   </>
                 );

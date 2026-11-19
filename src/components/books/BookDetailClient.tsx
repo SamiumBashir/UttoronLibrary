@@ -98,22 +98,22 @@ export default function BookDetailClient({
   };
 
   return (
-    <div className="paper-grain bg-[#f6f5f0] pb-24 pt-20 sm:pt-28 text-[#141413]">
+    <div className="paper-grain bg-[#F8F7F3] pb-24 pt-20 sm:pt-28 text-[#252525]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
-        <nav aria-label="Breadcrumb" className="mb-6 sm:mb-8 flex flex-wrap items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs text-[#62605a]">
-          <Link href="/" className="hover:text-[#141413]">Home</Link>
+        <nav aria-label="Breadcrumb" className="mb-6 sm:mb-8 flex flex-wrap items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs text-[#77736D]">
+          <Link href="/" className="hover:text-[#252525]">Home</Link>
           <span>/</span>
-          <Link href="/books" className="hover:text-[#141413]">Books</Link>
+          <Link href="/books" className="hover:text-[#252525]">Books</Link>
           <span>/</span>
           <Link
             href={`/books?category=${encodeURIComponent(book.category)}`}
-            className="hover:text-[#141413]"
+            className="hover:text-[#252525]"
           >
             {book.category}
           </Link>
           <span>/</span>
-          <span className="truncate max-w-[180px] sm:max-w-none font-medium text-[#141413]">{book.title}</span>
+          <span className="truncate max-w-[180px] sm:max-w-none font-medium text-[#252525]">{book.title}</span>
         </nav>
 
         {/* Main 2-Column Stage */}
@@ -124,7 +124,7 @@ export default function BookDetailClient({
 
             {/* Additional Plate Previews (Front / Spine / Back) */}
             <div className="mt-5 grid grid-cols-3 gap-4">
-              <div className="rounded-2xl border border-[#dedbd2] bg-white p-3 text-center">
+              <div className="rounded-2xl border border-[#DDD9D1] bg-white p-3 text-center">
                 <div className="mx-auto aspect-[2/3] w-20 overflow-hidden rounded-r shadow-md">
                   <BookCoverArt
                     title={book.title}
@@ -134,10 +134,10 @@ export default function BookDetailClient({
                     compact
                   />
                 </div>
-                <p className="mt-2 text-[11px] font-semibold text-[#141413]">Front Cover</p>
+                <p className="mt-2 text-[11px] font-semibold text-[#252525]">Front Cover</p>
               </div>
 
-              <div className="flex flex-col items-center justify-between rounded-2xl border border-[#dedbd2] bg-white p-3 text-center">
+              <div className="flex flex-col items-center justify-between rounded-2xl border border-[#DDD9D1] bg-white p-3 text-center">
                 <div
                   className="mx-auto flex h-28 w-7 items-center justify-center rounded shadow-md"
                   style={{ backgroundColor: book.spineColor }}
@@ -152,10 +152,10 @@ export default function BookDetailClient({
                     {book.title.slice(0, 18)}
                   </span>
                 </div>
-                <p className="mt-2 text-[11px] font-semibold text-[#141413]">Cloth Spine</p>
+                <p className="mt-2 text-[11px] font-semibold text-[#252525]">Cloth Spine</p>
               </div>
 
-              <div className="rounded-2xl border border-[#dedbd2] bg-white p-3 text-center">
+              <div className="rounded-2xl border border-[#DDD9D1] bg-white p-3 text-center">
                 <div
                   className="mx-auto flex aspect-[2/3] w-20 flex-col justify-between rounded-l p-2 shadow-md"
                   style={{
@@ -173,7 +173,7 @@ export default function BookDetailClient({
                     {book.isbn}
                   </span>
                 </div>
-                <p className="mt-2 text-[11px] font-semibold text-[#141413]">Back &amp; ISBN</p>
+                <p className="mt-2 text-[11px] font-semibold text-[#252525]">Back &amp; ISBN</p>
               </div>
             </div>
           </div>
@@ -181,84 +181,84 @@ export default function BookDetailClient({
           {/* RIGHT: Book Metadata & Purchase Actions */}
           <div className="lg:col-span-6">
             <div className="flex flex-wrap items-center gap-3">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-[#dedbd2] bg-white px-3.5 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#141413]">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#d93829]" />
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-[#DDD9D1] bg-white px-3.5 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#252525]">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#722F37]" />
                 {book.category}
               </span>
               <span
-                className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                className={`rounded-full px-3 py-1 font-mono text-xs font-semibold ${
                   stockBadge.tone === "out"
-                    ? "bg-red-50 text-[#d93829]"
+                    ? "bg-[#E9E6DF] text-[#77736D]"
                     : stockBadge.tone === "low"
-                    ? "bg-amber-50 text-amber-800"
-                    : "bg-[#eceae3] text-[#141413]"
-                }`}
+                    ? "bg-amber-50 text-amber-900 border border-amber-200"
+                    : "bg-[#E9E6DF] text-[#252525]"
+                  }`}
               >
                 {stockBadge.label} ({book.stock} available)
               </span>
               {book.rating > 0 && (
-                <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#62605a]">
-                  <Star className="h-3.5 w-3.5 fill-[#d93829] text-[#d93829]" />
+                <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#77736D]">
+                  <Star className="h-3.5 w-3.5 fill-[#722F37] text-[#722F37]" />
                   {book.rating} ({reviews.length} reviews)
                 </span>
               )}
             </div>
 
-            <h1 className="mt-3 sm:mt-4 font-serif text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-[#141413]">
+            <h1 className="mt-3 sm:mt-4 font-serif text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-[#252525]">
               {book.title}
             </h1>
             {book.subtitle && (
-              <p className="mt-1.5 sm:mt-2 font-serif text-base sm:text-xl italic text-[#62605a]">
+              <p className="mt-1.5 sm:mt-2 font-serif text-base sm:text-xl italic text-[#77736D]">
                 {book.subtitle}
               </p>
             )}
 
-            <div className="mt-3 sm:mt-4 flex flex-wrap items-center gap-x-4 sm:gap-x-6 gap-y-1.5 sm:gap-y-2 text-xs sm:text-sm text-[#62605a]">
+            <div className="mt-3 sm:mt-4 flex flex-wrap items-center gap-x-4 sm:gap-x-6 gap-y-1.5 sm:gap-y-2 text-xs sm:text-sm text-[#77736D]">
               <span>
                 By{" "}
                 {author ? (
                   <Link
                     href={`/authors/${author.slug}`}
-                    className="font-semibold text-[#141413] underline decoration-[#d93829] underline-offset-4 hover:text-[#d93829]"
+                    className="font-semibold text-[#252525] underline decoration-[#722F37] underline-offset-4 hover:text-[#722F37]"
                   >
                     {book.authorName}
                   </Link>
                 ) : (
-                  <strong className="text-[#141413]">{book.authorName}</strong>
+                  <strong className="text-[#252525]">{book.authorName}</strong>
                 )}
               </span>
               <span>
-                Publisher: <strong className="text-[#141413]">{book.publisherName}</strong>
+                Publisher: <strong className="text-[#252525]">{book.publisherName}</strong>
               </span>
             </div>
 
-            <p className="mt-4 sm:mt-6 text-sm sm:text-base leading-relaxed text-[#62605a]">
+            <p className="mt-4 sm:mt-6 text-sm sm:text-base leading-relaxed text-[#77736D]">
               {book.description}
             </p>
 
             {/* Quick Spec Grid */}
-            <div className="mt-5 sm:mt-6 grid grid-cols-2 gap-2 sm:gap-3 rounded-2xl border border-[#dedbd2] bg-white p-3 sm:p-4 text-xs sm:grid-cols-4">
+            <div className="mt-5 sm:mt-6 grid grid-cols-2 gap-2 sm:gap-3 rounded-2xl border border-[#DDD9D1] bg-white p-3 sm:p-4 text-xs sm:grid-cols-4">
               <div>
-                <span className="block text-[11px] text-[#62605a]">ISBN</span>
-                <span className="mt-0.5 block font-mono text-xs font-semibold text-[#141413] truncate">
+                <span className="block text-[11px] text-[#77736D]">ISBN</span>
+                <span className="mt-0.5 block font-mono text-xs font-semibold text-[#252525] truncate">
                   {book.isbn}
                 </span>
               </div>
               <div>
-                <span className="block text-[11px] text-[#62605a]">Published</span>
-                <span className="mt-0.5 block text-xs font-semibold text-[#141413]">
+                <span className="block text-[11px] text-[#77736D]">Published</span>
+                <span className="mt-0.5 block text-xs font-semibold text-[#252525]">
                   {book.publicationDate}
                 </span>
               </div>
               <div>
-                <span className="block text-[11px] text-[#62605a]">Pages</span>
-                <span className="mt-0.5 block text-xs font-semibold text-[#141413]">
+                <span className="block text-[11px] text-[#77736D]">Pages</span>
+                <span className="mt-0.5 block text-xs font-semibold text-[#252525]">
                   {book.pages} pages
                 </span>
               </div>
               <div>
-                <span className="block text-[11px] text-[#62605a]">Language</span>
-                <span className="mt-0.5 block text-xs font-semibold text-[#141413]">
+                <span className="block text-[11px] text-[#77736D]">Language</span>
+                <span className="mt-0.5 block text-xs font-semibold text-[#252525]">
                   {book.language}
                 </span>
               </div>
@@ -266,15 +266,15 @@ export default function BookDetailClient({
 
             {/* Pricing Block */}
             <div className="mt-6 sm:mt-8 flex items-baseline gap-2.5 sm:gap-3">
-              <span className="font-serif text-3xl sm:text-4xl font-bold text-[#141413]">
+              <span className="font-serif text-3xl sm:text-4xl font-bold text-[#252525]">
                 {formatPrice(book.price)}
               </span>
               {book.originalPrice > book.price && (
                 <>
-                  <span className="text-base sm:text-lg text-[#62605a]/70 line-through">
+                  <span className="text-base sm:text-lg text-[#77736D]/70 line-through">
                     {formatPrice(book.originalPrice)}
                   </span>
-                  <span className="rounded-full bg-[#d93829]/10 px-2.5 sm:px-3 py-0.5 sm:py-1 text-[11px] sm:text-xs font-bold text-[#d93829]">
+                  <span className="rounded-full bg-[#722F37]/10 px-2.5 sm:px-3 py-0.5 sm:py-1 font-mono text-[11px] sm:text-xs font-bold text-[#722F37]">
                     Save {discount}%
                   </span>
                 </>
@@ -283,17 +283,17 @@ export default function BookDetailClient({
 
             {/* Quantity + Cart / Buy Now / Wishlist */}
             <div className="mt-5 sm:mt-6 flex flex-wrap items-center gap-2.5 sm:gap-3">
-              <div className="inline-flex items-center rounded-full border border-[#dedbd2] bg-white px-2 py-1">
+              <div className="inline-flex items-center rounded-full border border-[#DDD9D1] bg-white px-2 py-1">
                 <button
                   type="button"
                   aria-label="Decrease quantity"
                   disabled={quantity <= 1 || book.stock <= 0}
                   onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                  className="p-1.5 sm:p-2 text-[#141413] disabled:opacity-40"
+                  className="cursor-pointer p-1.5 sm:p-2 text-[#252525] disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   <Minus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </button>
-                <span className="min-w-7 sm:min-w-8 text-center text-xs sm:text-sm font-bold text-[#141413]">
+                <span className="min-w-7 sm:min-w-8 text-center text-xs sm:text-sm font-bold text-[#252525]">
                   {quantity}
                 </span>
                 <button
@@ -301,7 +301,7 @@ export default function BookDetailClient({
                   aria-label="Increase quantity"
                   disabled={quantity >= book.stock || book.stock <= 0}
                   onClick={() => setQuantity((q) => Math.min(book.stock, q + 1))}
-                  className="p-1.5 sm:p-2 text-[#141413] disabled:opacity-40"
+                  className="cursor-pointer p-1.5 sm:p-2 text-[#252525] disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </button>
@@ -311,13 +311,13 @@ export default function BookDetailClient({
                 type="button"
                 aria-label={wishlisted ? "Saved in wishlist" : "Add to wishlist"}
                 onClick={() => void toggleWishlist(book.id, book.title)}
-                className={`inline-flex items-center justify-center rounded-full border p-2.5 sm:px-4 sm:py-3.5 text-xs font-semibold transition ${
+                className={`inline-flex cursor-pointer items-center justify-center rounded-full border p-2.5 sm:px-4 sm:py-3.5 text-xs font-semibold transition ${
                   wishlisted
-                    ? "border-[#d93829] bg-[#141413] text-white"
-                    : "border-[#dedbd2] bg-white text-[#141413] hover:border-[#141413]"
+                    ? "border-[#722F37] bg-[#722F37] text-white"
+                    : "border-[#DDD9D1] bg-white text-[#252525] hover:border-[#252525]"
                 }`}
               >
-                <Heart className={`h-4 w-4 ${wishlisted ? "fill-[#d93829] text-[#d93829]" : ""}`} />
+                <Heart className={`h-4 w-4 ${wishlisted ? "fill-current" : ""}`} />
                 <span className="hidden sm:inline ml-1.5">{wishlisted ? "Saved" : "Wishlist"}</span>
               </button>
 
@@ -326,7 +326,7 @@ export default function BookDetailClient({
                   type="button"
                   disabled={book.stock <= 0}
                   onClick={() => addToCart(book, quantity)}
-                  className="inline-flex flex-1 items-center justify-center gap-1.5 sm:gap-2 rounded-full bg-[#141413] px-4 sm:px-6 py-3 sm:py-3.5 text-xs font-bold uppercase tracking-[0.14em] sm:tracking-[0.16em] text-white shadow-lg transition hover:bg-[#d93829] disabled:cursor-not-allowed disabled:opacity-45"
+                  className="inline-flex flex-1 cursor-pointer items-center justify-center gap-1.5 sm:gap-2 rounded-full bg-[#252525] px-4 sm:px-6 py-3 sm:py-3.5 text-xs font-bold uppercase tracking-[0.14em] sm:tracking-[0.16em] text-white shadow-md transition hover:bg-[#3d3d3d] disabled:cursor-not-allowed disabled:opacity-45"
                 >
                   <ShoppingBag className="h-4 w-4" />
                   <span>{book.stock > 0 ? "Add to Cart" : "Out of Stock"}</span>
@@ -336,23 +336,23 @@ export default function BookDetailClient({
                   type="button"
                   disabled={book.stock <= 0}
                   onClick={handleBuyNow}
-                  className="inline-flex items-center justify-center gap-1.5 sm:gap-2 rounded-full border border-[#dedbd2] bg-white px-4 sm:px-6 py-3 sm:py-3.5 text-xs font-bold uppercase tracking-[0.14em] sm:tracking-[0.16em] text-[#141413] transition hover:border-[#141413] disabled:cursor-not-allowed disabled:opacity-45"
+                  className="inline-flex cursor-pointer items-center justify-center gap-1.5 sm:gap-2 rounded-full border border-[#722F37] bg-[#722F37] px-4 sm:px-6 py-3 sm:py-3.5 text-xs font-bold uppercase tracking-[0.14em] sm:tracking-[0.16em] text-white transition hover:bg-[#8B3A44] hover:border-[#8B3A44] disabled:cursor-not-allowed disabled:opacity-45"
                 >
-                  <Zap className="h-4 w-4 text-[#d93829]" />
+                  <Zap className="h-4 w-4 fill-current" />
                   <span>Buy Now</span>
                 </button>
               </div>
             </div>
 
-            <div className="mt-6 flex flex-wrap gap-4 border-t border-[#dedbd2] pt-5 text-xs text-[#62605a]">
+            <div className="mt-6 flex flex-wrap gap-4 border-t border-[#DDD9D1] pt-5 text-xs text-[#77736D]">
               <span className="inline-flex items-center gap-1.5">
-                <Check className="h-3.5 w-3.5 text-[#d93829]" /> Acid-free archival paper
+                <Check className="h-3.5 w-3.5 text-[#722F37]" /> Acid-free archival paper
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <Check className="h-3.5 w-3.5 text-[#d93829]" /> Free delivery over ৳2,000
+                <Check className="h-3.5 w-3.5 text-[#722F37]" /> Free delivery over ৳2,000
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <Check className="h-3.5 w-3.5 text-[#d93829]" /> 7-day collector return policy
+                <Check className="h-3.5 w-3.5 text-[#722F37]" /> 7-day collector return policy
               </span>
             </div>
           </div>
@@ -361,20 +361,20 @@ export default function BookDetailClient({
         {/* Lower Editorial Sections: Description, Specs, Author, Reviews */}
         <div className="mt-20 grid gap-10 lg:grid-cols-12">
           <div className="space-y-10 lg:col-span-7">
-            <section className="rounded-[2rem] border border-[#dedbd2] bg-white p-7 sm:p-9">
-              <h2 className="font-serif text-3xl font-semibold text-[#141413]">
+            <section className="rounded-2xl border border-[#DDD9D1] bg-white p-7 sm:p-9 shadow-sm">
+              <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-[#252525]">
                 About This Edition
               </h2>
-              <div className="mt-4 space-y-4 text-base leading-relaxed text-[#62605a] whitespace-pre-line">
+              <div className="mt-4 space-y-4 text-sm sm:text-base leading-relaxed text-[#77736D] whitespace-pre-line">
                 {book.longDescription}
               </div>
             </section>
 
-            <section className="rounded-[2rem] border border-[#dedbd2] bg-white p-7 sm:p-9">
-              <h2 className="font-serif text-3xl font-semibold text-[#141413]">
+            <section className="rounded-2xl border border-[#DDD9D1] bg-white p-7 sm:p-9 shadow-sm">
+              <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-[#252525]">
                 Book Specifications
               </h2>
-              <dl className="mt-5 grid gap-4 text-sm sm:grid-cols-2">
+              <dl className="mt-5 grid gap-4 text-xs sm:text-sm sm:grid-cols-2">
                 {[
                   ["Edition", book.edition],
                   ["Binding", book.binding],
@@ -387,10 +387,10 @@ export default function BookDetailClient({
                 ].map(([label, val]) => (
                   <div
                     key={label}
-                    className="flex items-center justify-between border-b border-[#dedbd2] pb-2.5"
+                    className="flex items-center justify-between border-b border-[#DDD9D1] pb-2.5"
                   >
-                    <dt className="text-[#62605a]">{label}</dt>
-                    <dd className="font-semibold text-[#141413]">{val}</dd>
+                    <dt className="text-[#77736D]">{label}</dt>
+                    <dd className="font-semibold text-[#252525]">{val}</dd>
                   </div>
                 ))}
               </dl>
@@ -400,9 +400,9 @@ export default function BookDetailClient({
           {/* Right Lower Column: Author + Reviews */}
           <div className="space-y-10 lg:col-span-5">
             {author && (
-              <section className="rounded-[2rem] border border-[#dedbd2] bg-[#eceae3] p-7 text-[#141413]">
-                <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#62605a]">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#d93829]" />
+              <section className="rounded-2xl border border-[#DDD9D1] bg-[#E9E6DF] p-7 text-[#252525]">
+                <p className="inline-flex items-center gap-2 font-mono text-[10px] sm:text-xs font-semibold uppercase tracking-[0.22em] text-[#77736D]">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#722F37]" />
                   About the Author
                 </p>
                 <div className="mt-4 flex items-center gap-4">
@@ -420,16 +420,16 @@ export default function BookDetailClient({
                       .join("")}
                   </div>
                   <div>
-                    <h3 className="font-serif text-2xl font-semibold text-[#141413]">{author.name}</h3>
-                    <p className="text-xs text-[#62605a]">{author.roleTitle}</p>
+                    <h3 className="font-serif text-xl sm:text-2xl font-semibold text-[#252525]">{author.name}</h3>
+                    <p className="text-xs text-[#77736D]">{author.roleTitle}</p>
                   </div>
                 </div>
-                <p className="mt-4 text-sm leading-relaxed text-[#62605a]">
+                <p className="mt-4 text-xs sm:text-sm leading-relaxed text-[#77736D]">
                   {author.longBio}
                 </p>
                 <Link
                   href={`/authors/${author.slug}`}
-                  className="mt-5 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-[#141413] hover:text-[#d93829]"
+                  className="mt-5 inline-flex items-center gap-1.5 font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-[0.18em] text-[#252525] hover:text-[#722F37]"
                 >
                   Author Profile &amp; Works <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
@@ -437,47 +437,47 @@ export default function BookDetailClient({
             )}
 
             {/* Customer Reviews */}
-            <section className="rounded-[2rem] border border-[#dedbd2] bg-white p-7">
+            <section className="rounded-2xl border border-[#DDD9D1] bg-white p-7 shadow-sm">
               <div className="flex items-center justify-between">
-                <h2 className="font-serif text-3xl font-semibold text-[#141413]">
+                <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-[#252525]">
                   Reader Reviews
                 </h2>
-                <span className="inline-flex items-center gap-1 text-sm font-bold text-[#141413]">
-                  <Star className="h-4 w-4 fill-[#d93829] text-[#d93829]" />
+                <span className="inline-flex items-center gap-1 font-mono text-sm font-bold text-[#252525]">
+                  <Star className="h-4 w-4 fill-[#722F37] text-[#722F37]" />
                   {book.rating}
                 </span>
               </div>
 
               <div className="mt-5 space-y-4">
                 {reviews.length === 0 ? (
-                  <p className="text-sm text-[#62605a]">
+                  <p className="text-xs sm:text-sm text-[#77736D]">
                     Be the first reader to share a reflection on this edition.
                   </p>
                 ) : (
                   reviews.map((rev) => (
                     <div
                       key={rev.id}
-                      className="rounded-2xl border border-[#dedbd2] bg-[#f6f5f0] p-4"
+                      className="rounded-xl border border-[#DDD9D1] bg-[#F8F7F3] p-4"
                     >
                       <div className="flex items-center justify-between gap-2">
-                        <span className="font-semibold text-sm text-[#141413]">
+                        <span className="font-semibold text-xs sm:text-sm text-[#252525]">
                           {rev.reviewerName}
                         </span>
-                        <span className="inline-flex items-center gap-0.5 text-[#d93829]">
+                        <span className="inline-flex items-center gap-0.5 text-[#722F37]">
                           {Array.from({ length: rev.rating }).map((_, i) => (
                             <Star key={i} className="h-3.5 w-3.5 fill-current" />
                           ))}
                         </span>
                       </div>
-                      <p className="mt-1 font-serif text-base font-semibold text-[#141413]">
+                      <p className="mt-1 font-serif text-sm sm:text-base font-semibold text-[#252525]">
                         {rev.title}
                       </p>
-                      <p className="mt-1 text-xs leading-relaxed text-[#62605a]">
+                      <p className="mt-1 text-xs leading-relaxed text-[#77736D]">
                         {rev.comment}
                       </p>
                       {rev.verifiedPurchase && (
-                        <span className="mt-2 inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#141413]">
-                          <BookOpen className="h-3 w-3 text-[#d93829]" /> Verified Reader
+                        <span className="mt-2 inline-flex items-center gap-1 font-mono text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.14em] text-[#252525]">
+                          <BookOpen className="h-3 w-3 text-[#722F37]" /> Verified Reader
                         </span>
                       )}
                     </div>
@@ -488,9 +488,9 @@ export default function BookDetailClient({
               {/* Write a Review Form */}
               <form
                 onSubmit={handleReviewSubmit}
-                className="mt-6 space-y-3 border-t border-[#dedbd2] pt-5"
+                className="mt-6 space-y-3 border-t border-[#DDD9D1] pt-5"
               >
-                <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-[#62605a]">
+                <h3 className="font-mono text-xs font-bold uppercase tracking-[0.18em] text-[#77736D]">
                   Add Your Review
                 </h3>
                 <div className="grid gap-3 sm:grid-cols-2">
@@ -500,13 +500,13 @@ export default function BookDetailClient({
                     value={reviewerName}
                     onChange={(e) => setReviewerName(e.target.value)}
                     placeholder="Your name"
-                    className="rounded-xl border border-[#dedbd2] bg-[#f6f5f0] px-3.5 py-2 text-xs text-[#141413] focus:border-[#141413] focus:outline-none"
+                    className="rounded-xl border border-[#DDD9D1] bg-[#F8F7F3] px-3.5 py-2 text-xs text-[#252525] focus:border-[#252525] focus:outline-none"
                   />
                   <select
                     value={rating}
                     onChange={(e) => setRating(Number(e.target.value))}
                     aria-label="Rating"
-                    className="rounded-xl border border-[#dedbd2] bg-[#f6f5f0] px-3.5 py-2 text-xs text-[#141413] focus:border-[#141413] focus:outline-none"
+                    className="cursor-pointer rounded-xl border border-[#DDD9D1] bg-[#F8F7F3] px-3.5 py-2 text-xs text-[#252525] focus:border-[#252525] focus:outline-none"
                   >
                     <option value={5}>5 Stars — Extraordinary</option>
                     <option value={4}>4 Stars — Recommended</option>
@@ -520,7 +520,7 @@ export default function BookDetailClient({
                   value={reviewTitle}
                   onChange={(e) => setReviewTitle(e.target.value)}
                   placeholder="Headline (optional)"
-                  className="w-full rounded-xl border border-[#dedbd2] bg-[#f6f5f0] px-3.5 py-2 text-xs text-[#141413] focus:border-[#141413] focus:outline-none"
+                  className="w-full rounded-xl border border-[#DDD9D1] bg-[#F8F7F3] px-3.5 py-2 text-xs text-[#252525] focus:border-[#252525] focus:outline-none"
                 />
                 <textarea
                   required
@@ -528,12 +528,12 @@ export default function BookDetailClient({
                   value={reviewComment}
                   onChange={(e) => setReviewComment(e.target.value)}
                   placeholder="Share your thoughts on this book..."
-                  className="w-full rounded-xl border border-[#dedbd2] bg-[#f6f5f0] px-3.5 py-2 text-xs text-[#141413] focus:border-[#141413] focus:outline-none"
+                  className="w-full rounded-xl border border-[#DDD9D1] bg-[#F8F7F3] px-3.5 py-2 text-xs text-[#252525] focus:border-[#252525] focus:outline-none"
                 />
                 <button
                   type="submit"
                   disabled={submittingReview}
-                  className="rounded-full bg-[#141413] px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.16em] text-white transition hover:bg-[#d93829] disabled:opacity-60"
+                  className="cursor-pointer rounded-full bg-[#252525] px-5 py-2.5 font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-[0.16em] text-white transition hover:bg-[#722F37] disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {submittingReview ? "Publishing..." : "Submit Review"}
                 </button>
@@ -547,22 +547,22 @@ export default function BookDetailClient({
           <section className="mt-20">
             <div className="flex items-end justify-between">
               <div>
-                <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#62605a]">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#d93829]" />
+                <p className="inline-flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-[0.22em] text-[#77736D]">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#722F37]" />
                   Companion Volumes
                 </p>
-                <h2 className="mt-1 font-serif text-3xl font-semibold text-[#141413]">
+                <h2 className="mt-1 font-serif text-2xl sm:text-3xl font-semibold text-[#252525]">
                   Related in {book.category}
                 </h2>
               </div>
               <Link
                 href={`/books?category=${encodeURIComponent(book.category)}`}
-                className="text-xs font-semibold uppercase tracking-[0.16em] text-[#141413] hover:text-[#d93829]"
+                className="font-mono text-xs font-semibold uppercase tracking-[0.16em] text-[#252525] hover:text-[#722F37]"
               >
                 Browse All
               </Link>
             </div>
-            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 items-stretch">
+            <div className="mt-8 grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4 items-stretch">
               {relatedBooks.map((rel) => (
                 <BookCard3D key={rel.id} book={rel} />
               ))}

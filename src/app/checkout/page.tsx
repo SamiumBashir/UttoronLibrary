@@ -154,7 +154,7 @@ function CheckoutContent() {
         }),
       });
 
-      const data = (await res.json()) as {
+      let data: {
         order?: {
           id?: string;
           orderNumber: string;
@@ -164,10 +164,17 @@ function CheckoutContent() {
         };
         redirectUrl?: string;
         error?: string;
-      };
+      } = {};
+
+      try {
+        data = (await res.json()) as typeof data;
+      } catch {
+        notify("অর্ডার প্রক্রিয়াকরণে সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন বা ক্যাশ অন ডেলিভারি বেছে নিন।", "error");
+        return;
+      }
 
       if (!res.ok || !data.order) {
-        notify(data.error || "Could not place order.", "error");
+        notify(data.error || "অর্ডার সম্পন্ন করা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।", "error");
         return;
       }
 

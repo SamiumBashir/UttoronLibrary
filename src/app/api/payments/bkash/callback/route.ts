@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { updateStore } from "@/lib/db";
 import { updateOrderPaymentInDb } from "@/lib/db-postgres";
 import { executeBkashPayment, getSiteBaseUrl } from "@/lib/payments";
@@ -79,13 +79,17 @@ export async function GET(request: Request) {
   ).catch(() => {});
 
   if (confirmedOrder) {
+    const orderToSend = confirmedOrder;
     try {
-      await Promise.race([
-        sendOrderConfirmationEmail({ order: confirmedOrder, siteUrl: baseUrl }),
-        new Promise((resolve) => setTimeout(resolve, 5000)),
-      ]);
-    } catch (err) {
-      console.warn("[Email] bKash confirmation email error:", err);
+      after(async () => {
+        try {
+          await sendOrderConfirmationEmail({ order: orderToSend, siteUrl: baseUrl });
+        } catch (err) {
+          console.warn("[Email] bKash confirmation email error:", err);
+        }
+      });
+    } catch {
+      void sendOrderConfirmationEmail({ order: orderToSend, siteUrl: baseUrl }).catch(() => {});
     }
   }
 

@@ -23,11 +23,13 @@ export interface EmailResult {
  * and uses optimized Gmail preset when host is smtp.gmail.com.
  */
 function getSmtpTransporter() {
-  const host = process.env.SMTP_HOST?.trim();
   const user = process.env.SMTP_USER?.trim();
   const rawPass = process.env.SMTP_PASS?.trim();
   // Strip spaces from App Passwords (e.g. Gmail 16-char format "xxxx xxxx xxxx xxxx" -> "xxxxxxxxxxxxxxxx")
   const pass = rawPass?.replace(/\s+/g, "");
+  const host =
+    process.env.SMTP_HOST?.trim() ||
+    (user?.endsWith("@gmail.com") ? "smtp.gmail.com" : undefined);
   const port = Number(process.env.SMTP_PORT) || 465;
   const secure = process.env.SMTP_SECURE === "true" || port === 465;
 
@@ -44,9 +46,9 @@ function getSmtpTransporter() {
         user,
         pass,
       },
-      connectionTimeout: 10000,
-      greetingTimeout: 10000,
-      socketTimeout: 15000,
+      connectionTimeout: 4000,
+      greetingTimeout: 4000,
+      socketTimeout: 5000,
     });
   }
 
@@ -65,9 +67,9 @@ function getSmtpTransporter() {
     tls: {
       rejectUnauthorized: process.env.NODE_ENV === "production",
     },
-    connectionTimeout: 10000,
-    greetingTimeout: 10000,
-    socketTimeout: 15000,
+    connectionTimeout: 4000,
+    greetingTimeout: 4000,
+    socketTimeout: 5000,
   });
 }
 

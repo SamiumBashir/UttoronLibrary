@@ -3,6 +3,7 @@ import { runCalculationTests } from "./calculations.test";
 import { runSecurityTests } from "./security.test";
 import { runEmailTests } from "./email.test";
 import { runWishlistTests } from "./wishlist.test";
+import { runOrdersTests } from "./orders.test";
 
 async function main() {
   console.log("==================================================");
@@ -49,6 +50,14 @@ async function main() {
     passed++;
   } catch (err) {
     console.error(" FAIL: Wishlist test suite failed", err);
+    failed++;
+  }
+
+  try {
+    await runOrdersTests();
+    passed++;
+  } catch (err) {
+    console.error(" FAIL: Orders test suite failed", err);
     failed++;
   }
 

@@ -2,17 +2,19 @@
 
 import React, { useRef, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import type { Book } from "@/lib/types";
 import { formatPrice, getDiscountPercent, getStockBadge } from "@/lib/format";
 import { useStore } from "@/components/providers/StoreProvider";
 import BookCoverArt from "@/components/books/BookCoverArt";
-import { Eye, Heart, ShoppingBag } from "lucide-react";
+import { Heart, ShoppingBag, Zap } from "lucide-react";
 
 interface BookCard3DProps {
   book: Book;
 }
 
 export default function BookCard3D({ book }: BookCard3DProps) {
+  const router = useRouter();
   const { addToCart, toggleWishlist, isInWishlist } = useStore();
   const cardRef = useRef<HTMLDivElement | null>(null);
   const [tilt, setTilt] = useState({ rx: 0, ry: -10 });
@@ -21,6 +23,14 @@ export default function BookCard3D({ book }: BookCard3DProps) {
   const wishlisted = isInWishlist(book.id, book.slug);
   const discount = getDiscountPercent(book.originalPrice, book.price);
   const stockBadge = getStockBadge(book.stock);
+
+  const handleBuyNow = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (book.stock <= 0) return;
+    addToCart(book, 1, false);
+    router.push("/checkout");
+  };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const el = cardRef.current;
@@ -215,20 +225,26 @@ export default function BookCard3D({ book }: BookCard3DProps) {
             <button
               type="button"
               disabled={book.stock <= 0}
-              onClick={() => addToCart(book, 1)}
-              className="inline-flex flex-1 items-center justify-center gap-1 sm:gap-1.5 rounded-full bg-[#141413] px-2 sm:px-3 py-2 sm:py-2.5 text-[10px] xs:text-xs font-semibold text-white transition hover:bg-[#d93829] disabled:cursor-not-allowed disabled:opacity-45"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                addToCart(book, 1);
+              }}
+              className="inline-flex flex-1 items-center justify-center gap-1 sm:gap-1.5 rounded-full bg-[#141413] px-2 sm:px-3 py-2 sm:py-2.5 text-[10px] xs:text-xs font-semibold text-white transition hover:bg-[#2e2d2a] disabled:cursor-not-allowed disabled:opacity-45"
             >
               <ShoppingBag className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
               <span className="truncate">{book.stock > 0 ? "Add to Bag" : "Sold Out"}</span>
             </button>
-            <Link
-              href={`/books/${book.slug}`}
-              aria-label={`View details for ${book.title}`}
-              className="inline-flex items-center justify-center gap-1 rounded-full border border-[#dedbd2] bg-[#f6f5f0] px-2 sm:px-3.5 py-2 sm:py-2.5 text-[10px] xs:text-xs font-semibold text-[#141413] transition hover:border-[#141413] hover:bg-white"
+            <button
+              type="button"
+              disabled={book.stock <= 0}
+              onClick={handleBuyNow}
+              aria-label={`Buy ${book.title} now`}
+              className="inline-flex items-center justify-center gap-1 sm:gap-1.5 rounded-full border border-[#d93829] bg-[#d93829] px-2.5 sm:px-3.5 py-2 sm:py-2.5 text-[10px] xs:text-xs font-semibold text-white transition hover:bg-[#b82d20] hover:border-[#b82d20] disabled:cursor-not-allowed disabled:opacity-45"
             >
-              <Eye className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
-              <span>3D</span>
-            </Link>
+              <Zap className="h-3 w-3 sm:h-3.5 sm:w-3.5 fill-current" />
+              <span>Buy</span>
+            </button>
           </div>
         </div>
       </div>

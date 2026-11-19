@@ -118,7 +118,7 @@ export default function ContactPage() {
               </p>
               <p className="flex items-center gap-3">
                 <Mail className="h-4 w-4 shrink-0 text-[#d93829]" />
-                <span>editorial@uttoronprokasoni.com</span>
+                <span>uttoronprokasoni@gmail.com</span>
               </p>
             </div>
           </div>
@@ -140,16 +140,14 @@ export default function ContactPage() {
                       key={topic}
                       type="button"
                       onClick={() => toggleTopic(topic)}
-                      className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold transition ${
-                        checked
-                          ? "border-[#141413] bg-[#141413] text-white"
-                          : "border-[#dedbd2] bg-[#f6f5f0] text-[#141413] hover:border-[#141413]"
-                      }`}
+                      className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold transition ${checked
+                        ? "border-[#141413] bg-[#141413] text-white"
+                        : "border-[#dedbd2] bg-[#f6f5f0] text-[#141413] hover:border-[#141413]"
+                        }`}
                     >
                       <span
-                        className={`flex h-4 w-4 items-center justify-center rounded-full ${
-                          checked ? "bg-[#d93829] text-white" : "border border-[#b5b2a8]"
-                        }`}
+                        className={`flex h-4 w-4 items-center justify-center rounded-full ${checked ? "bg-[#d93829] text-white" : "border border-[#b5b2a8]"
+                          }`}
                       >
                         {checked && <Check className="h-2.5 w-2.5" />}
                       </span>

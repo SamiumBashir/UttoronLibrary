@@ -173,19 +173,51 @@ export default function HomeExperience({
     }
   };
 
+  // Stepping inside publishing house transition progress
+  const exitProgress = Math.max(0, Math.min(1, (walkProgress - 0.78) / 0.22));
+
   return (
     <div className="bg-[#f6f5f0] text-[#141413] overflow-x-clip">
       {/* 1. MINIMAZE-LIGHT 3D VIRTUAL GALLERY CORRIDOR WALKTHROUGH */}
       <section ref={galleryTrackRef} className="relative h-[180vh] md:h-[320vh] w-full">
         <div className="sticky top-0 h-[100dvh] w-full overflow-hidden bg-[#f5f4ef]">
-          {/* Full-screen 3D Light Gallery Canvas */}
-          <div className="absolute inset-0 z-0">
+          {/* Full-screen 3D Light Gallery Canvas with smooth forward zoom upon entering */}
+          <div
+            className="absolute inset-0 z-0 origin-center transition-transform duration-150 ease-out"
+            style={{
+              transform: `scale(${1 + exitProgress * 0.08})`,
+            }}
+          >
             <MinimazeGalleryCanvas
               books={books}
               progress={walkProgress}
               onInspectBook={(b) => setZoomedBook(b)}
             />
           </div>
+
+          {/* Architectural doorway passage framing effect */}
+          {walkProgress >= 0.74 && (
+            <div
+              className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center transition-all duration-200"
+              style={{
+                opacity: Math.sin(exitProgress * Math.PI) * 0.75,
+                transform: `scale(${1 + exitProgress * 0.35})`,
+              }}
+              aria-hidden="true"
+            >
+              <div className="h-[92%] w-[88%] rounded-t-[140px] border-[14px] sm:border-[26px] border-[#eceae3]/65 shadow-[inset_0_0_80px_rgba(20,20,19,0.06)]" />
+            </div>
+          )}
+
+          {/* Warm sunlit interior portal bloom as user passes through the archway */}
+          <div
+            className="pointer-events-none absolute inset-0 z-10 transition-opacity duration-200"
+            style={{
+              opacity: walkProgress >= 0.82 ? Math.min(1, (walkProgress - 0.82) / 0.17) : 0,
+              background: `radial-gradient(circle at 50% 50%, rgba(255, 248, 235, 0.45) 0%, rgba(246, 245, 240, 0.88) 65%, rgba(246, 245, 240, 1) 100%)`,
+            }}
+            aria-hidden="true"
+          />
 
           {/* Minimal Scroll Instruction Badge (smoothly fades on scroll) */}
           <div
@@ -198,6 +230,25 @@ export default function HomeExperience({
             <div className="inline-flex items-center gap-2 rounded-full border border-[#dedbd2] bg-white/90 px-4 py-2 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-[#141413] shadow-lg backdrop-blur-md">
               <span className="h-2 w-2 animate-ping rounded-full bg-[#d93829]" />
               Scroll to explore gallery ↓
+            </div>
+          </div>
+
+          {/* "Stepping Inside The Publishing House" Transition HUD Badge */}
+          <div
+            className="pointer-events-none absolute bottom-5 inset-x-0 z-20 flex justify-center px-4 transition-all duration-300"
+            style={{
+              opacity: walkProgress >= 0.76 ? Math.min(1, (walkProgress - 0.76) * 5) : 0,
+              transform: `translateY(${Math.max(0, (1 - walkProgress) * 20)}px)`,
+            }}
+          >
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-[#dedbd2] bg-white/95 px-4 sm:px-5 py-2 sm:py-2.5 font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.2em] text-[#141413] shadow-2xl backdrop-blur-md">
+              <span className="h-2 w-2 animate-ping rounded-full bg-[#d93829]" />
+              <span>
+                {walkProgress >= 0.90
+                  ? "Stepping Inside • The Publishing House"
+                  : "Approaching Archway • Editorial Hall"}
+              </span>
+              <ArrowRight className="h-3.5 w-3.5 text-[#d93829]" />
             </div>
           </div>
         </div>

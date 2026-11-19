@@ -136,6 +136,43 @@ function createWallPlaqueTexture(book: Book, index: number): THREE.CanvasTexture
   return tex;
 }
 
+function createDoorArchSignTexture(): THREE.CanvasTexture {
+  const canvas = document.createElement("canvas");
+  canvas.width = 1024;
+  canvas.height = 256;
+  const ctx = canvas.getContext("2d")!;
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, 1024, 256);
+  ctx.strokeStyle = "#b08b46";
+  ctx.lineWidth = 6;
+  ctx.strokeRect(8, 8, 1008, 240);
+  ctx.strokeStyle = "#141413";
+  ctx.lineWidth = 2;
+  ctx.strokeRect(18, 18, 988, 220);
+
+  // Red seal
+  ctx.fillStyle = "#d93829";
+  ctx.beginPath();
+  ctx.arc(68, 72, 12, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = "#62605a";
+  ctx.font = "600 24px monospace";
+  ctx.fillText("THE PUBLISHING HOUSE • EST. 1998", 98, 80);
+
+  ctx.fillStyle = "#141413";
+  ctx.font = "700 50px Georgia, serif";
+  ctx.fillText("MAIN BINDERY & EDITORIAL HALL", 48, 156);
+
+  ctx.fillStyle = "#b08b46";
+  ctx.font = "600 22px monospace";
+  ctx.fillText("STEPPING INSIDE • UTTORON PROKASONI", 48, 206);
+
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+}
+
 export default function MinimazeGalleryCanvas({
   books,
   progress,
@@ -211,7 +248,7 @@ export default function MinimazeGalleryCanvas({
     sunDir.shadow.mapSize.height = 1024;
     scene.add(sunDir);
 
-    // Architectural Materials (White Plaster, Pale Stone Floor, Recessed Niche Shadow)
+    // Architectural Materials (White Plaster, Pale Stone Floor, Recessed Niche Shadow, Interior Woods & Brass)
     const wallMat = new THREE.MeshStandardMaterial({
       color: 0xf7f6f1,
       roughness: 0.88,
@@ -236,17 +273,35 @@ export default function MinimazeGalleryCanvas({
       roughness: 0.9,
     });
     const wireMat = new THREE.MeshBasicMaterial({ color: 0x9b9890 });
+    const brassMat = new THREE.MeshStandardMaterial({
+      color: 0xc49b45,
+      roughness: 0.28,
+      metalness: 0.82,
+    });
+    const woodFloorMat = new THREE.MeshStandardMaterial({
+      color: 0xd6cbb8,
+      roughness: 0.58,
+      metalness: 0.08,
+    });
+    const darkWoodMat = new THREE.MeshStandardMaterial({
+      color: 0x3d352e,
+      roughness: 0.65,
+    });
+    const paperMat = new THREE.MeshStandardMaterial({
+      color: 0xf5f3eb,
+      roughness: 0.9,
+    });
 
-    // Gallery Architectural Floor & Ceiling
-    const floor = new THREE.Mesh(new THREE.PlaneGeometry(42, 56), floorMat);
+    // Gallery Architectural Floor & Ceiling (extended into inner room)
+    const floor = new THREE.Mesh(new THREE.PlaneGeometry(54, 56), floorMat);
     floor.rotation.x = -Math.PI / 2;
-    floor.position.set(5, -2.2, -14);
+    floor.position.set(11, -2.2, -14);
     floor.receiveShadow = true;
     scene.add(floor);
 
-    const ceiling = new THREE.Mesh(new THREE.PlaneGeometry(42, 56), wallMat);
+    const ceiling = new THREE.Mesh(new THREE.PlaneGeometry(54, 56), wallMat);
     ceiling.rotation.x = Math.PI / 2;
-    ceiling.position.set(5, 3.6, -14);
+    ceiling.position.set(11, 3.6, -14);
     scene.add(ceiling);
 
     // L-Shaped Corridor Architecture (Corridor 1 along -Z, turning 90° Right into Wing 2 along +X!)
@@ -262,26 +317,182 @@ export default function MinimazeGalleryCanvas({
     rightWall1.receiveShadow = true;
     scene.add(rightWall1);
 
-    // Corner Back Wall (closes end of Hall 1 at z = -22.5, guides eye to turn right)
-    const cornerWall = new THREE.Mesh(new THREE.BoxGeometry(24, 5.8, 0.4), wallMat);
-    cornerWall.position.set(7.5, 0.7, -22.5);
+    // Corner Back Wall: extends along -Z = -22.5 from corner past doorway to inner room
+    const cornerWall = new THREE.Mesh(new THREE.BoxGeometry(38, 5.8, 0.4), wallMat);
+    cornerWall.position.set(14.0, 0.7, -22.5);
     cornerWall.receiveShadow = true;
     scene.add(cornerWall);
 
-    // Wing 2 South Wall (runs along +X after corner)
-    const wing2FrontWall = new THREE.Mesh(new THREE.BoxGeometry(18, 5.8, 0.4), wallMat);
-    wing2FrontWall.position.set(13.2, 0.7, -14.5);
+    // Wing 2 South Wall: runs along +X at z = -14.5 after corner into inner room
+    const wing2FrontWall = new THREE.Mesh(new THREE.BoxGeometry(28, 5.8, 0.4), wallMat);
+    wing2FrontWall.position.set(18.0, 0.7, -14.5);
     wing2FrontWall.receiveShadow = true;
     scene.add(wing2FrontWall);
 
-    // Architectural Ceiling Light Coves (glowing minimalist strips)
+    // Far East Wall: closing wall of the inner publishing hall at x = 32.0
+    const eastWall = new THREE.Mesh(new THREE.BoxGeometry(0.4, 5.8, 8.4), wallMat);
+    eastWall.position.set(32.0, 0.7, -18.5);
+    eastWall.receiveShadow = true;
+    scene.add(eastWall);
+
+    // GRAND ARCHITECTURAL DOORWAY / PORTAL AT x = 18.0
+    // North door jamb
+    const doorJambNorth = new THREE.Mesh(new THREE.BoxGeometry(0.5, 5.8, 1.9), wallMat);
+    doorJambNorth.position.set(18.0, 0.7, -21.55);
+    doorJambNorth.receiveShadow = true;
+    scene.add(doorJambNorth);
+
+    // South door jamb
+    const doorJambSouth = new THREE.Mesh(new THREE.BoxGeometry(0.5, 5.8, 1.9), wallMat);
+    doorJambSouth.position.set(18.0, 0.7, -15.45);
+    doorJambSouth.receiveShadow = true;
+    scene.add(doorJambSouth);
+
+    // Doorway Arch Lintel overhead
+    const doorLintel = new THREE.Mesh(new THREE.BoxGeometry(0.5, 1.7, 4.4), wallMat);
+    doorLintel.position.set(18.0, 2.75, -18.5);
+    doorLintel.receiveShadow = true;
+    scene.add(doorLintel);
+
+    // Door Pillars & Architectural Trim
+    const pillarNorth = new THREE.Mesh(new THREE.BoxGeometry(0.58, 5.8, 0.22), trimMat);
+    pillarNorth.position.set(17.9, 0.7, -20.65);
+    scene.add(pillarNorth);
+
+    const pillarSouth = new THREE.Mesh(new THREE.BoxGeometry(0.58, 5.8, 0.22), trimMat);
+    pillarSouth.position.set(17.9, 0.7, -16.35);
+    scene.add(pillarSouth);
+
+    const archTrim = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.16, 4.5), trimMat);
+    archTrim.position.set(17.9, 1.9, -18.5);
+    scene.add(archTrim);
+
+    // Brass Threshold Floor Strip
+    const threshold = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.03, 4.3), brassMat);
+    threshold.position.set(18.0, -2.185, -18.5);
+    scene.add(threshold);
+
+    // Grand Arch Signboard above the doorway
+    const archSignTex = createDoorArchSignTexture();
+    const archSignBoard = new THREE.Mesh(
+      new THREE.BoxGeometry(0.06, 0.85, 3.4),
+      [
+        trimMat,
+        new THREE.MeshStandardMaterial({ map: archSignTex, roughness: 0.35 }),
+        trimMat,
+        trimMat,
+        trimMat,
+        trimMat,
+      ]
+    );
+    archSignBoard.position.set(17.72, 2.5, -18.5);
+    scene.add(archSignBoard);
+
+    // INNER PUBLISHING HOUSE ROOM (x = 18.5 to 31.0)
+    // Warm parquet / wood floor rug inlay
+    const innerRug = new THREE.Mesh(new THREE.PlaneGeometry(12.5, 7.6), woodFloorMat);
+    innerRug.rotation.x = -Math.PI / 2;
+    innerRug.position.set(24.5, -2.19, -18.5);
+    innerRug.receiveShadow = true;
+    scene.add(innerRug);
+
+    // Warm golden interior illumination casting through the doorway
+    const interiorWarmLight = new THREE.PointLight(0xffdfa8, 3.8, 20);
+    interiorWarmLight.position.set(23.0, 1.8, -18.5);
+    scene.add(interiorWarmLight);
+
+    const interiorFillLight = new THREE.PointLight(0xffeed6, 2.0, 14);
+    interiorFillLight.position.set(28.0, 1.0, -18.5);
+    scene.add(interiorFillLight);
+
+    // Bookshelf on North Wall
+    const shelfFrame = new THREE.Mesh(new THREE.BoxGeometry(9.2, 4.6, 0.6), darkWoodMat);
+    shelfFrame.position.set(24.5, 0.1, -22.1);
+    shelfFrame.receiveShadow = true;
+    scene.add(shelfFrame);
+
+    const shelfBookColors = [0x8b261e, 0x1d3557, 0x2d4a3e, 0x593d2b, 0xc49b45, 0x222222];
+    for (let shelfIdx = 0; shelfIdx < 3; shelfIdx++) {
+      const shelfY = -1.2 + shelfIdx * 1.35;
+      const shelfBoard = new THREE.Mesh(new THREE.BoxGeometry(8.8, 0.08, 0.55), trimMat);
+      shelfBoard.position.set(24.5, shelfY, -22.1);
+      scene.add(shelfBoard);
+
+      let bx = 20.6;
+      let colorIdx = shelfIdx;
+      while (bx < 28.4) {
+        const bW = 0.08 + (Math.sin(bx * 7 + shelfIdx) * 0.5 + 0.5) * 0.07;
+        const bH = 0.85 + (Math.cos(bx * 5 + shelfIdx) * 0.5 + 0.5) * 0.28;
+        const bMat = new THREE.MeshStandardMaterial({
+          color: shelfBookColors[colorIdx % shelfBookColors.length],
+          roughness: 0.6,
+        });
+        const bookMesh = new THREE.Mesh(new THREE.BoxGeometry(bW, bH, 0.42), bMat);
+        bookMesh.position.set(bx + bW / 2, shelfY + bH / 2, -22.05);
+        scene.add(bookMesh);
+        bx += bW + 0.02;
+        colorIdx++;
+      }
+    }
+
+    // Manuscript drafting table on South Wall
+    const tableTop = new THREE.Mesh(new THREE.BoxGeometry(5.8, 0.12, 1.8), darkWoodMat);
+    tableTop.position.set(24.5, -1.1, -15.5);
+    scene.add(tableTop);
+
+    [
+      [21.8, -15.8],
+      [21.8, -15.2],
+      [27.2, -15.8],
+      [27.2, -15.2],
+    ].forEach(([tx, tz]) => {
+      const leg = new THREE.Mesh(new THREE.BoxGeometry(0.12, 1.1, 0.12), darkWoodMat);
+      leg.position.set(tx, -1.65, tz);
+      scene.add(leg);
+    });
+
+    const paperStack = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.15, 0.9), paperMat);
+    paperStack.position.set(23.6, -0.98, -15.5);
+    scene.add(paperStack);
+
+    const deskLamp = new THREE.PointLight(0xffdd99, 1.8, 4.5);
+    deskLamp.position.set(26.2, -0.4, -15.4);
+    scene.add(deskLamp);
+
+    const deskLampMesh = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.08, 0.18, 0.25),
+      brassMat
+    );
+    deskLampMesh.position.set(26.2, -0.7, -15.4);
+    scene.add(deskLampMesh);
+
+    // East Wall Clerestory Sunlit Window
+    const windowFrame = new THREE.Mesh(new THREE.BoxGeometry(0.12, 3.8, 4.6), trimMat);
+    windowFrame.position.set(31.8, 0.8, -18.5);
+    scene.add(windowFrame);
+
+    const windowGlass = new THREE.Mesh(
+      new THREE.PlaneGeometry(4.2, 3.4),
+      new THREE.MeshBasicMaterial({ color: 0xfffaea })
+    );
+    windowGlass.rotation.y = -Math.PI / 2;
+    windowGlass.position.set(31.72, 0.8, -18.5);
+    scene.add(windowGlass);
+
+    const windowLight = new THREE.DirectionalLight(0xfff3d6, 1.2);
+    windowLight.position.set(33.0, 3.0, -18.5);
+    windowLight.target.position.set(18.0, 0.0, -18.5);
+    scene.add(windowLight);
+    scene.add(windowLight.target);
+
+    // Architectural Ceiling Light Coves (glowing minimalist strips continuing into inner room)
     const coveMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
     for (let z = 1; z >= -19; z -= 4) {
       const strip = new THREE.Mesh(new THREE.BoxGeometry(3.4, 0.05, 0.18), coveMat);
       strip.position.set(0, 3.55, z);
       scene.add(strip);
     }
-    for (let x = 4; x <= 18; x += 4) {
+    for (let x = 4; x <= 28; x += 4) {
       const strip = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.05, 3.4), coveMat);
       strip.position.set(x, 3.55, -18.5);
       scene.add(strip);
@@ -430,7 +641,7 @@ export default function MinimazeGalleryCanvas({
       });
     });
 
-    // Camera Smooth Architectural Spline through Corridor 1 -> 90° Corner -> Wing 2
+    // Camera Smooth Architectural Spline through Corridor 1 -> 90° Corner -> Wing 2 -> Grand Archway -> Interior Hall!
     const cameraPath = new THREE.CatmullRomCurve3([
       new THREE.Vector3(0, 0.45, 3.2),
       new THREE.Vector3(0, 0.35, -3.5),
@@ -438,7 +649,9 @@ export default function MinimazeGalleryCanvas({
       new THREE.Vector3(0.4, 0.35, -17.2),
       new THREE.Vector3(4.5, 0.35, -18.5),
       new THREE.Vector3(11.5, 0.35, -18.4),
-      new THREE.Vector3(15.5, 0.35, -18.2),
+      new THREE.Vector3(15.5, 0.35, -18.5),
+      new THREE.Vector3(18.2, 0.35, -18.5),
+      new THREE.Vector3(22.0, 0.35, -18.5),
     ]);
 
     const lookAtPath = new THREE.CatmullRomCurve3([
@@ -447,8 +660,10 @@ export default function MinimazeGalleryCanvas({
       new THREE.Vector3(0.4, 0.25, -15.5),
       new THREE.Vector3(2.8, 0.25, -21.2),
       new THREE.Vector3(9.5, 0.25, -20.5),
-      new THREE.Vector3(14.5, 0.25, -15.5),
-      new THREE.Vector3(18.0, 0.25, -18.0),
+      new THREE.Vector3(15.0, 0.30, -18.5),
+      new THREE.Vector3(19.0, 0.35, -18.5),
+      new THREE.Vector3(25.0, 0.40, -18.5),
+      new THREE.Vector3(30.0, 0.45, -18.5),
     ]);
 
     const pointer = new THREE.Vector2(0, 0);
@@ -523,7 +738,7 @@ export default function MinimazeGalleryCanvas({
       if (!isVisible) return;
 
       const elapsed = clock.getElapsedTime();
-      const targetT = Math.min(0.98, Math.max(0, progressRef.current));
+      const targetT = Math.min(1.0, Math.max(0, progressRef.current));
       smoothT += (targetT - smoothT) * (caps.reducedMotion ? 0.3 : 0.085);
 
       pointer.lerp(targetPointer, 0.06);
@@ -570,6 +785,8 @@ export default function MinimazeGalleryCanvas({
       dom.removeEventListener("pointermove", handlePointerMove);
       dom.removeEventListener("click", handleClick);
       window.removeEventListener("resize", handleResize);
+      archSignTex.dispose();
+      signTex.dispose();
       renderer.dispose();
     };
   }, [books, caps.ready, caps.webglSupported, caps.reducedMotion, caps.isMobile]);

@@ -48,6 +48,26 @@ h4,
   font-family: var(--font-serif);
 }
 
+/* Universal cursor pointer for all buttons & interactive controls */
+button,
+[role="button"],
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+select,
+summary {
+  cursor: pointer;
+}
+
+button:disabled,
+[role="button"][aria-disabled="true"],
+input[type="button"]:disabled,
+input[type="submit"]:disabled,
+input[type="reset"]:disabled,
+select:disabled {
+  cursor: not-allowed;
+}
+
 /* Subtle architectural plaster micro-texture */
 .paper-grain {
   background-image: radial-gradient(rgba(20, 20, 19, 0.03) 1px, transparent 0);

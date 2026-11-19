@@ -425,7 +425,7 @@ function AccountContent() {
                 <h2 className="font-serif text-2xl font-semibold text-[#141413]">
                   Your Saved Wishlist ({wishlistedBooks.length})
                 </h2>
-                <div className="mt-4 grid grid-cols-2 gap-3 sm:gap-6 sm:grid-cols-2">
+                <div className="mt-4 grid grid-cols-2 gap-3 sm:gap-6 sm:grid-cols-2 items-stretch">
                   {wishlistedBooks.map((b) => (
                     <BookCard3D key={b.id} book={b} />
                   ))}
@@ -690,7 +690,7 @@ function AccountContent() {
                       </Link>
                     </div>
                   ) : (
-                    <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+                    <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 items-stretch">
                       {wishlistedBooks.map((book) => (
                         <BookCard3D key={book.id} book={book} />
                       ))}

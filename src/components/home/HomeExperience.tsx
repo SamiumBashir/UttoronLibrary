@@ -416,12 +416,12 @@ export default function HomeExperience({
 
           <div
             ref={arrivalsTrackRef}
-            className="mt-6 sm:mt-8 flex snap-x snap-mandatory gap-3 sm:gap-6 overflow-x-auto pb-4 scrollbar-none"
+            className="mt-6 sm:mt-8 flex items-stretch snap-x snap-mandatory gap-3 sm:gap-6 overflow-x-auto pb-4 scrollbar-none"
           >
             {newArrivals.map((book) => (
               <div
                 key={book.id}
-                className="w-[230px] xs:w-[260px] sm:w-[290px] md:w-[305px] shrink-0 snap-start"
+                className="w-[230px] sm:w-[270px] md:w-[285px] shrink-0 snap-start flex flex-col"
               >
                 <BookCard3D book={book} />
               </div>

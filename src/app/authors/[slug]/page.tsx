@@ -91,7 +91,7 @@ export default async function AuthorDetailPage({
           <h2 className="font-serif text-3xl font-semibold text-[#141413]">
             Published Editions by {author.name}
           </h2>
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 items-stretch">
             {works.map((book) => (
               <BookCard3D key={book.id} book={book} />
             ))}

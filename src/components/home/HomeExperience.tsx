@@ -50,34 +50,34 @@ interface HomeExperienceProps {
 
 const JOURNEY_STEPS = [
   {
-    step: "০১",
-    title: "পাণ্ডুলিপি নির্বাচন ও মূল্যায়ন",
-    desc: "প্রতি মৌসুমে সাহিত্য, বিজ্ঞান, ইতিহাস ও দর্শনের শত শত পাণ্ডুলিপি থেকে আমরা মৌলিক ও কালজয়ী রচনাগুলো যত্নসহকারে নির্বাচন করি।",
+    step: "01",
+    title: "Manuscript Acquisition & Curatorial Reading",
+    desc: "Every season, our editors read hundreds of submissions across fiction, science, and regional archives to discover singular, enduring voices.",
     icon: Feather,
   },
   {
-    step: "০২",
-    title: "নিবিড় সম্পাদনা ও প্রুফরিডিং",
-    desc: "লেখক ও অভিজ্ঞ সম্পাদকমণ্ডলীর যৌথ নিবিড় প্রচেষ্টায় প্রতিটি বাক্য, বানান ও তথ্যের নিখুঁত মান নিশ্চিত করা হয়।",
+    step: "02",
+    title: "Structural & Line Craft",
+    desc: "Authors collaborate closely with senior editors across three meticulous revision cycles, honoring rhythm, factual rigor, and voice.",
     icon: BookOpen,
   },
   {
-    step: "০৩",
-    title: "নান্দনিক প্রচ্ছদ ও মুদ্রণ পরিকল্পনা",
-    desc: "বইয়ের ভেতরের ভাবনার সাথে সঙ্গতি রেখে তৈরি হয় বিশিষ্ট শিল্পীদের আঁকা প্রচ্ছদ ও বাংলা হরফের সুবিন্যস্ত সজ্জা।",
+    step: "03",
+    title: "Typographic & Cover Architecture",
+    desc: "Each edition receives custom page proportions, legible serif typesetting, and tactile geometric motifs stamped onto cloth boards.",
     icon: Compass,
   },
   {
-    step: "০৪",
-    title: "উন্নত কাগজ ও টেকসই বাঁধাই",
-    desc: "দীর্ঘকাল পাঠ ও স্থায়ী সংরক্ষণের জন্য উচ্চমানের অ্যাসিড-মুক্ত কাগজ এবং মজবুত সুতা বাঁধাই ব্যবহার করা হয়।",
+    step: "04",
+    title: "Archival Paper & Smyth-Sewn Binding",
+    desc: "Printed on warm, acid-free 90gsm ivory stock with stitched signatures that open flat and endure for decades on your shelves.",
     icon: Layers,
   },
   {
-    step: "০৫",
-    title: "দেশব্যাপী সুরক্ষিত ও দ্রুত ডেলিভারি",
-    desc: "প্যাকেজিংয়ের সর্বোচ্চ নিরাপত্তা বজায় রেখে ঢাকা ও সারা বাংলাদেশের যেকোনো প্রান্তে পৌঁছে দেওয়া হয় কাঙ্ক্ষিত বই।",
-    icon: ShoppingBag,
+    step: "05",
+    title: "From Our Bindery to Your Library",
+    desc: "Hand-wrapped in protective kraft sleeves and dispatched across Dhaka and nationwide with live parcel tracking.",
+    icon: Sparkles,
   },
 ];
 
@@ -178,8 +178,8 @@ export default function HomeExperience({
 
   return (
     <div className="bg-[#f6f5f0] text-[#141413] overflow-x-clip">
-      {/* 1. 3D VIRTUAL GALLERY CORRIDOR WALKTHROUGH */}
-      <section ref={galleryTrackRef} className="relative h-[135vh] md:h-[160vh] w-full">
+      {/* 1. MINIMAZE-LIGHT 3D VIRTUAL GALLERY CORRIDOR WALKTHROUGH */}
+      <section ref={galleryTrackRef} className="relative h-[180vh] md:h-[320vh] w-full">
         <div className="sticky top-0 h-[100dvh] w-full overflow-hidden bg-[#f5f4ef]">
           {/* Full-screen 3D Light Gallery Canvas with smooth forward zoom upon entering */}
           <div
@@ -193,41 +193,6 @@ export default function HomeExperience({
               progress={walkProgress}
               onInspectBook={(b) => setZoomedBook(b)}
             />
-          </div>
-
-          {/* Welcoming Literary Hero Overlay */}
-          <div
-            className="pointer-events-none absolute inset-x-0 top-20 sm:top-24 z-20 flex flex-col items-center px-4 text-center transition-all duration-300"
-            style={{
-              opacity: Math.max(0, 1 - walkProgress * 3.2),
-              transform: `translateY(-${walkProgress * 30}px)`,
-            }}
-          >
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#dedbd2] bg-white/95 px-3.5 py-1 text-xs font-semibold text-[#62605a] shadow-xs backdrop-blur-md">
-              <span className="h-2 w-2 rounded-full bg-[#d93829]" />
-              <span>উত্তরণ প্রকাশনী • প্রতিষ্ঠিত ১৯৯৮ • ঢাকা</span>
-            </div>
-            <h1 className="mt-3 font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#141413]">
-              মননশীল সাহিত্যের চিরন্তন প্রকাশনা
-            </h1>
-            <p className="mt-2 max-w-xl text-xs sm:text-sm text-[#62605a]">
-              ধ্রুপদী সাহিত্য, চিন্তাশীল প্রবন্ধ, ইতিহাস ও সমকালীন সৃষ্টির ভার্চুয়াল প্রদর্শনী ও বইসমগ্র
-            </p>
-            <div className="pointer-events-auto mt-4 sm:mt-5 flex flex-wrap items-center justify-center gap-3">
-              <a
-                href="#publications-archive"
-                className="inline-flex items-center gap-2 rounded-full bg-[#141413] px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-white shadow-lg transition hover:bg-[#d93829]"
-              >
-                <BookOpen className="h-4 w-4" />
-                সরাসরি বই দেখুন ↓
-              </a>
-              <Link
-                href="/books"
-                className="inline-flex items-center gap-1.5 rounded-full border border-[#dedbd2] bg-white/90 px-4 sm:px-5 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-[#141413] shadow-xs transition hover:border-[#141413]"
-              >
-                বই ক্যাটালগ <ArrowRight className="h-3.5 w-3.5" />
-              </Link>
-            </div>
           </div>
 
           {/* Architectural doorway passage framing effect */}
@@ -262,9 +227,9 @@ export default function HomeExperience({
               transform: `translateY(${walkProgress * 20}px)`,
             }}
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-[#dedbd2] bg-white/95 px-4 py-2 text-xs font-semibold text-[#141413] shadow-lg backdrop-blur-md">
-              <span className="h-2 w-2 rounded-full bg-[#d93829]" />
-              স্ক্রোল করে গ্যালারি ঘুরে দেখুন ↓
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#dedbd2] bg-white/90 px-4 py-2 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-[#141413] shadow-lg backdrop-blur-md">
+              <span className="h-2 w-2 animate-ping rounded-full bg-[#d93829]" />
+              Scroll to explore gallery ↓
             </div>
           </div>
 
@@ -276,12 +241,12 @@ export default function HomeExperience({
               transform: `translateY(${Math.max(0, (1 - walkProgress) * 20)}px)`,
             }}
           >
-            <div className="inline-flex items-center gap-2.5 rounded-full border border-[#dedbd2] bg-white/95 px-4 sm:px-5 py-2 sm:py-2.5 text-xs font-semibold text-[#141413] shadow-2xl backdrop-blur-md">
-              <span className="h-2 w-2 rounded-full bg-[#d93829]" />
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-[#dedbd2] bg-white/95 px-4 sm:px-5 py-2 sm:py-2.5 font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.2em] text-[#141413] shadow-2xl backdrop-blur-md">
+              <span className="h-2 w-2 animate-ping rounded-full bg-[#d93829]" />
               <span>
                 {walkProgress >= 0.90
-                  ? "উত্তরণ প্রকাশালয়ে আপনাকে স্বাগতম"
-                  : "প্রকাশনা হলের দিকে অগ্রসর..."}
+                  ? "Stepping Inside • The Publishing House"
+                  : "Approaching Archway • Editorial Hall"}
               </span>
               <ArrowRight className="h-3.5 w-3.5 text-[#d93829]" />
             </div>
@@ -352,13 +317,13 @@ export default function HomeExperience({
 
                 <div className="mt-6 border-t border-[#dedbd2] pt-5">
                   <div className="mb-4 flex items-baseline justify-between">
-                    <span className="text-2xl font-bold text-[#141413]">
+                    <span className="font-mono text-2xl font-bold text-[#141413]">
                       {formatPrice(zoomedBook.price)}
                     </span>
-                    <span className="text-xs font-medium text-[#62605a]">
+                    <span className="font-mono text-xs text-[#62605a]">
                       {zoomedBook.stock > 0
-                        ? `${zoomedBook.stock} কপি স্টকে আছে`
-                        : "স্টক শেষ"}
+                        ? `${zoomedBook.stock} copies in bindery`
+                        : "Out of stock"}
                     </span>
                   </div>
                   <div className="flex flex-wrap gap-2.5">
@@ -371,14 +336,14 @@ export default function HomeExperience({
                       }}
                       className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-[#141413] px-5 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#d93829] disabled:opacity-40"
                     >
-                      <ShoppingBag className="h-3.5 w-3.5" /> ব্যাগে যোগ করুন
+                      <ShoppingBag className="h-3.5 w-3.5" /> Add to Bag
                     </button>
                     <Link
                       href={`/books/${zoomedBook.slug}`}
                       onClick={rememberSpotAndNavigate}
-                      className="inline-flex items-center justify-center gap-1.5 rounded-full border border-[#dedbd2] bg-white px-5 py-3 text-xs font-semibold text-[#141413] hover:border-[#141413]"
+                      className="inline-flex items-center justify-center gap-1.5 rounded-full border border-[#dedbd2] bg-white px-5 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-[#141413] hover:border-[#141413]"
                     >
-                      বইটির বিস্তারিত <ArrowRight className="h-3.5 w-3.5" />
+                      Full 3D View <ArrowRight className="h-3.5 w-3.5" />
                     </Link>
                   </div>
                 </div>
@@ -388,7 +353,7 @@ export default function HomeExperience({
         )}
       </AnimatePresence>
 
-      {/* 2. ABOUT THE PUBLISHING HOUSE (HERITAGE & MANIFESTO) */}
+      {/* 2. ABOUT THE PUBLISHING HOUSE (SUNLIT ARCHITECTURAL MANIFESTO) */}
       <section className="paper-grain border-y border-[#dedbd2] bg-white py-14 sm:py-20 lg:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid items-center gap-8 sm:gap-12 lg:grid-cols-12">
@@ -399,24 +364,28 @@ export default function HomeExperience({
               transition={{ duration: 0.6 }}
               className="lg:col-span-6"
             >
-              <p className="inline-flex items-center gap-2 text-xs font-semibold text-[#62605a]">
+              <p className="inline-flex items-center gap-2 font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.24em] text-[#62605a]">
                 <span className="h-2 w-2 rounded-full bg-[#d93829]" />
-                উত্তরণ প্রকাশনী • প্রতিষ্ঠিত ১৯৯৮
+                The Publishing House • Est. 1998
               </p>
               <h2 className="mt-3 font-serif text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-[#141413]">
-                মননশীল চিন্তার বিকাশ ও সমৃদ্ধ সাহিত্যের প্রকাশনা।
+                Where sunlit architecture meets enduring literature.
               </h2>
               <p className="mt-4 sm:mt-6 text-sm sm:text-base leading-relaxed text-[#62605a]">
-                ১৯৯৮ সালে ঢাকার বাংলাবাজারে আমাদের পথচলা শুরু। অমর একুশে বইমেলা ও বাংলাদেশের মননশীল পাঠকদের জন্য আমরা প্রকাশ করে আসছি ধ্রুপদী সাহিত্য, চিন্তাশীল প্রবন্ধ, সমকালীন উপন্যাস, বিজ্ঞান ও দর্শন।
+                Founded in Dhaka in 1998, Uttoron Prokasoni exists on a simple conviction:
+                a book is not disposable content—it is a permanent room built of paper,
+                ink, and memory.
               </p>
               <p className="mt-3 sm:mt-4 text-sm sm:text-base leading-relaxed text-[#62605a]">
-                আমাদের লক্ষ্য কেবল বই ছাপা নয়—প্রতিটি গ্রন্থ যেন পাঠকের বুকশেলফে চিরস্থায়ী এক শিল্পকর্ম হয়ে থাকে। উন্নত কাগজ, সুবিন্যস্ত টাইপোগ্রাফি ও স্থায়ী বাঁধাইয়ের মাধ্যমে আমরা বইয়ের নান্দনিক ঐতিহ্যকে ধরে রাখি।
+                From luminous literary fiction and monsoon poetry to rigorous treatises on
+                delta hydrology and humane computing, every volume is edited with patience
+                and bound for collectors.
               </p>
               <Link
                 href="/about"
-                className="mt-6 sm:mt-8 inline-flex items-center gap-2 border-b border-[#141413] pb-1 text-xs font-bold uppercase tracking-[0.18em] text-[#141413] transition hover:border-[#d93829] hover:text-[#d93829]"
+                className="mt-6 sm:mt-8 inline-flex items-center gap-2 border-b border-[#141413] pb-1 font-mono text-xs font-bold uppercase tracking-[0.18em] text-[#141413] transition hover:border-[#d93829] hover:text-[#d93829]"
               >
-                আমাদের প্রকাশনার ইতিহাস জানুন <ArrowRight className="h-3.5 w-3.5" />
+                Explore Our Interactive Studio <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </motion.div>
 
@@ -429,19 +398,19 @@ export default function HomeExperience({
             >
               {[
                 {
-                  metric: "২৮ বছর",
-                  label: "প্রকাশনা ঐতিহ্য",
-                  note: "স্বাধীন ও মননশীল সাহিত্য প্রকাশনা",
+                  metric: "28 Yrs",
+                  label: "Literary Heritage",
+                  note: "Independent publishing across South Asia",
                 },
                 {
-                  metric: "৪২০+ বই",
-                  label: "প্রকাশিত গ্রন্থমালা",
-                  note: "উপন্যাস, কবিতা, প্রবন্ধ ও গবেষণাধর্মী কাজ",
+                  metric: "420+",
+                  label: "Archival Titles",
+                  note: "Smyth-sewn cloth & acid-free editions",
                 },
                 {
-                  metric: "৯৫+",
-                  label: "লেখক ও গবেষক",
-                  note: "প্রখ্যাত সাহিত্যিক ও চিন্তাশীল গবেষকবৃন্দ",
+                  metric: "94",
+                  label: "Authors & Fellows",
+                  note: "Novelists, scientists, poets & archivists",
                 },
               ].map((stat) => (
                 <div
@@ -451,7 +420,7 @@ export default function HomeExperience({
                   <p className="font-serif text-3xl sm:text-4xl font-bold text-[#141413]">
                     {stat.metric}
                   </p>
-                  <p className="mt-1.5 sm:mt-2 text-xs font-semibold text-[#d93829]">
+                  <p className="mt-1.5 sm:mt-2 font-mono text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.18em] text-[#d93829]">
                     {stat.label}
                   </p>
                   <p className="mt-1.5 sm:mt-2 text-xs leading-relaxed text-[#62605a]">
@@ -464,16 +433,16 @@ export default function HomeExperience({
         </div>
       </section>
 
-      {/* 3. NEW ARRIVALS — HORIZONTAL INTERACTIVE SHOWCASE */}
+      {/* 3. NEW ARRIVALS — HORIZONTAL INTERACTIVE 3D SHOWCASE */}
       <section id="publications-archive" className="border-b border-[#dedbd2] bg-[#eceae3]/55 py-14 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="text-xs font-semibold text-[#62605a]">
-                সদ্য প্রকাশিত বই • New Arrivals
+              <p className="font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.24em] text-[#62605a]">
+                Fresh From the Bindery
               </p>
               <h2 className="mt-1.5 sm:mt-2 font-serif text-2xl sm:text-4xl font-semibold text-[#141413]">
-                নতুন প্রকাশনা
+                New Arrivals
               </h2>
             </div>
             <div className="flex items-center gap-2">
@@ -512,23 +481,23 @@ export default function HomeExperience({
         </div>
       </section>
 
-      {/* 4. INTERACTIVE BOOK COLLECTION */}
+      {/* 4. INTERACTIVE BOOK COLLECTION (3D GRID + MINIMAZE HOVER-COVER INDEX) */}
       <section className="paper-grain bg-[#f6f5f0] py-14 sm:py-20 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-6 sm:mb-10 flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="text-xs font-semibold text-[#62605a]">
-                বইসমগ্র ও সংগ্রহশালা • Explore the Archive
+              <p className="font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.24em] text-[#62605a]">
+                Interactive Collection &amp; Work Index
               </p>
               <h2 className="mt-1.5 sm:mt-2 font-serif text-2xl sm:text-4xl lg:text-5xl font-semibold text-[#141413]">
-                সকল বই খুঁজুন
+                Explore the Archive
               </h2>
             </div>
             <Link
               href="/books"
-              className="inline-flex items-center gap-2 rounded-full border border-[#dedbd2] bg-white px-4 sm:px-5 py-2 sm:py-2.5 text-xs font-semibold text-[#141413] transition hover:border-[#141413]"
+              className="inline-flex items-center gap-2 rounded-full border border-[#dedbd2] bg-white px-4 sm:px-5 py-2 sm:py-2.5 font-mono text-[11px] sm:text-xs font-semibold uppercase tracking-[0.14em] text-[#141413] transition hover:border-[#141413]"
             >
-              সম্পূর্ণ ক্যাটালগ <ArrowRight className="h-3.5 w-3.5" />
+              Full Catalog <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
 
@@ -542,11 +511,11 @@ export default function HomeExperience({
           <div className="grid gap-10 lg:gap-14 lg:grid-cols-2">
             {/* Best Sellers */}
             <div>
-              <p className="text-xs font-semibold text-[#d93829]">
-                পাঠকপ্রিয় বই • Reader Favorites
+              <p className="font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.24em] text-[#d93829]">
+                Reader Favorites
               </p>
               <h2 className="mt-1.5 sm:mt-2 font-serif text-2xl sm:text-4xl font-semibold text-[#141413]">
-                জনপ্রিয় ও সর্বাধিক বিক্রিত
+                Best Sellers
               </h2>
               <div className="mt-6 sm:mt-8 grid gap-3 sm:gap-4 grid-cols-1 xs:grid-cols-2">
                 {bestSellers.map((book) => (
@@ -556,8 +525,8 @@ export default function HomeExperience({
                     className="group flex flex-col justify-between rounded-2xl border border-[#dedbd2] bg-[#f6f5f0] p-4 sm:p-5 transition hover:-translate-y-0.5 hover:border-[#141413] hover:bg-white"
                   >
                     <div>
-                      <span className="text-[11px] font-semibold text-[#62605a]">
-                        {book.category} • {book.soldCount} কপি বিক্রি
+                      <span className="font-mono text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.18em] text-[#62605a]">
+                        {book.category} • {book.soldCount} sold
                       </span>
                       <h3 className="mt-1.5 sm:mt-2 font-serif text-base sm:text-xl font-semibold leading-snug text-[#141413] group-hover:text-[#d93829] line-clamp-2">
                         {book.title}
@@ -565,11 +534,11 @@ export default function HomeExperience({
                       <p className="mt-1 text-xs text-[#62605a] truncate">{book.authorName}</p>
                     </div>
                     <div className="mt-4 sm:mt-5 flex items-center justify-between border-t border-[#dedbd2] pt-2.5 sm:pt-3">
-                      <span className="text-sm sm:text-base font-bold text-[#141413]">
+                      <span className="font-mono text-sm sm:text-base font-bold text-[#141413]">
                         {formatPrice(book.price)}
                       </span>
-                      <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#62605a] group-hover:text-[#141413]">
-                        বিস্তারিত <ArrowRight className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
+                      <span className="inline-flex items-center gap-1 font-mono text-[10px] sm:text-[11px] text-[#62605a] group-hover:text-[#141413]">
+                        Inspect 3D <ArrowRight className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                       </span>
                     </div>
                   </Link>
@@ -579,11 +548,11 @@ export default function HomeExperience({
 
             {/* Editorial Picks */}
             <div>
-              <p className="text-xs font-semibold text-[#62605a]">
-                সম্পাদকের বাছাই • Curated by Our Editors
+              <p className="font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.24em] text-[#62605a]">
+                Curated by Our Editors
               </p>
               <h2 className="mt-1.5 sm:mt-2 font-serif text-2xl sm:text-4xl font-semibold text-[#141413]">
-                নির্বাচিত বই
+                Editorial Picks
               </h2>
               <div className="mt-6 sm:mt-8 space-y-3 sm:space-y-4">
                 {editorialPicks.map((book) => (
@@ -593,7 +562,7 @@ export default function HomeExperience({
                     className="group flex items-center justify-between gap-3 sm:gap-4 rounded-2xl border border-[#dedbd2] bg-[#f6f5f0] p-4 sm:p-5 transition hover:border-[#141413] hover:bg-white"
                   >
                     <div className="min-w-0 flex-1">
-                      <p className="text-[11px] font-medium text-[#62605a]">
+                      <p className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.18em] text-[#62605a]">
                         {book.publisherName} • {book.edition}
                       </p>
                       <h3 className="mt-1 font-serif text-base sm:text-xl font-semibold text-[#141413] group-hover:text-[#d93829] line-clamp-1">
@@ -604,11 +573,11 @@ export default function HomeExperience({
                       </p>
                     </div>
                     <div className="shrink-0 text-right">
-                      <span className="block text-sm sm:text-base font-bold text-[#141413]">
+                      <span className="block font-mono text-sm sm:text-base font-bold text-[#141413]">
                         {formatPrice(book.price)}
                       </span>
-                      <span className="mt-1 inline-flex items-center gap-1 text-[11px] font-semibold text-[#d93829]">
-                        দেখুন <ArrowRight className="h-3 w-3" />
+                      <span className="mt-1 inline-flex items-center gap-1 font-mono text-[10px] text-[#d93829]">
+                        Open <ArrowRight className="h-3 w-3" />
                       </span>
                     </div>
                   </Link>
@@ -624,18 +593,18 @@ export default function HomeExperience({
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="text-xs font-semibold text-[#62605a]">
-                লেখক পরিচিতি • Featured Authors
+              <p className="font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.24em] text-[#62605a]">
+                Hover a Portrait Frame to Illuminate
               </p>
               <h2 className="mt-1.5 sm:mt-2 font-serif text-2xl sm:text-4xl lg:text-5xl font-semibold text-[#141413]">
-                আমাদের বিশিষ্ট লেখকবৃন্দ
+                Featured Authors
               </h2>
             </div>
             <Link
               href="/authors"
-              className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[#141413] hover:text-[#d93829]"
+              className="inline-flex items-center gap-2 font-mono text-[11px] sm:text-xs font-bold uppercase tracking-[0.16em] text-[#141413] hover:text-[#d93829]"
             >
-              সকল লেখক <ArrowRight className="h-3.5 w-3.5" />
+              All Authors <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
 
@@ -682,7 +651,7 @@ export default function HomeExperience({
                         <h3 className="font-serif text-lg sm:text-2xl font-semibold text-[#141413] group-hover:text-[#d93829]">
                           {author.name}
                         </h3>
-                        <p className="text-xs font-medium text-[#62605a]">
+                        <p className="font-mono text-[10px] sm:text-[11px] font-medium text-[#62605a]">
                           {author.roleTitle}
                         </p>
                       </div>
@@ -694,13 +663,13 @@ export default function HomeExperience({
 
                   <div className="relative z-10 mt-4 sm:mt-5 border-t border-[#eceae3] pt-3 sm:pt-4">
                     {author.awards[0] && (
-                      <p className="flex items-center gap-1.5 text-xs text-[#62605a] truncate">
+                      <p className="flex items-center gap-1.5 font-mono text-[10px] sm:text-[11px] text-[#62605a] truncate">
                         <Award className="h-3.5 w-3.5 shrink-0 text-[#d93829]" />
                         <span className="truncate">{author.awards[0]}</span>
                       </p>
                     )}
                     <span className="mt-1.5 sm:mt-2 inline-flex items-center gap-1 text-[11px] sm:text-xs font-semibold text-[#141413] group-hover:text-[#d93829]">
-                      লেখকের পরিচিতি <ArrowRight className="h-3.5 w-3.5" />
+                      Author Biography <ArrowRight className="h-3.5 w-3.5" />
                     </span>
                   </div>
                 </Link>
@@ -714,11 +683,11 @@ export default function HomeExperience({
       <section ref={journeyRef} className="border-t border-[#dedbd2] bg-[#eceae3]/55 py-14 sm:py-20 lg:py-28">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#62605a]">
-              পাণ্ডুলিপি থেকে পাঠকের বুকশেলফ
+            <p className="font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.26em] text-[#62605a]">
+              From Manuscript to Heirloom
             </p>
             <h2 className="mt-1.5 sm:mt-2 font-serif text-2xl sm:text-4xl lg:text-5xl font-semibold text-[#141413]">
-              আমাদের প্রকাশনা প্রক্রিয়া
+              The Publishing Journey
             </h2>
           </div>
 
@@ -741,7 +710,7 @@ export default function HomeExperience({
                     transition={{ duration: 0.5 }}
                     className="relative rounded-2xl sm:rounded-3xl border border-[#dedbd2] bg-white p-4 sm:p-8 shadow-xs"
                   >
-                    <span className="absolute -left-[29px] top-5 sm:top-7 flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center rounded-full border border-[#141413] bg-[#141413] font-serif text-xs font-bold text-white sm:-left-[41px]">
+                    <span className="absolute -left-[29px] top-5 sm:top-7 flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center rounded-full border border-[#141413] bg-[#141413] font-mono text-[9px] sm:text-[10px] font-bold text-white sm:-left-[41px]">
                       {item.step}
                     </span>
                     <div className="flex items-start gap-3 sm:gap-4">
@@ -769,11 +738,11 @@ export default function HomeExperience({
       <section className="bg-white py-14 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#62605a]">
-              পাঠক ও বিদগ্ধ মহলের মূল্যায়ন
+            <p className="font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.24em] text-[#62605a]">
+              Critical &amp; Reader Praise
             </p>
             <h2 className="mt-1.5 sm:mt-2 font-serif text-2xl sm:text-4xl font-semibold text-[#141413]">
-              পাঠকদের ভালোবাসা ও অভিমত
+              Words From Our Readers
             </h2>
           </div>
 
@@ -792,8 +761,8 @@ export default function HomeExperience({
                 <footer className="mt-5 sm:mt-6 border-t border-[#dedbd2] pt-3 sm:pt-4">
                   <p className="text-sm sm:text-base font-semibold text-[#141413]">{t.name}</p>
                   <p className="text-xs text-[#62605a]">{t.role}</p>
-                  <p className="mt-1 text-xs font-semibold text-[#d93829]">
-                    {t.bookTitle} প্রসঙ্গে
+                  <p className="mt-1 font-mono text-[9px] sm:text-[10px] font-medium uppercase text-[#d93829]">
+                    On {t.bookTitle}
                   </p>
                 </footer>
               </blockquote>
@@ -805,34 +774,37 @@ export default function HomeExperience({
       {/* 9. NEWSLETTER INVITATION */}
       <section className="border-t border-[#dedbd2] bg-[#141413] py-14 sm:py-20 text-[#f6f5f0]">
         <div className="mx-auto max-w-4xl px-4 text-center sm:px-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#d93829]">
-            উত্তরণ সাহিত্য বার্তা • Newsletter
+          <p className="font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.28em] text-[#d93829]">
+            Seasonal Literary Letter
           </p>
           <h2 className="mt-2 sm:mt-3 font-serif text-2xl sm:text-4xl lg:text-5xl font-semibold">
-            নতুন বই প্রকাশ ও সাহিত্য সংবাদের সাথে যুক্ত থাকুন
+            Receive First Editions &amp; Gallery Salons.
           </h2>
-          <p className="mx-auto mt-3 sm:mt-4 max-w-2xl text-xs sm:text-base leading-relaxed text-[#dedbd2]">
-            উত্তরণ প্রকাশনীর নতুন বই, বিশেষ ছাড় ও সাহিত্যিক আড্ডার তথ্য নিয়মিত পেতে আমাদের সাহিত্য বার্তায় সাবস্ক্রাইব করুন।
+          <p className="mx-auto mt-3 sm:mt-4 max-w-xl text-xs sm:text-sm leading-relaxed text-[#f6f5f0]/70">
+            Join readers receiving quiet dispatches on forthcoming clothbound editions,
+            signed collector prints, and evening book launches in Dhaka.
           </p>
 
-          <form onSubmit={handleNewsletter} className="mx-auto mt-6 sm:mt-8 max-w-md">
-            <div className="flex flex-col sm:flex-row overflow-hidden rounded-2xl sm:rounded-full border border-[#62605a] bg-white/10 p-1.5 backdrop-blur-md gap-2 sm:gap-0">
-              <input
-                type="email"
-                required
-                value={newsletterEmail}
-                onChange={(e) => setNewsletterEmail(e.target.value)}
-                placeholder="আপনার ইমেইল ঠিকানা লিখুন..."
-                className="flex-1 bg-transparent px-4 sm:px-5 py-2.5 sm:py-3 text-xs sm:text-sm text-white placeholder:text-[#eceae3]/50 focus:outline-none text-center sm:text-left"
-              />
-              <button
-                type="submit"
-                disabled={newsletterLoading}
-                className="inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-xl sm:rounded-full bg-[#d93829] px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#b82d20] disabled:opacity-50"
-              >
-                {newsletterLoading ? "যুক্ত হচ্ছে..." : "সাবস্ক্রাইব করুন"}
-              </button>
-            </div>
+          <form
+            onSubmit={handleNewsletter}
+            className="mx-auto mt-6 sm:mt-8 flex max-w-lg flex-col gap-2.5 sm:gap-3 sm:flex-row"
+          >
+            <input
+              type="email"
+              required
+              value={newsletterEmail}
+              onChange={(e) => setNewsletterEmail(e.target.value)}
+              placeholder="Your email address"
+              aria-label="Email address for newsletter"
+              className="flex-1 rounded-full border border-white/20 bg-white/10 px-5 sm:px-6 py-3 sm:py-3.5 text-xs sm:text-sm text-white placeholder:text-white/50 focus:border-[#d93829] focus:outline-none"
+            />
+            <button
+              type="submit"
+              disabled={newsletterLoading}
+              className="rounded-full bg-[#d93829] px-6 sm:px-8 py-3 sm:py-3.5 text-xs font-bold uppercase tracking-[0.18em] text-white transition hover:bg-[#b72d20] disabled:opacity-60"
+            >
+              {newsletterLoading ? "Joining..." : "Subscribe"}
+            </button>
           </form>
         </div>
       </section>

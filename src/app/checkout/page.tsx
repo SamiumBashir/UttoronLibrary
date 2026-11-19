@@ -278,21 +278,21 @@ function CheckoutContent() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <header className="mb-6 sm:mb-10 flex flex-wrap items-end justify-between gap-3 sm:gap-4">
           <div>
-            <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#62605a]">
+            <p className="inline-flex items-center gap-2 font-mono text-[10px] sm:text-xs font-semibold uppercase tracking-[0.26em] text-[#62605a]">
               <span className="h-1.5 w-1.5 rounded-full bg-[#d93829]" />
-              নিরাপদ অর্ডার প্রক্রিয়া
+              Secure Fulfillment
             </p>
-            <h1 className="mt-1.5 sm:mt-2 font-serif text-2xl xs:text-3xl sm:text-4xl font-bold text-[#141413]">
-              চেকআউট
+            <h1 className="mt-1.5 sm:mt-2 font-serif text-2xl xs:text-3xl sm:text-5xl font-semibold text-[#141413]">
+              Checkout
             </h1>
           </div>
           {!user && (
             <p className="text-xs text-[#62605a]">
-              গেস্ট হিসেবে অর্ডার করছেন •{" "}
-              <Link href="/account" className="cursor-pointer font-bold text-[#141413] underline">
-                লগইন করুন
+              Checking out as Guest •{" "}
+              <Link href="/account" className="font-semibold text-[#141413] underline">
+                Sign in
               </Link>{" "}
-              পূর্ববর্তী তথ্য ব্যবহারের জন্য
+              for saved addresses
             </p>
           )}
         </header>
@@ -300,106 +300,106 @@ function CheckoutContent() {
         <form onSubmit={handlePlaceOrder} className="grid gap-6 sm:gap-10 lg:grid-cols-12">
           {/* LEFT: Delivery & Payment Details */}
           <div className="space-y-6 sm:space-y-8 lg:col-span-7">
-            <section className="rounded-2xl sm:rounded-[2rem] border border-[#dedbd2] bg-white p-5 sm:p-8 shadow-xs">
-              <h2 className="flex items-center gap-2 font-serif text-xl sm:text-2xl font-bold text-[#141413]">
+            <section className="rounded-2xl sm:rounded-[2rem] border border-[#dedbd2] bg-white p-4 sm:p-8">
+              <h2 className="flex items-center gap-2 font-serif text-xl sm:text-2xl font-semibold text-[#141413]">
                 <Truck className="h-5 w-5 text-[#d93829]" />
-                ডেলিভারি ঠিকানা ও প্রাপকের তথ্য
+                Delivery Information
               </h2>
 
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
                 <div className="sm:col-span-2">
                   <label className="block text-xs font-semibold text-[#141413]">
-                    প্রাপকের পূর্ণ নাম *
+                    Customer Full Name *
                   </label>
                   <input
                     type="text"
                     required
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    placeholder="যেমন: আয়েশা রহমান"
+                    placeholder="e.g. Ayesha Rahman"
                     className="mt-1.5 w-full rounded-xl border border-[#dedbd2] bg-[#f6f5f0] px-4 py-3 text-sm text-[#141413] focus:border-[#141413] focus:outline-none"
                   />
                 </div>
 
                 <div>
                   <label className="block text-xs font-semibold text-[#141413]">
-                    মোবাইল নম্বর *
+                    Phone Number *
                   </label>
                   <input
                     type="tel"
                     required
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    placeholder="০১৭xxxxxxxx"
+                    placeholder="+880 17XX-XXXXXX"
                     className="mt-1.5 w-full rounded-xl border border-[#dedbd2] bg-[#f6f5f0] px-4 py-3 text-sm text-[#141413] focus:border-[#141413] focus:outline-none"
                   />
                 </div>
 
                 <div>
                   <label className="block text-xs font-semibold text-[#141413]">
-                    ইমেইল ঠিকানা *
+                    Email Address *
                   </label>
                   <input
                     type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="reader@example.com"
+                    placeholder="you@example.com"
                     className="mt-1.5 w-full rounded-xl border border-[#dedbd2] bg-[#f6f5f0] px-4 py-3 text-sm text-[#141413] focus:border-[#141413] focus:outline-none"
                   />
                 </div>
 
                 <div className="sm:col-span-2">
                   <label className="block text-xs font-semibold text-[#141413]">
-                    বিস্তারিত ঠিকানা (বাসা/ফ্ল্যাট, রোড, এলাকা) *
+                    Delivery Address *
                   </label>
                   <input
                     type="text"
                     required
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
-                    placeholder="বাড়ি নং, রোড নং, এলাকা বা মহাল্লা"
+                    placeholder="House, Road, Apartment / Area"
                     className="mt-1.5 w-full rounded-xl border border-[#dedbd2] bg-[#f6f5f0] px-4 py-3 text-sm text-[#141413] focus:border-[#141413] focus:outline-none"
                   />
                 </div>
 
                 <div>
                   <label className="block text-xs font-semibold text-[#141413]">
-                    জেলা / শহর *
+                    City / District *
                   </label>
                   <input
                     type="text"
                     required
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
-                    placeholder="ঢাকা, চট্টগ্রাম, সিলেট..."
+                    placeholder="Dhaka, Chattogram, Sylhet..."
                     className="mt-1.5 w-full rounded-xl border border-[#dedbd2] bg-[#f6f5f0] px-4 py-3 text-sm text-[#141413] focus:border-[#141413] focus:outline-none"
                   />
                 </div>
 
                 <div>
                   <label className="block text-xs font-semibold text-[#141413]">
-                    পোস্টাল কোড *
+                    Postal Code *
                   </label>
                   <input
                     type="text"
                     required
                     value={postalCode}
                     onChange={(e) => setPostalCode(e.target.value)}
-                    placeholder="যেমন: ১২০৯"
+                    placeholder="e.g. 1209"
                     className="mt-1.5 w-full rounded-xl border border-[#dedbd2] bg-[#f6f5f0] px-4 py-3 text-sm text-[#141413] focus:border-[#141413] focus:outline-none"
                   />
                 </div>
 
                 <div className="sm:col-span-2">
                   <label className="block text-xs font-semibold text-[#141413]">
-                    অতিরিক্ত নির্দেশ বা চিরকুট (ঐচ্ছিক)
+                    Additional Delivery Instructions (Optional)
                   </label>
                   <textarea
                     rows={2}
                     value={instructions}
                     onChange={(e) => setInstructions(e.target.value)}
-                    placeholder="ডেলিভারির পূর্বে কল দেওয়া, সময়সূচি বা বিশেষ কোনো নোট..."
+                    placeholder="Gift wrapping note, call before arrival, preferred time window..."
                     className="mt-1.5 w-full rounded-xl border border-[#dedbd2] bg-[#f6f5f0] px-4 py-2.5 text-sm text-[#141413] focus:border-[#141413] focus:outline-none"
                   />
                 </div>
@@ -407,13 +407,13 @@ function CheckoutContent() {
             </section>
 
             {/* Configurable Payment Options */}
-            <section className="rounded-2xl sm:rounded-[2rem] border border-[#dedbd2] bg-white p-5 sm:p-8 shadow-xs">
-              <h2 className="flex items-center gap-2 font-serif text-xl sm:text-2xl font-bold text-[#141413]">
+            <section className="rounded-[2rem] border border-[#dedbd2] bg-white p-6 sm:p-8">
+              <h2 className="flex items-center gap-2 font-serif text-2xl font-semibold text-[#141413]">
                 <CreditCard className="h-5 w-5 text-[#d93829]" />
-                পেমেন্ট মাধ্যম
+                Payment Method
               </h2>
               <p className="mt-1 text-xs text-[#62605a]">
-                পছন্দের মাধ্যম নির্বাচন করে অর্ডার চূড়ান্ত করুন। ক্যাশ অন ডেলিভারিতে বই হাতে পেয়ে মূল্য পরিশোধ করতে পারবেন।
+                Online gateways verify transactions directly with merchant APIs before confirming orders.
               </p>
 
               <div className="mt-5 space-y-3">
@@ -426,7 +426,7 @@ function CheckoutContent() {
                       key={pm.method}
                       className={`flex cursor-pointer items-start gap-3.5 rounded-2xl border p-4 transition ${
                         active
-                          ? "border-[#141413] bg-[#f6f5f0] shadow-xs"
+                          ? "border-[#141413] bg-[#f6f5f0] shadow-sm"
                           : "border-[#dedbd2] bg-white hover:border-[#141413]/50"
                       }`}
                     >
@@ -436,27 +436,29 @@ function CheckoutContent() {
                         value={pm.method}
                         checked={active}
                         onChange={() => setSelectedPayment(pm.method)}
-                        className="mt-1 accent-[#d93829] cursor-pointer"
+                        className="mt-1 accent-[#d93829]"
                       />
                       <div className="flex-1">
                         <div className="flex flex-wrap items-center justify-between gap-2">
-                          <span className="font-bold text-sm text-[#141413]">
+                          <span className="font-semibold text-sm text-[#141413]">
                             {pm.label}
                           </span>
                           {pm.configured ? (
-                            <span className="inline-flex items-center gap-1 rounded-full bg-[#eceae3] px-2.5 py-0.5 text-[10px] font-bold text-[#141413]">
-                              <CheckCircle2 className="h-3 w-3 text-[#d93829]" /> প্রস্তুত
+                            <span className="inline-flex items-center gap-1 rounded-full bg-[#eceae3] px-2.5 py-0.5 text-[10px] font-semibold text-[#141413]">
+                              <CheckCircle2 className="h-3 w-3 text-[#d93829]" /> Ready
                             </span>
                           ) : (
-                            <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-0.5 text-[10px] font-bold text-amber-900">
-                              <AlertTriangle className="h-3 w-3" /> সেটিংস প্রয়োজন
+                            <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-0.5 text-[10px] font-semibold text-amber-900">
+                              <AlertTriangle className="h-3 w-3" /> API Keys Required
                             </span>
                           )}
                         </div>
                         <p className="mt-1 text-xs text-[#62605a]">{pm.subtitle}</p>
                         {unconfiguredOnline && active && pm.missingEnvVars && (
-                          <p className="mt-2 rounded-lg bg-amber-50 p-2 text-xs text-amber-950">
-                            সার্ভারে <code>{pm.missingEnvVars.join(", ")}</code> প্রয়োজন {pm.label} পেমেন্ট চালু করার জন্য।
+                          <p className="mt-2 rounded-lg bg-amber-50 p-2 text-[11px] text-amber-950">
+                            Server requires{" "}
+                            <code className="font-mono">{pm.missingEnvVars.join(", ")}</code>{" "}
+                            in <code>.env.local</code> to process live {pm.label} payments.
                           </p>
                         )}
                       </div>
@@ -469,9 +471,9 @@ function CheckoutContent() {
 
           {/* RIGHT: Order Summary */}
           <aside className="lg:col-span-5">
-            <div className="sticky top-28 rounded-2xl sm:rounded-[2rem] border border-[#dedbd2] bg-white p-5 sm:p-7 shadow-xs">
-              <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#141413]">
-                অর্ডারের বিবরণ
+            <div className="sticky top-28 rounded-2xl sm:rounded-[2rem] border border-[#dedbd2] bg-white p-5 sm:p-8 shadow-sm">
+              <h2 className="font-serif text-xl sm:text-2xl font-semibold text-[#141413]">
+                Order Summary
               </h2>
 
               <div className="mt-5 max-h-72 space-y-3 overflow-y-auto pr-1">
@@ -481,14 +483,14 @@ function CheckoutContent() {
                     className="flex items-center justify-between gap-3 border-b border-[#dedbd2] pb-3 text-sm"
                   >
                     <div className="min-w-0">
-                      <p className="truncate font-serif font-bold text-[#141413]">
+                      <p className="truncate font-serif font-semibold text-[#141413]">
                         {item.title}
                       </p>
                       <p className="text-xs text-[#62605a]">
-                        পরিমাণ {item.quantity} × {formatPrice(item.price)}
+                        Qty {item.quantity} × {formatPrice(item.price)}
                       </p>
                     </div>
-                    <span className="shrink-0 font-bold text-[#141413]">
+                    <span className="shrink-0 font-semibold text-[#141413]">
                       {formatPrice(item.price * item.quantity)}
                     </span>
                   </div>
@@ -501,38 +503,38 @@ function CheckoutContent() {
                   type="text"
                   value={couponCode}
                   onChange={(e) => setCouponCode(e.target.value)}
-                  placeholder="কুপন কোড (যেমন: LIBRARY10)"
+                  placeholder="Coupon code (e.g. LIBRARY10)"
                   className="flex-1 rounded-xl border border-[#dedbd2] bg-[#f6f5f0] px-3.5 py-2 text-xs uppercase text-[#141413]"
                 />
                 <button
                   type="button"
                   onClick={applyCoupon}
-                  className="cursor-pointer rounded-xl border border-[#dedbd2] bg-white px-4 py-2 text-xs font-semibold text-[#141413] hover:bg-[#eceae3]"
+                  className="rounded-xl border border-[#dedbd2] bg-white px-4 py-2 text-xs font-semibold text-[#141413] hover:bg-[#eceae3]"
                 >
-                  প্রয়োগ
+                  Apply
                 </button>
               </div>
 
               <dl className="mt-6 space-y-2.5 border-t border-[#dedbd2] pt-5 text-sm">
                 <div className="flex justify-between">
-                  <dt className="text-[#62605a]">বইয়ের মূল্য</dt>
-                  <dd className="font-bold text-[#141413]">{formatPrice(cartSubtotal)}</dd>
+                  <dt className="text-[#62605a]">Subtotal</dt>
+                  <dd className="font-semibold">{formatPrice(cartSubtotal)}</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-[#62605a]">ডেলিভারি চার্জ</dt>
-                  <dd className="font-bold text-[#141413]">
-                    {deliveryCharge === 0 ? "ফ্রি" : formatPrice(deliveryCharge)}
+                  <dt className="text-[#62605a]">Delivery ({city || "Standard"})</dt>
+                  <dd className="font-semibold">
+                    {deliveryCharge === 0 ? "Free" : formatPrice(deliveryCharge)}
                   </dd>
                 </div>
                 {discount > 0 && (
                   <div className="flex justify-between text-[#d93829]">
-                    <dt>কুপন ছাড় ({appliedCode})</dt>
-                    <dd className="font-bold">-{formatPrice(discount)}</dd>
+                    <dt>Coupon Discount ({appliedCode})</dt>
+                    <dd className="font-semibold">-{formatPrice(discount)}</dd>
                   </div>
                 )}
                 <div className="flex justify-between border-t border-[#dedbd2] pt-3 text-base">
-                  <dt className="font-bold text-[#141413]">সর্বমোট প্রদেয়</dt>
-                  <dd className="font-serif text-2xl sm:text-3xl font-bold text-[#141413]">
+                  <dt className="font-bold text-[#141413]">Total Payable</dt>
+                  <dd className="font-serif text-3xl font-bold text-[#141413]">
                     {formatPrice(totalPayable)}
                   </dd>
                 </div>
@@ -541,15 +543,15 @@ function CheckoutContent() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="mt-6 flex cursor-pointer w-full items-center justify-center gap-2 rounded-full bg-[#141413] px-6 py-4 text-xs font-bold text-white shadow-xl transition hover:bg-[#d93829] disabled:opacity-60"
+                className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-[#141413] px-6 py-4 text-xs font-bold uppercase tracking-[0.18em] text-white shadow-xl transition hover:bg-[#d93829] disabled:opacity-60"
               >
                 <Lock className="h-4 w-4" />
-                {submitting ? "অর্ডার প্রসেস হচ্ছে..." : "অর্ডার নিশ্চিত করুন"}
+                {submitting ? "Placing Order..." : "Place Order"}
               </button>
 
-              <p className="mt-4 flex items-center justify-center gap-1.5 text-xs text-[#62605a]">
+              <p className="mt-4 flex items-center justify-center gap-1.5 text-[11px] text-[#62605a]">
                 <ShieldCheck className="h-4 w-4 text-[#d93829]" />
-                নিরাপদ ও নির্ভরযোগ্য অর্ডার প্রক্রিয়া
+                Server-verified inventory &amp; pricing before order creation
               </p>
             </div>
           </aside>

@@ -11,7 +11,7 @@ import {
 } from "@/lib/book-texture";
 import { useEnvironmentCapabilities } from "@/components/three/WebGLGuard";
 import { formatPrice } from "@/lib/format";
-import { ArrowUpRight, BookOpen } from "lucide-react";
+import { ArrowUpRight, Sparkles } from "lucide-react";
 
 interface MinimazeGalleryCanvasProps {
   books: Book[];
@@ -115,11 +115,11 @@ function createWallPlaqueTexture(book: Book, index: number): THREE.CanvasTexture
   ctx.fill();
 
   ctx.fillStyle = "#62605a";
-  ctx.font = "600 16px sans-serif";
-  ctx.fillText(`বই প্রদর্শনী ০${index + 1} • ${book.category}`, 46, 40);
+  ctx.font = "600 16px monospace";
+  ctx.fillText(`EXHIBIT ${String(index + 1).padStart(2, "0")} / ${book.category.toUpperCase()}`, 46, 40);
 
   ctx.fillStyle = "#141413";
-  ctx.font = "700 24px 'Hind Siliguri', Georgia, serif";
+  ctx.font = "700 24px Georgia, serif";
   const shortTitle = book.title.length > 26 ? `${book.title.slice(0, 24)}...` : book.title;
   ctx.fillText(shortTitle, 24, 92);
 
@@ -128,7 +128,7 @@ function createWallPlaqueTexture(book: Book, index: number): THREE.CanvasTexture
   ctx.fillText(book.authorName, 24, 126);
 
   ctx.fillStyle = "#141413";
-  ctx.font = "700 20px sans-serif";
+  ctx.font = "700 20px monospace";
   ctx.fillText(formatPrice(book.price), 24, 162);
 
   const tex = new THREE.CanvasTexture(canvas);
@@ -157,16 +157,16 @@ function createDoorArchSignTexture(): THREE.CanvasTexture {
   ctx.fill();
 
   ctx.fillStyle = "#62605a";
-  ctx.font = "600 24px sans-serif";
-  ctx.fillText("উত্তরণ প্রকাশনী • প্রতিষ্ঠিত ১৯৯৮", 98, 80);
+  ctx.font = "600 24px monospace";
+  ctx.fillText("THE PUBLISHING HOUSE • EST. 1998", 98, 80);
 
   ctx.fillStyle = "#141413";
-  ctx.font = "700 48px 'Hind Siliguri', Georgia, serif";
-  ctx.fillText("মূল সাহিত্য ও বাঁধাই ভবন", 48, 156);
+  ctx.font = "700 50px Georgia, serif";
+  ctx.fillText("MAIN BINDERY & EDITORIAL HALL", 48, 156);
 
   ctx.fillStyle = "#b08b46";
-  ctx.font = "600 22px sans-serif";
-  ctx.fillText("স্বাগতম • UTTORON PROKASONI", 48, 206);
+  ctx.font = "600 22px monospace";
+  ctx.fillText("STEPPING INSIDE • UTTORON PROKASONI", 48, 206);
 
   const tex = new THREE.CanvasTexture(canvas);
   tex.colorSpace = THREE.SRGBColorSpace;
@@ -844,20 +844,20 @@ export default function MinimazeGalleryCanvas({
           </p>
           <p className="text-xs text-[#62605a]">{hoveredExhibit.book.authorName}</p>
           <div className="mt-2.5 flex items-center justify-between border-t border-[#eceae3] pt-2 text-xs">
-            <span className="font-bold text-[#141413]">
+            <span className="font-mono font-bold text-[#141413]">
               {formatPrice(hoveredExhibit.book.price)}
             </span>
             <span className="inline-flex items-center gap-1 font-semibold text-[#d93829]">
-              বিস্তারিত দেখুন <ArrowUpRight className="h-3.5 w-3.5" />
+              Zoom In <ArrowUpRight className="h-3.5 w-3.5" />
             </span>
           </div>
         </div>
       )}
 
       {/* Subtle Bottom-Right Spatial Hint */}
-      <div className="pointer-events-none absolute bottom-5 right-5 z-20 hidden items-center gap-2 rounded-full border border-[#dedbd2] bg-white/90 px-4 py-2 text-xs font-medium text-[#141413] shadow-sm backdrop-blur-md sm:flex">
-        <BookOpen className="h-3.5 w-3.5 text-[#d93829]" />
-        <span>স্ক্রোল করে প্রদর্শনী দেখুন • বিস্তারিত জানতে বইয়ে ক্লিক করুন</span>
+      <div className="pointer-events-none absolute bottom-5 right-5 z-20 hidden items-center gap-2 rounded-full border border-[#dedbd2] bg-white/85 px-4 py-2 font-mono text-[11px] text-[#141413] shadow-sm backdrop-blur-md sm:flex">
+        <Sparkles className="h-3.5 w-3.5 text-[#d93829]" />
+        <span>Scroll to walk the 3D gallery • Click any lit niche</span>
       </div>
     </div>
   );

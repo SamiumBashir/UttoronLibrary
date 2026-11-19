@@ -16,12 +16,12 @@ import {
 import { AnimatePresence, motion } from "framer-motion";
 
 const NAV_LINKS = [
-  { href: "/", label: "প্রচ্ছদ", code: "০১", note: "প্রধান পাতা ও বিশেষ প্রদর্শনী" },
-  { href: "/books", label: "বইসমগ্র", code: "০২", note: "সকল সংকলন ও নির্বাচিত গ্রন্থ" },
-  { href: "/categories", label: "বিষয়শ্রেণী", code: "০৩", note: "সাহিত্য, বিজ্ঞান, ইতিহাস ও কাব্য" },
-  { href: "/authors", label: "লেখকবৃন্দ", code: "০৪", note: "লেখক পরিচিতি ও গ্রন্থতালিকা" },
-  { href: "/about", label: "আমাদের কথা", code: "০৫", note: "প্রকাশনার ইতিহাস ও ঐতিহ্য" },
-  { href: "/contact", label: "যোগাযোগ", code: "০৬", note: "পাঠক সেবা ও পাণ্ডুলিপি জমা" },
+  { href: "/", label: "Home", code: "01", note: "3D Gallery Walkthrough" },
+  { href: "/books", label: "Books", code: "02", note: "Interactive Collection & Index" },
+  { href: "/categories", label: "Categories", code: "03", note: "Nine Literary Wings" },
+  { href: "/authors", label: "Authors", code: "04", note: "Fellows & Biographies" },
+  { href: "/about", label: "About Us", code: "05", note: "House Manifesto & Craft" },
+  { href: "/contact", label: "Contact", code: "06", note: "Salon & Submissions" },
 ];
 
 export default function Navbar() {
@@ -72,11 +72,10 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 h-16 transition-all duration-300 ${
-          solidHeader
-            ? "border-b border-[#dedbd2] bg-[#f6f5f0]/95 shadow-[0_8px_30px_rgba(20,20,19,0.06)] backdrop-blur-xl"
-            : "bg-gradient-to-b from-[#f6f5f0]/95 via-[#f6f5f0]/70 to-transparent"
-        }`}
+        className={`fixed inset-x-0 top-0 z-50 h-16 transition-all duration-300 ${solidHeader
+          ? "border-b border-[#dedbd2] bg-[#f6f5f0]/95 shadow-[0_8px_30px_rgba(20,20,19,0.06)] backdrop-blur-xl"
+          : "bg-gradient-to-b from-[#f6f5f0]/95 via-[#f6f5f0]/70 to-transparent"
+          }`}
       >
         <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* Brand Logo */}
@@ -86,11 +85,11 @@ export default function Navbar() {
             </span>
             <div>
               <span className="flex items-center gap-1.5 font-serif text-base sm:text-xl font-bold tracking-tight text-[#141413]">
-                উত্তরণ প্রকাশনী
+                Uttoron Prokasoni
                 <span className="h-1.5 w-1.5 rounded-full bg-[#d93829]" />
               </span>
-              <span className="hidden xs:block text-[11px] font-medium text-[#62605a]">
-                সাহিত্য ও ঐতিহ্য প্রকাশনা • ঢাকা
+              <span className="hidden xs:block font-mono text-[9px] uppercase tracking-[0.24em] text-[#62605a]">
+                3D Gallery &amp; Press
               </span>
             </div>
           </Link>
@@ -106,9 +105,8 @@ export default function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`relative cursor-pointer text-sm font-semibold transition ${
-                    active ? "text-[#141413]" : "text-[#62605a] hover:text-[#141413]"
-                  }`}
+                  className={`relative text-xs font-semibold uppercase tracking-[0.14em] transition ${active ? "text-[#141413]" : "text-[#62605a] hover:text-[#141413]"
+                    }`}
                 >
                   {item.label}
                   {active && (
@@ -124,13 +122,13 @@ export default function Navbar() {
             {/* Desktop Only: Search Trigger */}
             <button
               type="button"
-              aria-label="বই অনুসন্ধান"
+              aria-label="Search collection"
               onClick={() => {
                 setBlindOpen(false);
                 setSearchOpen(true);
               }}
-              className="hidden lg:flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-[#dedbd2] bg-white/90 text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
-              title="বই খুঁজুন"
+              className="hidden lg:flex h-9 w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/90 text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
+              title="Search Books"
             >
               <Search className="h-4 w-4" />
             </button>
@@ -138,9 +136,9 @@ export default function Navbar() {
             {/* Desktop Only: Wishlist Link */}
             <Link
               href="/account?tab=wishlist"
-              aria-label={`পছন্দের তালিকা (${wishlist.length}টি)`}
-              className="relative hidden lg:flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-[#dedbd2] bg-white/90 text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
-              title="পছন্দের তালিকা"
+              aria-label={`Wishlist (${wishlist.length} items)`}
+              className="relative hidden lg:flex h-9 w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/90 text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
+              title="Wishlist"
             >
               <Heart className="h-4 w-4" />
               {wishlist.length > 0 && (
@@ -153,13 +151,13 @@ export default function Navbar() {
             {/* Desktop Only: Shopping Cart Trigger */}
             <button
               type="button"
-              aria-label={`শপিং ব্যাগ (${cartCount}টি)`}
+              aria-label={`Shopping cart (${cartCount} items)`}
               onClick={() => {
                 setBlindOpen(false);
                 setCartOpen(true);
               }}
-              className="relative hidden lg:flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-[#dedbd2] bg-white/90 text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
-              title="শপিং ব্যাগ"
+              className="relative hidden lg:flex h-9 w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/90 text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
+              title="Shopping Cart"
             >
               <ShoppingBag className="h-4 w-4" />
               {cartCount > 0 && (
@@ -172,9 +170,9 @@ export default function Navbar() {
             {/* Desktop Only: Reader Account Link */}
             <Link
               href="/account"
-              aria-label={user ? `অ্যাকাউন্ট (${user.name})` : "পাঠক লগইন"}
-              className="hidden lg:flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-[#dedbd2] bg-white/90 text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
-              title={user ? `লগইন আছেন: ${user.name}` : "পাঠক লগইন / অ্যাকাউন্ট"}
+              aria-label={user ? `Account (${user.name})` : "Reader Sign In"}
+              className="hidden lg:flex h-9 w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white/90 text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
+              title={user ? `Signed in as ${user.name}` : "Reader Sign In / Account"}
             >
               <User className="h-4 w-4" />
             </Link>
@@ -182,10 +180,10 @@ export default function Navbar() {
             {/* Responsive Mobile & Tablet Menu Toggle (Only visible < 1024px) */}
             <button
               type="button"
-              aria-label={blindOpen ? "মেনু বন্ধ করুন" : "মেনু খুলুন"}
+              aria-label={blindOpen ? "Close Navigation Menu" : "Open Navigation Menu"}
               onClick={() => setBlindOpen((v) => !v)}
-              className="flex lg:hidden h-8 w-8 sm:h-9 sm:w-9 cursor-pointer items-center justify-center rounded-full border border-[#dedbd2] bg-white text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
-              title={blindOpen ? "বন্ধ করুন" : "মেনু"}
+              className="flex lg:hidden h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-[#dedbd2] bg-white text-[#141413] shadow-xs transition hover:border-[#141413] hover:bg-[#141413] hover:text-[#f6f5f0] focus:outline-none"
+              title={blindOpen ? "Close Menu" : "Open Menu"}
             >
               {blindOpen ? (
                 <X className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
@@ -236,10 +234,10 @@ export default function Navbar() {
                 <Link
                   href="/account"
                   onClick={() => setBlindOpen(false)}
-                  className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-[#141413] bg-[#141413] px-3.5 sm:px-4 py-1.5 sm:py-2 text-xs font-semibold text-[#f6f5f0] shadow-xs transition hover:bg-[#2a2a28]"
+                  className="inline-flex items-center gap-2 rounded-full border border-[#141413] bg-[#141413] px-3.5 sm:px-4 py-1.5 sm:py-2 text-xs font-semibold text-[#f6f5f0] shadow-xs transition hover:bg-[#2a2a28]"
                 >
                   <User className="h-3.5 w-3.5" />
-                  <span>{user ? `লগইন আছেন: ${user.name}` : "পাঠক লগইন / সাইন ইন"}</span>
+                  <span>{user ? `Signed in as ${user.name}` : "Reader Sign In / Account"}</span>
                 </Link>
 
                 <div className="flex flex-wrap items-center gap-2">
@@ -249,10 +247,10 @@ export default function Navbar() {
                       setBlindOpen(false);
                       setSearchOpen(true);
                     }}
-                    className="flex cursor-pointer items-center gap-1.5 rounded-full border border-[#dedbd2] bg-white px-3 py-1.5 text-xs font-semibold text-[#141413] transition hover:border-[#141413]"
+                    className="flex items-center gap-1.5 rounded-full border border-[#dedbd2] bg-white px-3 py-1.5 text-xs font-semibold text-[#141413] transition hover:border-[#141413]"
                   >
                     <Search className="h-3.5 w-3.5 text-[#62605a]" />
-                    <span>খুঁজুন</span>
+                    <span>Search</span>
                   </button>
 
                   <button
@@ -261,10 +259,10 @@ export default function Navbar() {
                       setBlindOpen(false);
                       setCartOpen(true);
                     }}
-                    className="flex cursor-pointer items-center gap-1.5 rounded-full border border-[#dedbd2] bg-white px-3 py-1.5 text-xs font-semibold text-[#141413] transition hover:border-[#141413]"
+                    className="flex items-center gap-1.5 rounded-full border border-[#dedbd2] bg-white px-3 py-1.5 text-xs font-semibold text-[#141413] transition hover:border-[#141413]"
                   >
                     <ShoppingBag className="h-3.5 w-3.5 text-[#62605a]" />
-                    <span>ব্যাগ</span>
+                    <span>Bag</span>
                     {cartCount > 0 && (
                       <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-[#d93829] px-1 text-[10px] font-bold text-white">
                         {cartCount}
@@ -275,10 +273,10 @@ export default function Navbar() {
                   <Link
                     href="/account?tab=wishlist"
                     onClick={() => setBlindOpen(false)}
-                    className="flex cursor-pointer items-center gap-1.5 rounded-full border border-[#dedbd2] bg-white px-3 py-1.5 text-xs font-semibold text-[#141413] transition hover:border-[#141413]"
+                    className="flex items-center gap-1.5 rounded-full border border-[#dedbd2] bg-white px-3 py-1.5 text-xs font-semibold text-[#141413] transition hover:border-[#141413]"
                   >
                     <Heart className="h-3.5 w-3.5 text-[#62605a]" />
-                    <span>পছন্দ</span>
+                    <span>Wishlist</span>
                     {wishlist.length > 0 && (
                       <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-[#d93829] px-1 text-[10px] font-bold text-white">
                         {wishlist.length}
@@ -299,50 +297,49 @@ export default function Navbar() {
                     <Link
                       key={item.href}
                       href={item.href}
-                      className="group flex cursor-pointer items-baseline justify-between rounded-2xl border border-[#dedbd2]/80 bg-white/85 px-4 py-3.5 sm:px-6 sm:py-5 transition hover:border-[#141413] hover:bg-white"
+                      className="group flex items-baseline justify-between rounded-2xl border border-[#dedbd2]/80 bg-white/85 px-4 py-3.5 sm:px-6 sm:py-5 transition hover:border-[#141413] hover:bg-white"
                     >
                       <div>
-                        <span className="text-[11px] sm:text-xs font-bold text-[#d93829]">
+                        <span className="font-mono text-[10px] sm:text-[11px] font-semibold text-[#d93829]">
                           {item.code}
                         </span>
-                        <h3 className="mt-0.5 sm:mt-1 font-serif text-xl sm:text-2xl font-bold text-[#141413] transition group-hover:translate-x-1">
+                        <h3 className="mt-0.5 sm:mt-1 font-serif text-xl sm:text-3xl font-semibold text-[#141413] transition group-hover:translate-x-1">
                           {item.label}
                         </h3>
-                        <p className="mt-0.5 text-xs text-[#62605a]">{item.note}</p>
+                        <p className="mt-0.5 text-[11px] sm:text-xs text-[#62605a]">{item.note}</p>
                       </div>
                       <span
-                        className={`h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full transition ${
-                          active
-                            ? "bg-[#d93829]"
-                            : "bg-[#dedbd2] group-hover:bg-[#d93829]"
-                        }`}
+                        className={`h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full transition ${active
+                          ? "bg-[#d93829]"
+                          : "bg-[#dedbd2] group-hover:bg-[#d93829]"
+                          }`}
                       />
                     </Link>
                   );
                 })}
               </div>
 
-              <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-[#dedbd2] pt-5 text-xs text-[#62605a]">
-                <div className="flex flex-wrap gap-3 sm:gap-5 font-medium">
-                  <Link href="/account?tab=wishlist" className="cursor-pointer hover:text-[#141413]">
-                    পছন্দের তালিকা ({wishlist.length})
+              <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-[#dedbd2] pt-5 font-mono text-xs text-[#62605a]">
+                <div className="flex flex-wrap gap-3 sm:gap-5">
+                  <Link href="/account?tab=wishlist" className="hover:text-[#141413]">
+                    Wishlist ({wishlist.length})
                   </Link>
-                  <Link href="/track" className="cursor-pointer hover:text-[#141413]">
-                    অর্ডার ট্র্যাক
+                  <Link href="/track" className="hover:text-[#141413]">
+                    Track Order
                   </Link>
-                  <Link href="/cart" className="cursor-pointer hover:text-[#141413]">
-                    শপিং ব্যাগ ({cartCount})
+                  <Link href="/cart" className="hover:text-[#141413]">
+                    Shopping Bag ({cartCount})
                   </Link>
-                  <Link href="/account" className="cursor-pointer hover:text-[#141413]">
-                    {user ? `পাঠক প্রোফাইল: ${user.name}` : "পাঠক লগইন"}
+                  <Link href="/account" className="hover:text-[#141413]">
+                    {user ? `User Portal: ${user.name}` : "Reader Login"}
                   </Link>
                   {user?.role === "admin" && (
-                    <Link href="/admin" className="cursor-pointer hover:text-[#141413] text-[#d93829] font-bold">
-                      অ্যাডমিন প্যানেল
+                    <Link href="/admin" className="hover:text-[#141413] text-[#d93829] font-bold">
+                      CMS Console (Admin)
                     </Link>
                   )}
                 </div>
-                <span className="hidden sm:inline font-medium text-[#8c827a]">উত্তরণ প্রকাশনী • ঢাকা ও বাংলাবাজার</span>
+                <span className="hidden sm:inline">GALLERY OPEN • DHAKA &amp; ONLINE</span>
               </div>
             </div>
           </motion.div>

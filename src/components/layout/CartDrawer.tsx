@@ -46,17 +46,17 @@ export default function CartDrawer() {
               <div className="flex items-center gap-3">
                 <ShoppingBag className="h-5 w-5 text-[#d93829]" />
                 <div>
-                  <h2 className="font-serif text-xl font-bold">শপিং ব্যাগ</h2>
-                  <p className="text-xs text-[#62605a]">
-                    {cartCount}টি বই যুক্ত আছে
+                  <h2 className="font-serif text-xl font-semibold">Reading Bag</h2>
+                  <p className="font-mono text-[11px] text-[#62605a]">
+                    {cartCount} {cartCount === 1 ? "volume" : "volumes"} selected
                   </p>
                 </div>
               </div>
               <button
                 type="button"
-                aria-label="শপিং ব্যাগ বন্ধ করুন"
+                aria-label="Close shopping bag"
                 onClick={() => setCartOpen(false)}
-                className="cursor-pointer rounded-full p-2 text-[#62605a] transition hover:bg-[#f6f5f0] hover:text-[#141413]"
+                className="rounded-full p-2 text-[#62605a] transition hover:bg-[#f6f5f0] hover:text-[#141413]"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -67,12 +67,13 @@ export default function CartDrawer() {
               <div className="border-b border-[#dedbd2] bg-[#eceae3] px-6 py-3 text-xs text-[#141413]">
                 {freeShippingRemaining > 0 ? (
                   <span>
-                    আর মাত্র <strong>{formatPrice(freeShippingRemaining)}</strong> টাকার বই কিনলে <strong>ফ্রি ডেলিভারি</strong>!
+                    Add <strong>{formatPrice(freeShippingRemaining)}</strong> more for
+                    complimentary archival courier delivery.
                   </span>
                 ) : (
                   <span className="inline-flex items-center gap-1.5 font-semibold text-[#141413]">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#d93829]" />
-                    অভিনন্দন! আপনার অর্ডারে ফ্রি ডেলিভারি প্রযোজ্য।
+                    Complimentary archival courier delivery unlocked.
                   </span>
                 )}
               </div>
@@ -85,18 +86,18 @@ export default function CartDrawer() {
                   <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#eceae3] text-[#d93829]">
                     <ShoppingBag className="h-7 w-7" />
                   </div>
-                  <h3 className="font-serif text-2xl font-bold text-[#141413]">
-                    আপনার ব্যাগে কোনো বই নেই
+                  <h3 className="font-serif text-2xl font-semibold text-[#141413]">
+                    Your reading bag is empty
                   </h3>
-                  <p className="mt-2 max-w-xs text-xs text-[#62605a]">
-                    আমাদের সংগ্রহশালা থেকে পছন্দের কালজয়ী বইগুলো খুঁজে নিন।
+                  <p className="mt-2 max-w-xs text-sm text-[#62605a]">
+                    Explore our 3D gallery shelves to collect archival editions.
                   </p>
                   <Link
                     href="/books"
                     onClick={() => setCartOpen(false)}
-                    className="mt-6 inline-flex cursor-pointer items-center gap-2 rounded-full bg-[#141413] px-6 py-3 text-xs font-bold text-white transition hover:bg-[#d93829]"
+                    className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#141413] px-6 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-white transition hover:bg-[#d93829]"
                   >
-                    বই দেখুন <ArrowRight className="h-4 w-4" />
+                    Explore Books <ArrowRight className="h-4 w-4" />
                   </Link>
                 </div>
               ) : (
@@ -104,12 +105,12 @@ export default function CartDrawer() {
                   {cart.map((item) => (
                     <div
                       key={item.bookId}
-                      className="flex gap-4 rounded-2xl border border-[#dedbd2] bg-white p-3.5 shadow-xs"
+                      className="flex gap-4 rounded-2xl border border-[#dedbd2] bg-white p-3.5"
                     >
                       <Link
                         href={`/books/${item.slug}`}
                         onClick={() => setCartOpen(false)}
-                        className="cursor-pointer h-24 w-16 shrink-0 overflow-hidden rounded-r shadow-md"
+                        className="h-24 w-16 shrink-0 overflow-hidden rounded-r shadow-md"
                       >
                         <BookCoverArt
                           title={item.title}
@@ -125,43 +126,43 @@ export default function CartDrawer() {
                           <Link
                             href={`/books/${item.slug}`}
                             onClick={() => setCartOpen(false)}
-                            className="cursor-pointer font-serif text-base font-bold leading-snug text-[#141413] hover:text-[#d93829] line-clamp-2"
+                            className="font-serif text-base font-semibold leading-snug text-[#141413] hover:text-[#d93829] line-clamp-2"
                           >
                             {item.title}
                           </Link>
                           <button
                             type="button"
-                            aria-label={`${item.title} মুছে ফেলুন`}
+                            aria-label={`Remove ${item.title}`}
                             onClick={() => removeFromCart(item.bookId)}
-                            className="cursor-pointer text-[#62605a] transition hover:text-[#d93829]"
+                            className="text-[#62605a] transition hover:text-[#d93829]"
                           >
                             <Trash2 className="h-4 w-4" />
                           </button>
                         </div>
-                        <p className="text-xs text-[#62605a] mt-0.5">{item.authorName}</p>
+                        <p className="text-xs text-[#62605a]">{item.authorName}</p>
 
                         <div className="mt-auto flex items-center justify-between pt-3">
                           <div className="inline-flex items-center rounded-full border border-[#dedbd2] bg-[#f6f5f0]">
                             <button
                               type="button"
-                              aria-label="পরিমাণ কমান"
+                              aria-label="Decrease quantity"
                               onClick={() =>
                                 updateQuantity(item.bookId, item.quantity - 1)
                               }
-                              className="cursor-pointer p-1.5 text-[#141413] hover:text-[#d93829]"
+                              className="p-1.5 text-[#141413] hover:text-[#d93829]"
                             >
                               <Minus className="h-3.5 w-3.5" />
                             </button>
-                            <span className="min-w-7 text-center text-xs font-bold text-[#141413]">
+                            <span className="min-w-7 text-center text-xs font-semibold text-[#141413]">
                               {item.quantity}
                             </span>
                             <button
                               type="button"
-                              aria-label="পরিমাণ বাড়ান"
+                              aria-label="Increase quantity"
                               onClick={() =>
                                 updateQuantity(item.bookId, item.quantity + 1)
                               }
-                              className="cursor-pointer p-1.5 text-[#141413] hover:text-[#d93829]"
+                              className="p-1.5 text-[#141413] hover:text-[#d93829]"
                             >
                               <Plus className="h-3.5 w-3.5" />
                             </button>
@@ -180,10 +181,10 @@ export default function CartDrawer() {
 
             {/* Footer */}
             {cart.length > 0 && (
-              <div className="border-t border-[#dedbd2] bg-white p-6 shadow-xs">
+              <div className="border-t border-[#dedbd2] bg-white p-6">
                 <div className="mb-4 flex items-baseline justify-between">
-                  <span className="text-sm font-semibold text-[#62605a]">মোট মূল্য</span>
-                  <span className="font-serif text-2xl font-bold text-[#141413]">
+                  <span className="text-sm font-medium text-[#62605a]">Subtotal</span>
+                  <span className="font-mono text-2xl font-bold text-[#141413]">
                     {formatPrice(cartSubtotal)}
                   </span>
                 </div>
@@ -191,16 +192,16 @@ export default function CartDrawer() {
                   <Link
                     href="/cart"
                     onClick={() => setCartOpen(false)}
-                    className="inline-flex cursor-pointer items-center justify-center rounded-full border border-[#dedbd2] bg-[#f6f5f0] px-4 py-3 text-xs font-bold text-[#141413] transition hover:border-[#141413]"
+                    className="inline-flex items-center justify-center rounded-full border border-[#dedbd2] bg-[#f6f5f0] px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-[#141413] transition hover:border-[#141413]"
                   >
-                    ব্যাগ দেখুন
+                    View Bag
                   </Link>
                   <Link
                     href="/checkout"
                     onClick={() => setCartOpen(false)}
-                    className="inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-full bg-[#141413] px-4 py-3 text-xs font-bold text-white transition hover:bg-[#d93829]"
+                    className="inline-flex items-center justify-center gap-1.5 rounded-full bg-[#141413] px-4 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-[#d93829]"
                   >
-                    চেকআউট <ArrowRight className="h-3.5 w-3.5" />
+                    Checkout <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
                 </div>
               </div>

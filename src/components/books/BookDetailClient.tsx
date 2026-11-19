@@ -101,14 +101,14 @@ export default function BookDetailClient({
     <div className="paper-grain bg-[#f6f5f0] pb-24 pt-20 sm:pt-28 text-[#141413]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
-        <nav aria-label="Breadcrumb" className="mb-6 sm:mb-8 flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs text-[#62605a]">
-          <Link href="/" className="cursor-pointer hover:text-[#141413]">প্রচ্ছদ</Link>
+        <nav aria-label="Breadcrumb" className="mb-6 sm:mb-8 flex flex-wrap items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs text-[#62605a]">
+          <Link href="/" className="hover:text-[#141413]">Home</Link>
           <span>/</span>
-          <Link href="/books" className="cursor-pointer hover:text-[#141413]">বইসমগ্র</Link>
+          <Link href="/books" className="hover:text-[#141413]">Books</Link>
           <span>/</span>
           <Link
             href={`/books?category=${encodeURIComponent(book.category)}`}
-            className="cursor-pointer hover:text-[#141413]"
+            className="hover:text-[#141413]"
           >
             {book.category}
           </Link>
@@ -134,7 +134,7 @@ export default function BookDetailClient({
                     compact
                   />
                 </div>
-                <p className="mt-2 text-xs font-semibold text-[#141413]">সামনের প্রচ্ছদ</p>
+                <p className="mt-2 text-[11px] font-semibold text-[#141413]">Front Cover</p>
               </div>
 
               <div className="flex flex-col items-center justify-between rounded-2xl border border-[#dedbd2] bg-white p-3 text-center">
@@ -143,7 +143,7 @@ export default function BookDetailClient({
                   style={{ backgroundColor: book.spineColor }}
                 >
                   <span
-                    className="font-serif text-[9px] tracking-wide"
+                    className="font-serif text-[8px] tracking-widest uppercase"
                     style={{
                       color: book.coverPalette.text,
                       writingMode: "vertical-rl",
@@ -152,7 +152,7 @@ export default function BookDetailClient({
                     {book.title.slice(0, 18)}
                   </span>
                 </div>
-                <p className="mt-2 text-xs font-semibold text-[#141413]">বইয়ের স্পাইন</p>
+                <p className="mt-2 text-[11px] font-semibold text-[#141413]">Cloth Spine</p>
               </div>
 
               <div className="rounded-2xl border border-[#dedbd2] bg-white p-3 text-center">
@@ -163,17 +163,17 @@ export default function BookDetailClient({
                     color: book.coverPalette.text,
                   }}
                 >
-                  <span className="text-[7px] font-semibold opacity-85">
+                  <span className="text-[6px] uppercase tracking-widest opacity-80">
                     {book.publisherName}
                   </span>
-                  <span className="text-[7px] leading-tight opacity-75 line-clamp-4">
+                  <span className="text-[6px] leading-tight opacity-75 line-clamp-4">
                     {book.description}
                   </span>
-                  <span className="bg-white/90 px-1 py-0.5 text-[6px] font-medium text-black">
+                  <span className="bg-white/90 px-1 py-0.5 font-mono text-[5px] text-black">
                     {book.isbn}
                   </span>
                 </div>
-                <p className="mt-2 text-xs font-semibold text-[#141413]">পেছনের প্রচ্ছদ</p>
+                <p className="mt-2 text-[11px] font-semibold text-[#141413]">Back &amp; ISBN</p>
               </div>
             </div>
           </div>
@@ -181,7 +181,7 @@ export default function BookDetailClient({
           {/* RIGHT: Book Metadata & Purchase Actions */}
           <div className="lg:col-span-6">
             <div className="flex flex-wrap items-center gap-3">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-[#dedbd2] bg-white px-3.5 py-1 text-xs font-semibold text-[#141413]">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-[#dedbd2] bg-white px-3.5 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#141413]">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#d93829]" />
                 {book.category}
               </span>
@@ -194,32 +194,32 @@ export default function BookDetailClient({
                     : "bg-[#eceae3] text-[#141413]"
                 }`}
               >
-                {stockBadge.label} ({book.stock}টি আছে)
+                {stockBadge.label} ({book.stock} available)
               </span>
               {book.rating > 0 && (
                 <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#62605a]">
                   <Star className="h-3.5 w-3.5 fill-[#d93829] text-[#d93829]" />
-                  {book.rating} ({reviews.length}টি রিভিউ)
+                  {book.rating} ({reviews.length} reviews)
                 </span>
               )}
             </div>
 
-            <h1 className="mt-3 sm:mt-4 font-serif text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-[#141413]">
+            <h1 className="mt-3 sm:mt-4 font-serif text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight text-[#141413]">
               {book.title}
             </h1>
             {book.subtitle && (
-              <p className="mt-1.5 sm:mt-2 font-serif text-base sm:text-xl text-[#62605a]">
+              <p className="mt-1.5 sm:mt-2 font-serif text-base sm:text-xl italic text-[#62605a]">
                 {book.subtitle}
               </p>
             )}
 
             <div className="mt-3 sm:mt-4 flex flex-wrap items-center gap-x-4 sm:gap-x-6 gap-y-1.5 sm:gap-y-2 text-xs sm:text-sm text-[#62605a]">
               <span>
-                লেখক:{" "}
+                By{" "}
                 {author ? (
                   <Link
                     href={`/authors/${author.slug}`}
-                    className="cursor-pointer font-bold text-[#141413] underline decoration-[#d93829] underline-offset-4 hover:text-[#d93829]"
+                    className="font-semibold text-[#141413] underline decoration-[#d93829] underline-offset-4 hover:text-[#d93829]"
                   >
                     {book.authorName}
                   </Link>
@@ -228,7 +228,7 @@ export default function BookDetailClient({
                 )}
               </span>
               <span>
-                প্রকাশনী: <strong className="text-[#141413]">{book.publisherName}</strong>
+                Publisher: <strong className="text-[#141413]">{book.publisherName}</strong>
               </span>
             </div>
 
@@ -239,25 +239,25 @@ export default function BookDetailClient({
             {/* Quick Spec Grid */}
             <div className="mt-5 sm:mt-6 grid grid-cols-2 gap-2 sm:gap-3 rounded-2xl border border-[#dedbd2] bg-white p-3 sm:p-4 text-xs sm:grid-cols-4">
               <div>
-                <span className="block text-xs text-[#62605a]">আইএসবিএন</span>
-                <span className="mt-0.5 block text-xs font-semibold text-[#141413] truncate">
+                <span className="block text-[11px] text-[#62605a]">ISBN</span>
+                <span className="mt-0.5 block font-mono text-xs font-semibold text-[#141413] truncate">
                   {book.isbn}
                 </span>
               </div>
               <div>
-                <span className="block text-xs text-[#62605a]">প্রকাশকাল</span>
+                <span className="block text-[11px] text-[#62605a]">Published</span>
                 <span className="mt-0.5 block text-xs font-semibold text-[#141413]">
                   {book.publicationDate}
                 </span>
               </div>
               <div>
-                <span className="block text-xs text-[#62605a]">পৃষ্ঠা সংখ্যা</span>
+                <span className="block text-[11px] text-[#62605a]">Pages</span>
                 <span className="mt-0.5 block text-xs font-semibold text-[#141413]">
-                  {book.pages} পৃষ্ঠা
+                  {book.pages} pages
                 </span>
               </div>
               <div>
-                <span className="block text-xs text-[#62605a]">ভাষা</span>
+                <span className="block text-[11px] text-[#62605a]">Language</span>
                 <span className="mt-0.5 block text-xs font-semibold text-[#141413]">
                   {book.language}
                 </span>
@@ -274,8 +274,8 @@ export default function BookDetailClient({
                   <span className="text-base sm:text-lg text-[#62605a]/70 line-through">
                     {formatPrice(book.originalPrice)}
                   </span>
-                  <span className="rounded-full bg-[#d93829]/10 px-2.5 sm:px-3 py-0.5 sm:py-1 text-xs font-bold text-[#d93829]">
-                    {discount}% ছাড়
+                  <span className="rounded-full bg-[#d93829]/10 px-2.5 sm:px-3 py-0.5 sm:py-1 text-[11px] sm:text-xs font-bold text-[#d93829]">
+                    Save {discount}%
                   </span>
                 </>
               )}
@@ -286,10 +286,10 @@ export default function BookDetailClient({
               <div className="inline-flex items-center rounded-full border border-[#dedbd2] bg-white px-2 py-1">
                 <button
                   type="button"
-                  aria-label="পরিমাণ কমান"
+                  aria-label="Decrease quantity"
                   disabled={quantity <= 1 || book.stock <= 0}
                   onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                  className="cursor-pointer p-1.5 sm:p-2 text-[#141413] disabled:cursor-not-allowed disabled:opacity-40"
+                  className="p-1.5 sm:p-2 text-[#141413] disabled:opacity-40"
                 >
                   <Minus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </button>
@@ -298,10 +298,10 @@ export default function BookDetailClient({
                 </span>
                 <button
                   type="button"
-                  aria-label="পরিমাণ বাড়ান"
+                  aria-label="Increase quantity"
                   disabled={quantity >= book.stock || book.stock <= 0}
                   onClick={() => setQuantity((q) => Math.min(book.stock, q + 1))}
-                  className="cursor-pointer p-1.5 sm:p-2 text-[#141413] disabled:cursor-not-allowed disabled:opacity-40"
+                  className="p-1.5 sm:p-2 text-[#141413] disabled:opacity-40"
                 >
                   <Plus className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </button>
@@ -309,16 +309,16 @@ export default function BookDetailClient({
 
               <button
                 type="button"
-                aria-label={wishlisted ? "পছন্দের তালিকায় সংরক্ষিত" : "পছন্দের তালিকায় যোগ করুন"}
+                aria-label={wishlisted ? "Saved in wishlist" : "Add to wishlist"}
                 onClick={() => void toggleWishlist(book.id, book.title)}
-                className={`inline-flex cursor-pointer items-center justify-center rounded-full border p-2.5 sm:px-4 sm:py-3.5 text-xs font-semibold transition ${
+                className={`inline-flex items-center justify-center rounded-full border p-2.5 sm:px-4 sm:py-3.5 text-xs font-semibold transition ${
                   wishlisted
                     ? "border-[#d93829] bg-[#141413] text-white"
                     : "border-[#dedbd2] bg-white text-[#141413] hover:border-[#141413]"
                 }`}
               >
                 <Heart className={`h-4 w-4 ${wishlisted ? "fill-[#d93829] text-[#d93829]" : ""}`} />
-                <span className="hidden sm:inline ml-1.5">{wishlisted ? "সংরক্ষিত" : "পছন্দ"}</span>
+                <span className="hidden sm:inline ml-1.5">{wishlisted ? "Saved" : "Wishlist"}</span>
               </button>
 
               <div className="flex w-full sm:w-auto sm:flex-1 gap-2 sm:gap-3">
@@ -326,33 +326,33 @@ export default function BookDetailClient({
                   type="button"
                   disabled={book.stock <= 0}
                   onClick={() => addToCart(book, quantity)}
-                  className="inline-flex flex-1 cursor-pointer items-center justify-center gap-1.5 sm:gap-2 rounded-full bg-[#141413] px-4 sm:px-6 py-3 sm:py-3.5 text-xs font-bold text-white shadow-lg transition hover:bg-[#2e2d2a] disabled:cursor-not-allowed disabled:opacity-45"
+                  className="inline-flex flex-1 items-center justify-center gap-1.5 sm:gap-2 rounded-full bg-[#141413] px-4 sm:px-6 py-3 sm:py-3.5 text-xs font-bold uppercase tracking-[0.14em] sm:tracking-[0.16em] text-white shadow-lg transition hover:bg-[#d93829] disabled:cursor-not-allowed disabled:opacity-45"
                 >
                   <ShoppingBag className="h-4 w-4" />
-                  <span>{book.stock > 0 ? "ব্যাগে যোগ করুন" : "স্টক শেষ"}</span>
+                  <span>{book.stock > 0 ? "Add to Cart" : "Out of Stock"}</span>
                 </button>
 
                 <button
                   type="button"
                   disabled={book.stock <= 0}
                   onClick={handleBuyNow}
-                  className="inline-flex cursor-pointer items-center justify-center gap-1.5 sm:gap-2 rounded-full border border-[#d93829] bg-[#d93829] px-4 sm:px-6 py-3 sm:py-3.5 text-xs font-bold text-white transition hover:bg-[#b82d20] disabled:cursor-not-allowed disabled:opacity-45"
+                  className="inline-flex items-center justify-center gap-1.5 sm:gap-2 rounded-full border border-[#dedbd2] bg-white px-4 sm:px-6 py-3 sm:py-3.5 text-xs font-bold uppercase tracking-[0.14em] sm:tracking-[0.16em] text-[#141413] transition hover:border-[#141413] disabled:cursor-not-allowed disabled:opacity-45"
                 >
-                  <Zap className="h-4 w-4 fill-current" />
-                  <span>এখনই কিনুন</span>
+                  <Zap className="h-4 w-4 text-[#d93829]" />
+                  <span>Buy Now</span>
                 </button>
               </div>
             </div>
 
             <div className="mt-6 flex flex-wrap gap-4 border-t border-[#dedbd2] pt-5 text-xs text-[#62605a]">
               <span className="inline-flex items-center gap-1.5">
-                <Check className="h-3.5 w-3.5 text-[#d93829]" /> অ্যাসিড-মুক্ত টেকসই কাগজ
+                <Check className="h-3.5 w-3.5 text-[#d93829]" /> Acid-free archival paper
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <Check className="h-3.5 w-3.5 text-[#d93829]" /> ২,০০০ টাকার অর্ডারে ফ্রি ডেলিভারি
+                <Check className="h-3.5 w-3.5 text-[#d93829]" /> Free delivery over ৳2,000
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <Check className="h-3.5 w-3.5 text-[#d93829]" /> ৭ দিনের সহজ রিটার্ন পলিসি
+                <Check className="h-3.5 w-3.5 text-[#d93829]" /> 7-day collector return policy
               </span>
             </div>
           </div>
@@ -361,29 +361,29 @@ export default function BookDetailClient({
         {/* Lower Editorial Sections: Description, Specs, Author, Reviews */}
         <div className="mt-20 grid gap-10 lg:grid-cols-12">
           <div className="space-y-10 lg:col-span-7">
-            <section className="rounded-[2rem] border border-[#dedbd2] bg-white p-7 sm:p-9 shadow-xs">
-              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#141413]">
-                বইয়ের বিষয়বস্তু ও পর্যালোচনা
+            <section className="rounded-[2rem] border border-[#dedbd2] bg-white p-7 sm:p-9">
+              <h2 className="font-serif text-3xl font-semibold text-[#141413]">
+                About This Edition
               </h2>
               <div className="mt-4 space-y-4 text-base leading-relaxed text-[#62605a] whitespace-pre-line">
                 {book.longDescription}
               </div>
             </section>
 
-            <section className="rounded-[2rem] border border-[#dedbd2] bg-white p-7 sm:p-9 shadow-xs">
-              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#141413]">
-                গ্রন্থ বিবরণী
+            <section className="rounded-[2rem] border border-[#dedbd2] bg-white p-7 sm:p-9">
+              <h2 className="font-serif text-3xl font-semibold text-[#141413]">
+                Book Specifications
               </h2>
               <dl className="mt-5 grid gap-4 text-sm sm:grid-cols-2">
                 {[
-                  ["সংস্করণ", book.edition],
-                  ["বাঁধাই", book.binding],
-                  ["সাইজ / আকার", book.dimensions],
-                  ["পৃষ্ঠা সংখ্যা", `${book.pages} পৃষ্ঠা`],
-                  ["আইএসবিএন", book.isbn],
-                  ["প্রকাশনী", book.publisherName],
-                  ["ভাষা", book.language],
-                  ["প্রকাশকাল", book.publicationDate],
+                  ["Edition", book.edition],
+                  ["Binding", book.binding],
+                  ["Dimensions", book.dimensions],
+                  ["Page Count", `${book.pages} pages`],
+                  ["ISBN-13", book.isbn],
+                  ["Publisher", book.publisherName],
+                  ["Language", book.language],
+                  ["Publication Date", book.publicationDate],
                 ].map(([label, val]) => (
                   <div
                     key={label}
@@ -401,9 +401,9 @@ export default function BookDetailClient({
           <div className="space-y-10 lg:col-span-5">
             {author && (
               <section className="rounded-[2rem] border border-[#dedbd2] bg-[#eceae3] p-7 text-[#141413]">
-                <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#62605a]">
+                <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#62605a]">
                   <span className="h-1.5 w-1.5 rounded-full bg-[#d93829]" />
-                  লেখক পরিচিতি
+                  About the Author
                 </p>
                 <div className="mt-4 flex items-center gap-4">
                   <div
@@ -420,8 +420,8 @@ export default function BookDetailClient({
                       .join("")}
                   </div>
                   <div>
-                    <h3 className="font-serif text-2xl font-bold text-[#141413]">{author.name}</h3>
-                    <p className="text-xs font-semibold text-[#62605a]">{author.roleTitle}</p>
+                    <h3 className="font-serif text-2xl font-semibold text-[#141413]">{author.name}</h3>
+                    <p className="text-xs text-[#62605a]">{author.roleTitle}</p>
                   </div>
                 </div>
                 <p className="mt-4 text-sm leading-relaxed text-[#62605a]">
@@ -429,18 +429,18 @@ export default function BookDetailClient({
                 </p>
                 <Link
                   href={`/authors/${author.slug}`}
-                  className="mt-5 inline-flex cursor-pointer items-center gap-1.5 text-xs font-bold text-[#141413] hover:text-[#d93829]"
+                  className="mt-5 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-[#141413] hover:text-[#d93829]"
                 >
-                  লেখকের অন্যান্য বই দেখুন <ArrowRight className="h-3.5 w-3.5" />
+                  Author Profile &amp; Works <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
               </section>
             )}
 
             {/* Customer Reviews */}
-            <section className="rounded-[2rem] border border-[#dedbd2] bg-white p-7 shadow-xs">
+            <section className="rounded-[2rem] border border-[#dedbd2] bg-white p-7">
               <div className="flex items-center justify-between">
-                <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#141413]">
-                  পাঠকের মতামত ও রিভিউ
+                <h2 className="font-serif text-3xl font-semibold text-[#141413]">
+                  Reader Reviews
                 </h2>
                 <span className="inline-flex items-center gap-1 text-sm font-bold text-[#141413]">
                   <Star className="h-4 w-4 fill-[#d93829] text-[#d93829]" />
@@ -451,7 +451,7 @@ export default function BookDetailClient({
               <div className="mt-5 space-y-4">
                 {reviews.length === 0 ? (
                   <p className="text-sm text-[#62605a]">
-                    এই বইটিতে এখনো কোনো মতামত যোগ করা হয়নি। প্রথম পাঠক হিসেবে আপনার অনুভূতি জানান!
+                    Be the first reader to share a reflection on this edition.
                   </p>
                 ) : (
                   reviews.map((rev) => (
@@ -476,8 +476,8 @@ export default function BookDetailClient({
                         {rev.comment}
                       </p>
                       {rev.verifiedPurchase && (
-                        <span className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-[#141413]">
-                          <BookOpen className="h-3 w-3 text-[#d93829]" /> নিশ্চিত পাঠক
+                        <span className="mt-2 inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#141413]">
+                          <BookOpen className="h-3 w-3 text-[#d93829]" /> Verified Reader
                         </span>
                       )}
                     </div>
@@ -490,8 +490,8 @@ export default function BookDetailClient({
                 onSubmit={handleReviewSubmit}
                 className="mt-6 space-y-3 border-t border-[#dedbd2] pt-5"
               >
-                <h3 className="text-xs font-bold uppercase tracking-wider text-[#62605a]">
-                  আপনার রিভিউ লিখুন
+                <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-[#62605a]">
+                  Add Your Review
                 </h3>
                 <div className="grid gap-3 sm:grid-cols-2">
                   <input
@@ -499,27 +499,27 @@ export default function BookDetailClient({
                     required
                     value={reviewerName}
                     onChange={(e) => setReviewerName(e.target.value)}
-                    placeholder="আপনার নাম"
+                    placeholder="Your name"
                     className="rounded-xl border border-[#dedbd2] bg-[#f6f5f0] px-3.5 py-2 text-xs text-[#141413] focus:border-[#141413] focus:outline-none"
                   />
                   <select
                     value={rating}
                     onChange={(e) => setRating(Number(e.target.value))}
-                    aria-label="রেটিং"
-                    className="cursor-pointer rounded-xl border border-[#dedbd2] bg-[#f6f5f0] px-3.5 py-2 text-xs text-[#141413] focus:border-[#141413] focus:outline-none"
+                    aria-label="Rating"
+                    className="rounded-xl border border-[#dedbd2] bg-[#f6f5f0] px-3.5 py-2 text-xs text-[#141413] focus:border-[#141413] focus:outline-none"
                   >
-                    <option value={5}>৫ তারকা — অসাধারণ গ্রন্থ</option>
-                    <option value={4}>৪ তারকা — অত্যন্ত চমৎকার</option>
-                    <option value={3}>৩ তারকা — বেশ ভালো</option>
-                    <option value={2}>২ তারকা — চলনসই</option>
-                    <option value={1}>১ তারকা — প্রত্যাশা পূরণ হয়নি</option>
+                    <option value={5}>5 Stars — Extraordinary</option>
+                    <option value={4}>4 Stars — Recommended</option>
+                    <option value={3}>3 Stars — Good</option>
+                    <option value={2}>2 Stars — Fair</option>
+                    <option value={1}>1 Star — Needs work</option>
                   </select>
                 </div>
                 <input
                   type="text"
                   value={reviewTitle}
                   onChange={(e) => setReviewTitle(e.target.value)}
-                  placeholder="রিভিউ শিরোনাম (ঐচ্ছিক)"
+                  placeholder="Headline (optional)"
                   className="w-full rounded-xl border border-[#dedbd2] bg-[#f6f5f0] px-3.5 py-2 text-xs text-[#141413] focus:border-[#141413] focus:outline-none"
                 />
                 <textarea
@@ -527,15 +527,15 @@ export default function BookDetailClient({
                   rows={3}
                   value={reviewComment}
                   onChange={(e) => setReviewComment(e.target.value)}
-                  placeholder="বইটি সম্পর্কে আপনার মতামত জানান..."
+                  placeholder="Share your thoughts on this book..."
                   className="w-full rounded-xl border border-[#dedbd2] bg-[#f6f5f0] px-3.5 py-2 text-xs text-[#141413] focus:border-[#141413] focus:outline-none"
                 />
                 <button
                   type="submit"
                   disabled={submittingReview}
-                  className="cursor-pointer rounded-full bg-[#141413] px-6 py-2.5 text-xs font-bold text-white transition hover:bg-[#d93829] disabled:opacity-60"
+                  className="rounded-full bg-[#141413] px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.16em] text-white transition hover:bg-[#d93829] disabled:opacity-60"
                 >
-                  {submittingReview ? "প্রকাশ হচ্ছে..." : "রিভিউ জমা দিন"}
+                  {submittingReview ? "Publishing..." : "Submit Review"}
                 </button>
               </form>
             </section>
@@ -547,19 +547,19 @@ export default function BookDetailClient({
           <section className="mt-20">
             <div className="flex items-end justify-between">
               <div>
-                <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#62605a]">
+                <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.22em] text-[#62605a]">
                   <span className="h-1.5 w-1.5 rounded-full bg-[#d93829]" />
-                  একই বিষয়ের গ্রন্থ
+                  Companion Volumes
                 </p>
-                <h2 className="mt-1 font-serif text-2xl sm:text-3xl font-bold text-[#141413]">
-                  {book.category} বিভাগের অন্যান্য বই
+                <h2 className="mt-1 font-serif text-3xl font-semibold text-[#141413]">
+                  Related in {book.category}
                 </h2>
               </div>
               <Link
                 href={`/books?category=${encodeURIComponent(book.category)}`}
-                className="cursor-pointer text-xs font-bold text-[#141413] hover:text-[#d93829]"
+                className="text-xs font-semibold uppercase tracking-[0.16em] text-[#141413] hover:text-[#d93829]"
               >
-                সবগুলো দেখুন
+                Browse All
               </Link>
             </div>
             <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 items-stretch">

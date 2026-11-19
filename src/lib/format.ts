@@ -12,11 +12,11 @@ export function getStockBadge(stock: number): {
   tone: "in" | "low" | "out";
 } {
   if (stock <= 0) {
-    return { label: "Out of Stock", tone: "out" };
+    return { label: "স্টক শেষ", tone: "out" };
   }
   if (stock <= 8) {
-    return { label: `Only ${stock} Left`, tone: "low" };
+    return { label: `মাত্র ${stock}টি বাকি`, tone: "low" };
   }
-  return { label: "In Stock", tone: "in" };
+  return { label: "স্টকে আছে", tone: "in" };
 }
 

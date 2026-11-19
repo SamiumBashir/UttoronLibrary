@@ -39,19 +39,19 @@ export default function BookCard3D({ book }: BookCard3DProps) {
     const px = (e.clientX - rect.left) / rect.width - 0.5;
     const py = (e.clientY - rect.top) / rect.height - 0.5;
     setTilt({
-      rx: Number((-py * 14).toFixed(2)),
-      ry: Number((-22 + px * 26).toFixed(2)),
+      rx: Number((-py * 6).toFixed(2)),
+      ry: Number((-14 + px * 10).toFixed(2)),
     });
   };
 
   const handleMouseEnter = () => {
     setHovered(true);
-    setTilt({ rx: 3, ry: -22 });
+    setTilt({ rx: 2, ry: -14 });
   };
 
   const handleMouseLeave = () => {
     setHovered(false);
-    setTilt({ rx: 0, ry: -10 });
+    setTilt({ rx: 0, ry: -8 });
   };
 
   return (
@@ -65,7 +65,7 @@ export default function BookCard3D({ book }: BookCard3DProps) {
       {/* Top plaque metadata & Wishlist */}
       <div className="mb-2 sm:mb-3 flex h-7 sm:h-8 items-center justify-between gap-1.5 sm:gap-2 shrink-0">
         <span
-          className={`inline-flex items-center gap-1 sm:gap-1.5 rounded-full px-1.5 sm:px-2.5 py-0.5 font-mono text-[9px] sm:text-[10px] font-medium uppercase ${
+          className={`inline-flex items-center gap-1 sm:gap-1.5 rounded-full px-2 sm:px-2.5 py-0.5 text-[10px] sm:text-xs font-semibold ${
             stockBadge.tone === "out"
               ? "bg-red-50 text-red-700"
               : stockBadge.tone === "low"
@@ -87,7 +87,7 @@ export default function BookCard3D({ book }: BookCard3DProps) {
 
         <div className="flex items-center gap-1 sm:gap-1.5">
           {discount > 0 && (
-            <span className="rounded-full bg-[#d93829]/10 px-1.5 sm:px-2 py-0.5 font-mono text-[9px] sm:text-[10px] font-bold text-[#d93829]">
+            <span className="rounded-full bg-[#d93829]/10 px-2 py-0.5 text-[10px] sm:text-xs font-bold text-[#d93829]">
               -{discount}%
             </span>
           )}
@@ -194,9 +194,9 @@ export default function BookCard3D({ book }: BookCard3DProps) {
 
       {/* Book Plaque Metadata */}
       <div className="mt-2.5 sm:mt-4 flex flex-1 flex-col">
-        <div className="flex h-4 items-center justify-between gap-1.5 font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.14em] sm:tracking-[0.16em] text-[#62605a]">
+        <div className="flex h-4 items-center justify-between gap-1.5 text-[11px] sm:text-xs font-medium text-[#62605a]">
           <span className="truncate">{book.category}</span>
-          <span className="shrink-0">{book.pages} PP</span>
+          <span className="shrink-0">{book.pages} পৃষ্ঠা</span>
         </div>
 
         <Link href={`/books/${book.slug}`} className="mt-1 sm:mt-1.5 block">
@@ -204,18 +204,18 @@ export default function BookCard3D({ book }: BookCard3DProps) {
             {book.title}
           </h3>
         </Link>
-        <p className="mt-0.5 h-4 text-[10px] sm:text-xs font-medium text-[#62605a] truncate">
+        <p className="mt-0.5 h-4 text-[11px] sm:text-xs font-medium text-[#62605a] truncate">
           {book.authorName}
         </p>
 
         {/* Price & Actions */}
         <div className="mt-auto pt-2.5 sm:pt-4">
           <div className="mb-2 sm:mb-3 flex h-6 sm:h-7 items-baseline gap-1.5 sm:gap-2">
-            <span className="font-mono text-xs xs:text-sm sm:text-lg font-bold text-[#141413]">
+            <span className="text-sm xs:text-base sm:text-lg font-bold text-[#141413]">
               {formatPrice(book.price)}
             </span>
             {book.originalPrice > book.price && (
-              <span className="font-mono text-[10px] sm:text-xs text-[#62605a]/65 line-through">
+              <span className="text-xs text-[#62605a]/65 line-through">
                 {formatPrice(book.originalPrice)}
               </span>
             )}
@@ -230,20 +230,20 @@ export default function BookCard3D({ book }: BookCard3DProps) {
                 e.stopPropagation();
                 addToCart(book, 1);
               }}
-              className="inline-flex flex-1 items-center justify-center gap-1 sm:gap-1.5 rounded-full bg-[#141413] px-2 sm:px-3 py-2 sm:py-2.5 text-[10px] xs:text-xs font-semibold text-white transition hover:bg-[#2e2d2a] disabled:cursor-not-allowed disabled:opacity-45"
+              className="inline-flex flex-1 items-center justify-center gap-1 sm:gap-1.5 rounded-full bg-[#141413] px-2.5 sm:px-3 py-2 sm:py-2.5 text-xs font-semibold text-white transition hover:bg-[#2e2d2a] disabled:cursor-not-allowed disabled:opacity-45"
             >
-              <ShoppingBag className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
-              <span className="truncate">{book.stock > 0 ? "Add to Bag" : "Sold Out"}</span>
+              <ShoppingBag className="h-3.5 w-3.5" />
+              <span className="truncate">{book.stock > 0 ? "ব্যাগে যোগ" : "স্টক শেষ"}</span>
             </button>
             <button
               type="button"
               disabled={book.stock <= 0}
               onClick={handleBuyNow}
               aria-label={`Buy ${book.title} now`}
-              className="inline-flex items-center justify-center gap-1 sm:gap-1.5 rounded-full border border-[#d93829] bg-[#d93829] px-2.5 sm:px-3.5 py-2 sm:py-2.5 text-[10px] xs:text-xs font-semibold text-white transition hover:bg-[#b82d20] hover:border-[#b82d20] disabled:cursor-not-allowed disabled:opacity-45"
+              className="inline-flex items-center justify-center gap-1 sm:gap-1.5 rounded-full border border-[#d93829] bg-[#d93829] px-3 sm:px-4 py-2 sm:py-2.5 text-xs font-semibold text-white transition hover:bg-[#b82d20] hover:border-[#b82d20] disabled:cursor-not-allowed disabled:opacity-45"
             >
-              <Zap className="h-3 w-3 sm:h-3.5 sm:w-3.5 fill-current" />
-              <span>Buy</span>
+              <Zap className="h-3.5 w-3.5 fill-current" />
+              <span>কিনুন</span>
             </button>
           </div>
         </div>

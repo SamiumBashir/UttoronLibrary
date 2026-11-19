@@ -80,16 +80,16 @@ export default function BookCatalogClient({
             type="search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search by title, author, ISBN, or category..."
-            aria-label="Search book catalog"
+            placeholder="বইয়ের নাম, লেখক, আইএসবিএন বা বিষয় দিয়ে খুঁজুন..."
+            aria-label="বই অনুসন্ধান"
             className="w-full rounded-xl border border-[#dedbd2] bg-[#f6f5f0] py-2.5 pl-10 pr-9 text-sm text-[#141413] placeholder:text-[#62605a] focus:border-[#141413] focus:bg-white focus:outline-none"
           />
           {searchQuery && (
             <button
               type="button"
-              aria-label="Clear search"
+              aria-label="অনুসন্ধান মুছুন"
               onClick={() => setSearchQuery("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#62605a] hover:text-[#141413]"
+              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-[#62605a] hover:text-[#141413]"
             >
               <X className="h-4 w-4" />
             </button>
@@ -99,49 +99,49 @@ export default function BookCatalogClient({
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-2">
             <ArrowUpDown className="h-4 w-4 text-[#d93829]" />
-            <label htmlFor="catalog-sort" className="font-mono text-xs text-[#62605a]">
-              SORT:
+            <label htmlFor="catalog-sort" className="text-xs font-semibold text-[#62605a]">
+              সাজান:
             </label>
             <select
               id="catalog-sort"
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as SortOption)}
-              className="rounded-xl border border-[#dedbd2] bg-[#f6f5f0] px-3 py-2 text-xs font-semibold text-[#141413] focus:border-[#141413] focus:outline-none"
+              className="cursor-pointer rounded-xl border border-[#dedbd2] bg-[#f6f5f0] px-3 py-2 text-xs font-semibold text-[#141413] focus:border-[#141413] focus:outline-none"
             >
-              <option value="newest">Newest</option>
-              <option value="bestselling">Best Selling</option>
-              <option value="price-asc">Price: Low to High</option>
-              <option value="price-desc">Price: High to Low</option>
+              <option value="newest">সর্বশেষ প্রকাশিত</option>
+              <option value="bestselling">সর্বাধিক বিক্রিত</option>
+              <option value="price-asc">মূল্য: কম থেকে বেশি</option>
+              <option value="price-desc">মূল্য: বেশি থেকে কম</option>
             </select>
           </div>
 
-          {/* Minimaze Grid vs Work Index Toggle */}
+          {/* Grid vs Work Index Toggle */}
           <div className="inline-flex rounded-xl border border-[#dedbd2] bg-[#f6f5f0] p-1">
             <button
               type="button"
               onClick={() => setViewMode("grid")}
-              aria-label="3D Grid View"
-              className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
+              aria-label="গ্রিড ভিউ"
+              className={`inline-flex cursor-pointer items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
                 viewMode === "grid"
                   ? "bg-[#141413] text-white"
                   : "text-[#62605a] hover:text-[#141413]"
               }`}
             >
               <LayoutGrid className="h-3.5 w-3.5" />
-              3D Grid
+              গ্রিড
             </button>
             <button
               type="button"
               onClick={() => setViewMode("index")}
-              aria-label="Gallery Index View"
-              className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
+              aria-label="তালিকা ভিউ"
+              className={`inline-flex cursor-pointer items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
                 viewMode === "index"
                   ? "bg-[#141413] text-white"
                   : "text-[#62605a] hover:text-[#141413]"
               }`}
             >
               <List className="h-3.5 w-3.5" />
-              Index
+              তালিকা
             </button>
           </div>
         </div>
@@ -155,6 +155,7 @@ export default function BookCatalogClient({
       >
         {categories.map((cat) => {
           const active = selectedCategory.toLowerCase() === cat.toLowerCase();
+          const label = cat === "All" ? "সকল বই" : cat;
           return (
             <button
               key={cat}
@@ -162,13 +163,13 @@ export default function BookCatalogClient({
               aria-selected={active}
               type="button"
               onClick={() => setSelectedCategory(cat)}
-              className={`shrink-0 rounded-full px-3.5 sm:px-4 py-1.5 sm:py-2 font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.12em] transition ${
+              className={`shrink-0 cursor-pointer rounded-full px-3.5 sm:px-4 py-1.5 sm:py-2 text-xs font-semibold transition ${
                 active
                   ? "bg-[#141413] text-white shadow-sm"
                   : "border border-[#dedbd2] bg-white text-[#62605a] hover:border-[#141413] hover:text-[#141413]"
               }`}
             >
-              {cat}
+              {label}
             </button>
           );
         })}
@@ -177,11 +178,11 @@ export default function BookCatalogClient({
       {/* Results */}
       {filteredBooks.length === 0 ? (
         <div className="mt-12 rounded-3xl border border-[#dedbd2] bg-white px-6 py-16 text-center">
-          <p className="font-serif text-2xl font-semibold text-[#141413]">
-            No volumes matched your filter
+          <p className="font-serif text-2xl font-bold text-[#141413]">
+            কোনো বই খুঁজে পাওয়া যায়নি
           </p>
           <p className="mt-2 text-sm text-[#62605a]">
-            Reset the category or search query to browse our complete archive.
+            অনুসন্ধান বা বিষয়শ্রেণী পরিবর্তন করে পুনরায় চেষ্টা করুন অথবা ফিল্টার রিসেট করুন।
           </p>
           <button
             type="button"
@@ -189,9 +190,9 @@ export default function BookCatalogClient({
               setSelectedCategory("All");
               setSearchQuery("");
             }}
-            className="mt-5 rounded-full bg-[#141413] px-6 py-2.5 text-xs font-semibold uppercase tracking-[0.16em] text-white"
+            className="mt-5 cursor-pointer rounded-full bg-[#141413] px-6 py-2.5 text-xs font-semibold text-white transition hover:bg-[#d93829]"
           >
-            Reset Filters
+            ফিল্টার রিসেট করুন
           </button>
         </div>
       ) : viewMode === "grid" ? (
@@ -201,7 +202,7 @@ export default function BookCatalogClient({
           ))}
         </div>
       ) : (
-        /* Minimaze-Inspired Index List with Live Hover Cover Preview */
+        /* Index List with Live Hover Cover Preview */
         <div className="relative mt-6 sm:mt-8 grid gap-8 lg:grid-cols-12">
           <div className="divide-y divide-[#dedbd2] rounded-3xl border border-[#dedbd2] bg-white lg:col-span-8">
             {filteredBooks.map((book, idx) => {
@@ -213,39 +214,39 @@ export default function BookCatalogClient({
                   className="group flex flex-wrap items-center justify-between gap-3 sm:gap-4 px-4 sm:px-5 py-3.5 sm:py-4 transition hover:bg-[#f6f5f0]"
                 >
                   <div className="flex min-w-0 items-baseline gap-3 sm:gap-4">
-                    <span className="font-mono text-xs text-[#d93829]">
+                    <span className="text-xs font-bold text-[#d93829]">
                       {String(idx + 1).padStart(2, "0")}
                     </span>
                     <div className="min-w-0">
                       <Link
                         href={`/books/${book.slug}`}
-                        className="block truncate font-serif text-base sm:text-2xl font-semibold text-[#141413] group-hover:text-[#d93829]"
+                        className="block truncate font-serif text-base sm:text-xl font-bold text-[#141413] group-hover:text-[#d93829]"
                       >
                         {book.title}
                       </Link>
-                      <p className="font-mono text-[10px] sm:text-[11px] text-[#62605a]">
+                      <p className="mt-0.5 text-xs text-[#62605a]">
                         {book.authorName} • {book.category} • {badge.label}
                       </p>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <span className="font-mono text-sm font-bold text-[#141413]">
+                    <span className="text-sm font-bold text-[#141413]">
                       {formatPrice(book.price)}
                     </span>
                     <button
                       type="button"
                       disabled={book.stock <= 0}
                       onClick={() => addToCart(book, 1)}
-                      aria-label={`Add ${book.title} to bag`}
-                      className="rounded-full border border-[#dedbd2] bg-white p-2 text-[#141413] transition hover:border-[#141413] hover:bg-[#141413] hover:text-white disabled:opacity-40"
+                      aria-label={`${book.title} ব্যাগে যোগ করুন`}
+                      className="cursor-pointer rounded-full border border-[#dedbd2] bg-white p-2 text-[#141413] transition hover:border-[#141413] hover:bg-[#141413] hover:text-white disabled:opacity-40"
                     >
                       <ShoppingBag className="h-3.5 w-3.5" />
                     </button>
                     <Link
                       href={`/books/${book.slug}`}
-                      aria-label={`Open ${book.title}`}
-                      className="rounded-full bg-[#141413] p-2 text-white transition hover:bg-[#d93829]"
+                      aria-label={`${book.title} দেখুন`}
+                      className="cursor-pointer rounded-full bg-[#141413] p-2 text-white transition hover:bg-[#d93829]"
                     >
                       <ArrowUpRight className="h-3.5 w-3.5" />
                     </Link>
@@ -262,8 +263,8 @@ export default function BookCatalogClient({
                 const preview = hoveredRowBook || filteredBooks[0];
                 return (
                   <>
-                    <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#62605a]">
-                      Archive Cover Preview
+                    <p className="text-xs font-bold text-[#62605a]">
+                      নির্বাচিত বইয়ের প্রচ্ছদ
                     </p>
                     <div className="perspective-1200 mx-auto my-6 flex h-72 items-center justify-center rounded-2xl bg-[#f6f5f0]">
                       <div
@@ -278,15 +279,15 @@ export default function BookCatalogClient({
                         />
                       </div>
                     </div>
-                    <h3 className="font-serif text-2xl font-semibold text-[#141413]">
+                    <h3 className="font-serif text-xl font-bold text-[#141413]">
                       {preview.title}
                     </h3>
                     <p className="mt-1 text-xs text-[#62605a]">{preview.authorName}</p>
                     <Link
                       href={`/books/${preview.slug}`}
-                      className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-[#141413] px-5 py-2.5 text-xs font-semibold text-white hover:bg-[#d93829]"
+                      className="mt-5 inline-flex cursor-pointer items-center gap-1.5 rounded-full bg-[#141413] px-5 py-2.5 text-xs font-bold text-white transition hover:bg-[#d93829]"
                     >
-                      Inspect 3D Edition <ArrowUpRight className="h-3.5 w-3.5" />
+                      বিস্তারিত দেখুন <ArrowUpRight className="h-3.5 w-3.5" />
                     </Link>
                   </>
                 );

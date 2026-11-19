@@ -47,8 +47,8 @@ export default function BookCoverArt({
       {/* Top Category Eyebrow */}
       <div className="relative z-10 text-center">
         <span
-          className={`inline-block font-sans uppercase tracking-[0.22em] ${
-            compact ? "text-[7px]" : "text-[9px]"
+          className={`inline-block font-sans font-medium ${
+            compact ? "text-[8px]" : "text-[10px]"
           }`}
           style={{ color: palette.accent }}
         >
@@ -199,10 +199,10 @@ export default function BookCoverArt({
         </p>
         {!compact && (
           <p
-            className="mt-1 font-sans text-[8px] font-semibold uppercase tracking-[0.26em] opacity-80"
+            className="mt-1 font-sans text-[9px] font-semibold tracking-wider opacity-85"
             style={{ color: palette.accent }}
           >
-            Uttoron Prokasoni
+            উত্তরণ প্রকাশনী
           </p>
         )}
       </div>

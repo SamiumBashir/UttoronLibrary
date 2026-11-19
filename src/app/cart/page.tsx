@@ -105,29 +105,29 @@ export default function CartPage() {
     <div className="paper-grain min-h-screen bg-[#f6f5f0] pb-24 pt-20 sm:pt-28 text-[#141413]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <header className="mb-6 sm:mb-10">
-          <p className="inline-flex items-center gap-2 font-mono text-[10px] sm:text-xs font-semibold uppercase tracking-[0.26em] text-[#62605a]">
+          <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#62605a]">
             <span className="h-1.5 w-1.5 rounded-full bg-[#d93829]" />
-            Your Reading Bag
+            পাঠকের শপিং ব্যাগ
           </p>
-          <h1 className="mt-1.5 sm:mt-2 font-serif text-2xl xs:text-3xl sm:text-5xl font-semibold text-[#141413]">
-            Shopping Cart
+          <h1 className="mt-1.5 sm:mt-2 font-serif text-2xl xs:text-3xl sm:text-4xl font-bold text-[#141413]">
+            শপিং ব্যাগ
           </h1>
         </header>
 
         {cart.length === 0 ? (
-          <div className="rounded-2xl sm:rounded-[2rem] border border-[#dedbd2] bg-white px-5 sm:px-6 py-12 sm:py-20 text-center">
+          <div className="rounded-2xl sm:rounded-[2rem] border border-[#dedbd2] bg-white px-5 sm:px-6 py-12 sm:py-20 text-center shadow-xs">
             <ShoppingBag className="mx-auto h-10 w-10 sm:h-12 sm:w-12 text-[#d93829]" />
-            <h2 className="mt-4 font-serif text-2xl sm:text-3xl font-semibold text-[#141413]">
-              No volumes in your bag yet
+            <h2 className="mt-4 font-serif text-2xl sm:text-3xl font-bold text-[#141413]">
+              আপনার ব্যাগে কোনো বই যুক্ত করা হয়নি
             </h2>
             <p className="mt-2 text-xs sm:text-sm text-[#62605a]">
-              Browse our gallery collection to discover clothbound editions and new arrivals.
+              আমাদের সমৃদ্ধ বইসমগ্র থেকে পছন্দের কালজয়ী বইগুলো খুঁজে নিন।
             </p>
             <Link
               href="/books"
-              className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#141413] px-6 sm:px-7 py-3 sm:py-3.5 text-xs font-bold uppercase tracking-[0.18em] text-white transition hover:bg-[#d93829]"
+              className="mt-6 inline-flex cursor-pointer items-center gap-2 rounded-full bg-[#141413] px-6 sm:px-7 py-3 sm:py-3.5 text-xs font-bold text-white transition hover:bg-[#d93829]"
             >
-              Continue Shopping <ArrowRight className="h-4 w-4" />
+              বই দেখুন <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         ) : (
@@ -137,12 +137,12 @@ export default function CartPage() {
               {cart.map((item) => (
                 <div
                   key={item.bookId}
-                  className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 rounded-2xl sm:rounded-[2rem] border border-[#dedbd2] bg-white p-3.5 sm:p-5"
+                  className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 rounded-2xl sm:rounded-[2rem] border border-[#dedbd2] bg-white p-3.5 sm:p-5 shadow-xs"
                 >
                   <div className="flex items-center gap-3 min-w-0 flex-1">
                     <Link
                       href={`/books/${item.slug}`}
-                      className="h-20 w-14 sm:h-28 sm:w-20 shrink-0 overflow-hidden rounded-r shadow-md"
+                      className="cursor-pointer h-20 w-14 sm:h-28 sm:w-20 shrink-0 overflow-hidden rounded-r shadow-md"
                     >
                       <BookCoverArt
                         title={item.title}
@@ -156,15 +156,15 @@ export default function CartPage() {
                     <div className="min-w-0 flex-1">
                       <Link
                         href={`/books/${item.slug}`}
-                        className="font-serif text-base sm:text-2xl font-semibold text-[#141413] hover:text-[#d93829] line-clamp-2"
+                        className="cursor-pointer font-serif text-base sm:text-xl font-bold text-[#141413] hover:text-[#d93829] line-clamp-2"
                       >
                         {item.title}
                       </Link>
-                      <p className="text-[11px] sm:text-xs text-[#62605a] truncate">
-                        {item.authorName} • ISBN {item.isbn}
+                      <p className="text-xs text-[#62605a] truncate mt-0.5">
+                        {item.authorName} • আইএসবিএন {item.isbn}
                       </p>
-                      <p className="mt-1 sm:mt-2 text-xs sm:text-sm font-semibold text-[#141413]">
-                        {formatPrice(item.price)} each
+                      <p className="mt-1 sm:mt-1.5 text-xs sm:text-sm font-bold text-[#141413]">
+                        {formatPrice(item.price)}
                       </p>
                     </div>
                   </div>
@@ -173,9 +173,9 @@ export default function CartPage() {
                     <div className="inline-flex items-center rounded-full border border-[#dedbd2] bg-[#f6f5f0] px-1 sm:px-1.5 py-0.5 sm:py-1">
                       <button
                         type="button"
-                        aria-label="Decrease quantity"
+                        aria-label="পরিমাণ কমান"
                         onClick={() => updateQuantity(item.bookId, item.quantity - 1)}
-                        className="p-1 sm:p-1.5 text-[#141413] hover:text-[#d93829]"
+                        className="cursor-pointer p-1 sm:p-1.5 text-[#141413] hover:text-[#d93829]"
                       >
                         <Minus className="h-3.5 w-3.5" />
                       </button>
@@ -184,24 +184,24 @@ export default function CartPage() {
                       </span>
                       <button
                         type="button"
-                        aria-label="Increase quantity"
+                        aria-label="পরিমাণ বাড়ান"
                         onClick={() => updateQuantity(item.bookId, item.quantity + 1)}
-                        className="p-1 sm:p-1.5 text-[#141413] hover:text-[#d93829]"
+                        className="cursor-pointer p-1 sm:p-1.5 text-[#141413] hover:text-[#d93829]"
                       >
                         <Plus className="h-3.5 w-3.5" />
                       </button>
                     </div>
 
                     <div className="text-right">
-                      <p className="font-serif text-base sm:text-xl font-bold text-[#141413]">
+                      <p className="font-serif text-base sm:text-lg font-bold text-[#141413]">
                         {formatPrice(item.price * item.quantity)}
                       </p>
                       <button
                         type="button"
                         onClick={() => removeFromCart(item.bookId)}
-                        className="mt-0.5 inline-flex items-center gap-1 text-[11px] sm:text-xs text-[#d93829]/80 hover:text-[#d93829]"
+                        className="mt-0.5 inline-flex cursor-pointer items-center gap-1 text-xs font-semibold text-[#d93829]/80 hover:text-[#d93829]"
                       >
-                        <Trash2 className="h-3 w-3" /> Remove
+                        <Trash2 className="h-3 w-3" /> বাদ দিন
                       </button>
                     </div>
                   </div>
@@ -211,27 +211,27 @@ export default function CartPage() {
               <div className="pt-2">
                 <Link
                   href="/books"
-                  className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[#141413] hover:text-[#d93829]"
+                  className="inline-flex cursor-pointer items-center gap-2 text-xs font-bold text-[#141413] hover:text-[#d93829]"
                 >
-                  ← Continue Shopping
+                  ← আরও বই দেখুন
                 </Link>
               </div>
             </div>
 
             {/* Order Summary & Coupon */}
             <aside className="lg:col-span-4">
-              <div className="rounded-[2rem] border border-[#dedbd2] bg-white p-7 shadow-sm">
-                <h2 className="font-serif text-2xl font-semibold text-[#141413]">
-                  Order Summary
+              <div className="rounded-[2rem] border border-[#dedbd2] bg-white p-6 sm:p-7 shadow-xs">
+                <h2 className="font-serif text-2xl font-bold text-[#141413]">
+                  অর্ডারের বিবরণ
                 </h2>
 
                 {/* Coupon Form */}
                 <form onSubmit={handleApplyCoupon} className="mt-5">
                   <label
                     htmlFor="cart-coupon"
-                    className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-[#62605a]"
+                    className="flex items-center gap-1.5 text-xs font-bold text-[#62605a]"
                   >
-                    <Tag className="h-3.5 w-3.5 text-[#d93829]" /> Discount Coupon
+                    <Tag className="h-3.5 w-3.5 text-[#d93829]" /> ডিসকাউন্ট কুপন
                   </label>
                   <div className="mt-2 flex gap-2">
                     <input
@@ -239,20 +239,20 @@ export default function CartPage() {
                       type="text"
                       value={couponInput}
                       onChange={(e) => setCouponInput(e.target.value)}
-                      placeholder="e.g. LIBRARY10"
+                      placeholder="যেমন: LIBRARY10"
                       className="flex-1 rounded-xl border border-[#dedbd2] bg-[#f6f5f0] px-3.5 py-2.5 text-xs uppercase text-[#141413] focus:border-[#141413] focus:outline-none"
                     />
                     <button
                       type="submit"
                       disabled={validatingCoupon}
-                      className="rounded-xl bg-[#141413] px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-[#d93829]"
+                      className="cursor-pointer rounded-xl bg-[#141413] px-4 py-2.5 text-xs font-semibold text-white transition hover:bg-[#d93829]"
                     >
-                      Apply
+                      যুক্ত করুন
                     </button>
                   </div>
-                  <p className="mt-1.5 text-[11px] text-[#62605a]">
-                    Try <code className="font-semibold text-[#141413]">LIBRARY10</code> or{" "}
-                    <code className="font-semibold text-[#141413]">FIRSTREAD</code>
+                  <p className="mt-1.5 text-xs text-[#62605a]">
+                    কুপন ট্রাই করুন: <code className="font-bold text-[#141413]">LIBRARY10</code> অথবা{" "}
+                    <code className="font-bold text-[#141413]">FIRSTREAD</code>
                   </p>
                 </form>
 
@@ -260,41 +260,41 @@ export default function CartPage() {
                 <div className="mt-5">
                   <label
                     htmlFor="cart-delivery-city"
-                    className="block text-xs font-semibold uppercase tracking-[0.16em] text-[#62605a]"
+                    className="block text-xs font-bold text-[#62605a]"
                   >
-                    Delivery Zone
+                    ডেলিভারি এলাকা
                   </label>
                   <select
                     id="cart-delivery-city"
                     value={city}
                     onChange={(e) => handleCityChange(e.target.value)}
-                    className="mt-2 w-full rounded-xl border border-[#dedbd2] bg-[#f6f5f0] px-3.5 py-2.5 text-xs font-medium text-[#141413]"
+                    className="cursor-pointer mt-2 w-full rounded-xl border border-[#dedbd2] bg-[#f6f5f0] px-3.5 py-2.5 text-xs font-medium text-[#141413]"
                   >
-                    <option value="Dhaka">Dhaka Metro (৳60 • Free above ৳2,000)</option>
-                    <option value="Chattogram">Outside Dhaka (৳120 • Free above ৳2,000)</option>
+                    <option value="Dhaka">ঢাকা সিটি (৬০৳ • ২,০০০ টাকার অর্ডারে ফ্রি)</option>
+                    <option value="Chattogram">ঢাকার বাইরে (১২০৳ • ২,০০০ টাকার অর্ডারে ফ্রি)</option>
                   </select>
                 </div>
 
                 {/* Breakdown */}
                 <dl className="mt-6 space-y-3 border-t border-[#dedbd2] pt-5 text-sm">
                   <div className="flex justify-between">
-                    <dt className="text-[#62605a]">Subtotal</dt>
-                    <dd className="font-semibold text-[#141413]">{formatPrice(cartSubtotal)}</dd>
+                    <dt className="text-[#62605a]">বইয়ের মূল্য</dt>
+                    <dd className="font-bold text-[#141413]">{formatPrice(cartSubtotal)}</dd>
                   </div>
                   <div className="flex justify-between">
-                    <dt className="text-[#62605a]">Delivery Charge</dt>
-                    <dd className="font-semibold text-[#141413]">
-                      {deliveryCharge === 0 ? "Free" : formatPrice(deliveryCharge)}
+                    <dt className="text-[#62605a]">ডেলিভারি চার্জ</dt>
+                    <dd className="font-bold text-[#141413]">
+                      {deliveryCharge === 0 ? "ফ্রি" : formatPrice(deliveryCharge)}
                     </dd>
                   </div>
                   {discount > 0 && (
                     <div className="flex justify-between text-[#d93829]">
-                      <dt>Discount ({appliedCoupon?.code})</dt>
-                      <dd className="font-semibold">-{formatPrice(discount)}</dd>
+                      <dt>ছাড় ({appliedCoupon?.code})</dt>
+                      <dd className="font-bold">-{formatPrice(discount)}</dd>
                     </div>
                   )}
                   <div className="flex justify-between border-t border-[#dedbd2] pt-3 text-base">
-                    <dt className="font-semibold text-[#141413]">Total Payable</dt>
+                    <dt className="font-bold text-[#141413]">সর্বমোট প্রদেয়</dt>
                     <dd className="font-serif text-2xl font-bold text-[#141413]">
                       {formatPrice(total)}
                     </dd>
@@ -303,9 +303,9 @@ export default function CartPage() {
 
                 <Link
                   href="/checkout"
-                  className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-[#141413] px-6 py-3.5 text-xs font-bold uppercase tracking-[0.18em] text-white shadow-lg transition hover:bg-[#d93829]"
+                  className="mt-6 flex cursor-pointer w-full items-center justify-center gap-2 rounded-full bg-[#141413] px-6 py-3.5 text-xs font-bold text-white shadow-lg transition hover:bg-[#d93829]"
                 >
-                  Proceed to Checkout <ArrowRight className="h-4 w-4" />
+                  অর্ডার সম্পন্ন করুন <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
             </aside>

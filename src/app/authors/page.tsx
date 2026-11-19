@@ -20,16 +20,15 @@ export default async function AuthorsPage() {
     <div className="paper-grain min-h-screen bg-[#f6f5f0] pb-24 pt-20 sm:pt-28 text-[#141413]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <header className="max-w-2xl">
-          <p className="inline-flex items-center gap-2 font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.26em] text-[#62605a]">
+          <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#62605a]">
             <span className="h-2 w-2 rounded-full bg-[#d93829]" />
-            Literary Roster
+            লেখক পরিচিতি ও জীবনী
           </p>
-          <h1 className="mt-1.5 sm:mt-2 font-serif text-2xl xs:text-3xl sm:text-4xl sm:text-5xl font-semibold text-[#141413]">
-            Authors &amp; Fellows
+          <h1 className="mt-1.5 sm:mt-2 font-serif text-2xl xs:text-3xl sm:text-4xl sm:text-5xl font-bold text-[#141413]">
+            আমাদের লেখকবৃন্দ
           </h1>
           <p className="mt-2 sm:mt-3 text-xs sm:text-base text-[#62605a]">
-            Novelists, astrophysicists, archivists, poets, and systems thinkers shaping
-            Uttoron Prokasoni&apos;s catalog.
+            কথাশিল্পী, গবেষক, কবি ও অনুবাদক—যাঁদের মননশীল ও অনুসন্ধিৎসু লেখনীতে সমৃদ্ধ উত্তরণ প্রকাশনীর সাহিত্যভাণ্ডার।
           </p>
         </header>
 
@@ -42,7 +41,7 @@ export default async function AuthorsPage() {
               <Link
                 key={author.id}
                 href={`/authors/${author.slug}`}
-                className="group flex flex-col justify-between rounded-2xl sm:rounded-3xl border border-[#dedbd2] bg-white p-5 sm:p-7 transition hover:-translate-y-1 hover:border-[#141413] hover:shadow-xl"
+                className="group flex cursor-pointer flex-col justify-between rounded-2xl sm:rounded-3xl border border-[#dedbd2] bg-white p-5 sm:p-7 transition hover:-translate-y-1 hover:border-[#141413] hover:shadow-xl shadow-xs"
               >
                 <div>
                   <div className="flex items-center gap-3 sm:gap-4">
@@ -60,10 +59,10 @@ export default async function AuthorsPage() {
                         .join("")}
                     </div>
                     <div>
-                      <h2 className="font-serif text-lg sm:text-2xl font-semibold text-[#141413] group-hover:text-[#d93829]">
+                      <h2 className="font-serif text-lg sm:text-2xl font-bold text-[#141413] group-hover:text-[#d93829]">
                         {author.name}
                       </h2>
-                      <p className="font-mono text-[10px] sm:text-[11px] font-medium text-[#62605a]">
+                      <p className="text-xs font-semibold text-[#62605a] mt-0.5">
                         {author.roleTitle}
                       </p>
                     </div>
@@ -74,12 +73,12 @@ export default async function AuthorsPage() {
                 </div>
 
                 <div className="mt-5 sm:mt-6 flex items-center justify-between border-t border-[#eceae3] pt-3.5 sm:pt-4 text-xs">
-                  <span className="inline-flex items-center gap-1 font-mono text-[10px] sm:text-[11px] text-[#62605a]">
+                  <span className="inline-flex items-center gap-1 text-xs font-medium text-[#62605a]">
                     <Award className="h-3.5 w-3.5 text-[#d93829]" />
-                    {authoredCount} {authoredCount === 1 ? "Volume" : "Volumes"}
+                    {authoredCount}টি গ্রন্থ
                   </span>
-                  <span className="inline-flex items-center gap-1 font-semibold text-[#141413] group-hover:text-[#d93829]">
-                    Read Bio <ArrowRight className="h-3.5 w-3.5" />
+                  <span className="inline-flex items-center gap-1 font-bold text-[#141413] group-hover:text-[#d93829]">
+                    বিস্তারিত দেখুন <ArrowRight className="h-3.5 w-3.5" />
                   </span>
                 </div>
               </Link>

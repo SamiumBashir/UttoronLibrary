@@ -76,14 +76,14 @@ export default function SearchOverlay() {
                 autoFocus
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search by book title, author, ISBN, or category..."
+                placeholder="বইয়ের নাম, লেখক, আইএসবিএন বা বিষয় দিয়ে খুঁজুন..."
                 className="flex-1 bg-transparent text-base text-[#141413] placeholder:text-[#62605a]/70 focus:outline-none"
               />
               <button
                 type="button"
-                aria-label="Close search"
+                aria-label="অনুসন্ধান বন্ধ করুন"
                 onClick={() => setSearchOpen(false)}
-                className="rounded-full p-1.5 text-[#62605a] hover:bg-[#eceae3] hover:text-[#141413]"
+                className="cursor-pointer rounded-full p-1.5 text-[#62605a] hover:bg-[#eceae3] hover:text-[#141413]"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -92,11 +92,11 @@ export default function SearchOverlay() {
             <div className="max-h-[60vh] overflow-y-auto p-4">
               {loading ? (
                 <p className="py-8 text-center text-sm text-[#62605a]">
-                  Searching the Uttoron gallery archive...
+                  উত্তরণ প্রকাশনীর বইসমগ্র অনুসন্ধান করা হচ্ছে...
                 </p>
               ) : results.length === 0 ? (
                 <p className="py-8 text-center text-sm text-[#62605a]">
-                  No volumes matched &ldquo;{query}&rdquo;. Try another title, author, or ISBN.
+                  “{query}” দিয়ে কোনো বই পাওয়া যায়নি। ভিন্ন কোনো বইয়ের নাম বা লেখক দিয়ে চেষ্টা করুন।
                 </p>
               ) : (
                 <div className="grid gap-2.5">
@@ -105,7 +105,7 @@ export default function SearchOverlay() {
                       key={book.id}
                       href={`/books/${book.slug}`}
                       onClick={() => setSearchOpen(false)}
-                      className="flex items-center gap-4 rounded-2xl border border-transparent bg-white/75 p-2.5 transition hover:border-[#dedbd2] hover:bg-white"
+                      className="cursor-pointer flex items-center gap-4 rounded-2xl border border-transparent bg-white/75 p-2.5 transition hover:border-[#dedbd2] hover:bg-white"
                     >
                       <div className="h-16 w-11 shrink-0 overflow-hidden rounded-r shadow-md">
                         <BookCoverArt
@@ -117,10 +117,10 @@ export default function SearchOverlay() {
                         />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#d93829]">
-                          {book.category} • {book.isbn}
+                        <p className="text-xs font-semibold text-[#d93829]">
+                          {book.category} • আইএসবিএন {book.isbn}
                         </p>
-                        <h4 className="truncate font-serif text-lg font-semibold text-[#141413]">
+                        <h4 className="truncate font-serif text-lg font-bold text-[#141413]">
                           {book.title}
                         </h4>
                         <p className="truncate text-xs text-[#62605a]">
@@ -139,13 +139,13 @@ export default function SearchOverlay() {
             </div>
 
             <div className="flex items-center justify-between border-t border-[#dedbd2] bg-[#eceae3] px-5 py-3 text-xs text-[#62605a]">
-              <span>Press Esc to close</span>
+              <span>Esc চাপলে বন্ধ হবে</span>
               <Link
                 href={query ? `/books?q=${encodeURIComponent(query)}` : "/books"}
                 onClick={() => setSearchOpen(false)}
-                className="inline-flex items-center gap-1 font-semibold text-[#141413] hover:text-[#d93829]"
+                className="inline-flex cursor-pointer items-center gap-1 font-bold text-[#141413] hover:text-[#d93829]"
               >
-                Explore full catalog <ArrowRight className="h-3.5 w-3.5" />
+                সম্পূর্ণ ক্যাটালগ দেখুন <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </div>
           </motion.div>

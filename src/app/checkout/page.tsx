@@ -244,7 +244,6 @@ function CheckoutContent() {
 
       clearCart();
       sessionStorage.removeItem("uttoron_checkout_coupon");
-      notify(`Order ${data.order.orderNumber} confirmed!`, "success");
       router.push(`/orders/${data.order.orderNumber}`);
     } finally {
       setSubmitting(false);

@@ -15,7 +15,8 @@ async function handleCallback(request: Request) {
 
   if (status !== "success" || !orderNumber) {
     return NextResponse.redirect(
-      `${baseUrl}/checkout?paymentError=${encodeURIComponent("Card payment was cancelled or declined.")}`
+      `${baseUrl}/checkout?paymentError=${encodeURIComponent("Card payment was cancelled or declined.")}`,
+      303
     );
   }
 
@@ -34,23 +35,51 @@ async function handleCallback(request: Request) {
     process.env.SSLCOMMERZ_STORE_ID &&
     process.env.SSLCOMMERZ_STORE_PASSWD
   ) {
-    const formData = request.method === "POST" ? await request.formData() : null;
-    const valId = (formData?.get("val_id") as string) || url.searchParams.get("val_id") || "";
+    let valId = url.searchParams.get("val_id") || "";
+    let tranId = url.searchParams.get("tran_id") || "";
+    let bankTranId = url.searchParams.get("bank_tran_id") || "";
+
+    if (request.method === "POST") {
+      try {
+        const formData = await request.formData();
+        valId = (formData.get("val_id") as string) || valId;
+        tranId = (formData.get("tran_id") as string) || tranId;
+        bankTranId = (formData.get("bank_tran_id") as string) || bankTranId;
+      } catch {}
+    }
+
     if (valId) {
+      const storeId = process.env.SSLCOMMERZ_STORE_ID.trim();
+      const storePasswd = process.env.SSLCOMMERZ_STORE_PASSWD.trim();
       const isSandbox = process.env.SSLCOMMERZ_IS_SANDBOX !== "false";
       const valUrl = isSandbox
         ? "https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php"
         : "https://securepay.sslcommerz.com/validator/api/validationserverAPI.php";
-      const vRes = await fetch(
-        `${valUrl}?val_id=${encodeURIComponent(valId)}&store_id=${encodeURIComponent(
-          process.env.SSLCOMMERZ_STORE_ID
-        )}&store_passwd=${encodeURIComponent(
-          process.env.SSLCOMMERZ_STORE_PASSWD
-        )}&format=json`
-      );
-      const vJson = (await vRes.json()) as { status?: string; bank_tran_id?: string };
+
+      const validate = async (sPass: string) => {
+        const vRes = await fetch(
+          `${valUrl}?val_id=${encodeURIComponent(valId)}&store_id=${encodeURIComponent(
+            storeId
+          )}&store_passwd=${encodeURIComponent(sPass)}&format=json`
+        );
+        return (await vRes.json()) as { status?: string; bank_tran_id?: string };
+      };
+
+      let vJson = await validate(storePasswd);
+      if (
+        isSandbox &&
+        vJson.status !== "VALID" &&
+        vJson.status !== "VALIDATED" &&
+        storePasswd !== `${storeId}@ssl`
+      ) {
+        const retryJson = await validate(`${storeId}@ssl`);
+        if (retryJson.status === "VALID" || retryJson.status === "VALIDATED") {
+          vJson = retryJson;
+        }
+      }
+
       verified = vJson.status === "VALID" || vJson.status === "VALIDATED";
-      ref = vJson.bank_tran_id || valId;
+      ref = vJson.bank_tran_id || bankTranId || valId;
     }
   }
 
@@ -66,7 +95,8 @@ async function handleCallback(request: Request) {
     return NextResponse.redirect(
       `${baseUrl}/checkout?paymentError=${encodeURIComponent(
         "Card payment could not be verified with the gateway."
-      )}`
+      )}`,
+      303
     );
   }
 
@@ -116,7 +146,8 @@ async function handleCallback(request: Request) {
   }
 
   return NextResponse.redirect(
-    `${baseUrl}/orders/${encodeURIComponent(orderNumber)}?paid=1`
+    `${baseUrl}/orders/${encodeURIComponent(orderNumber)}?paid=1`,
+    303
   );
 }
 

@@ -75,13 +75,30 @@ export function isPaymentMethodAvailable(method: PaymentMethod): PaymentGatewayA
 }
 
 export function getSiteBaseUrl(req?: Request): string {
+  if (req) {
+    const forwardedHost = req.headers.get("x-forwarded-host");
+    const forwardedProto = req.headers.get("x-forwarded-proto") || "https";
+    if (forwardedHost) {
+      return `${forwardedProto}://${forwardedHost}`;
+    }
+    const host = req.headers.get("host");
+    if (host) {
+      const proto =
+        host.includes("localhost") || host.includes("127.0.0.1")
+          ? "http"
+          : "https";
+      return `${proto}://${host}`;
+    }
+    try {
+      const url = new URL(req.url);
+      return `${url.protocol}//${url.host}`;
+    } catch {}
+  }
+
   if (process.env.NEXT_PUBLIC_SITE_URL) {
     return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "");
   }
-  if (req) {
-    const url = new URL(req.url);
-    return `${url.protocol}//${url.host}`;
-  }
+
   return "http://localhost:3000";
 }
 
@@ -213,8 +230,8 @@ export async function initiateSSLCommerzCheckout(
   order: Order,
   baseUrl: string
 ): Promise<{ redirectUrl: string; sessionKey: string }> {
-  const storeId = process.env.SSLCOMMERZ_STORE_ID;
-  const storePasswd = process.env.SSLCOMMERZ_STORE_PASSWD;
+  const storeId = process.env.SSLCOMMERZ_STORE_ID?.trim();
+  const storePasswd = process.env.SSLCOMMERZ_STORE_PASSWD?.trim();
   if (!storeId || !storePasswd) {
     throw new Error("SSLCommerz credentials are not configured.");
   }
@@ -224,43 +241,82 @@ export async function initiateSSLCommerzCheckout(
     ? "https://sandbox.sslcommerz.com/gwprocess/v4/api.php"
     : "https://securepay.sslcommerz.com/gwprocess/v4/api.php";
 
-  const params = new URLSearchParams({
-    store_id: storeId,
-    store_passwd: storePasswd,
-    total_amount: String(order.total),
-    currency: "BDT",
-    tran_id: order.orderNumber,
-    success_url: `${baseUrl}/api/payments/card/callback?status=success&orderNumber=${encodeURIComponent(order.orderNumber)}`,
-    fail_url: `${baseUrl}/api/payments/card/callback?status=fail&orderNumber=${encodeURIComponent(order.orderNumber)}`,
-    cancel_url: `${baseUrl}/api/payments/card/callback?status=cancel&orderNumber=${encodeURIComponent(order.orderNumber)}`,
-    cus_name: order.customer.fullName,
-    cus_email: order.customer.email,
-    cus_add1: order.customer.address,
-    cus_city: order.customer.city,
-    cus_postcode: order.customer.postalCode,
-    cus_country: "Bangladesh",
-    cus_phone: order.customer.phone,
-    shipping_method: "Courier",
-    product_name: order.items.map((i) => i.title).join(", ").slice(0, 200),
-    product_category: "Books",
-    product_profile: "physical-goods",
-  });
+  const itemCount = order.items.reduce((acc, i) => acc + i.quantity, 0) || 1;
+  const productNames =
+    order.items.map((i) => i.title).join(", ").slice(0, 200) || "Books & Publications";
 
-  const res = await fetch(endpoint, {
+  const buildParams = (sId: string, sPass: string) => {
+    return new URLSearchParams({
+      store_id: sId,
+      store_passwd: sPass,
+      total_amount: Number(order.total).toFixed(2),
+      currency: "BDT",
+      tran_id: order.orderNumber,
+      success_url: `${baseUrl}/api/payments/card/callback?status=success&orderNumber=${encodeURIComponent(order.orderNumber)}`,
+      fail_url: `${baseUrl}/api/payments/card/callback?status=fail&orderNumber=${encodeURIComponent(order.orderNumber)}`,
+      cancel_url: `${baseUrl}/api/payments/card/callback?status=cancel&orderNumber=${encodeURIComponent(order.orderNumber)}`,
+      ipn_url: `${baseUrl}/api/payments/card/callback?status=ipn&orderNumber=${encodeURIComponent(order.orderNumber)}`,
+      cus_name: order.customer.fullName || "Valued Reader",
+      cus_email: order.customer.email || "customer@uttoronprokasoni.com",
+      cus_add1: order.customer.address || "Dhaka, Bangladesh",
+      cus_city: order.customer.city || "Dhaka",
+      cus_postcode: order.customer.postalCode || "1200",
+      cus_country: "Bangladesh",
+      cus_phone: order.customer.phone || "01700000000",
+      shipping_method: "Courier",
+      num_of_item: String(itemCount),
+      ship_name: order.customer.fullName || "Valued Reader",
+      ship_add1: order.customer.address || "Dhaka, Bangladesh",
+      ship_city: order.customer.city || "Dhaka",
+      ship_postcode: order.customer.postalCode || "1200",
+      ship_country: "Bangladesh",
+      product_name: productNames,
+      product_category: "Books",
+      product_profile: "physical-goods",
+    });
+  };
+
+  let res = await fetch(endpoint, {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: params.toString(),
+    body: buildParams(storeId, storePasswd).toString(),
   });
 
-  const json = (await res.json()) as {
+  let json = (await res.json()) as {
     status?: string;
     GatewayPageURL?: string;
     sessionkey?: string;
     failedreason?: string;
   };
 
+  // If in sandbox and store credential error occurred, auto-retry with standard sandbox password (${storeId}@ssl)
+  if (
+    isSandbox &&
+    json.status !== "SUCCESS" &&
+    json.failedreason?.toLowerCase().includes("store credential")
+  ) {
+    const candidatePasswords = [`${storeId}@ssl`];
+    for (const altPass of candidatePasswords) {
+      if (altPass !== storePasswd) {
+        console.info(`[SSLCommerz] Retrying sandbox with candidate password for ${storeId}...`);
+        const retryRes = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: buildParams(storeId, altPass).toString(),
+        });
+        const retryJson = (await retryRes.json()) as typeof json;
+        if (retryJson.status === "SUCCESS" && retryJson.GatewayPageURL) {
+          json = retryJson;
+          break;
+        }
+      }
+    }
+  }
+
   if (json.status !== "SUCCESS" || !json.GatewayPageURL) {
-    throw new Error(json.failedreason || "Failed to initialize SSLCommerz payment session.");
+    throw new Error(
+      json.failedreason || "Failed to initialize SSLCommerz payment session."
+    );
   }
 
   return {

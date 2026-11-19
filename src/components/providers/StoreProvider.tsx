@@ -163,12 +163,10 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         }
         const finalQty = Math.min(desired, book.stock);
         if (existing) {
-          notify(`Updated "${book.title}" quantity to ${finalQty}.`, "success");
           return prev.map((i) =>
             i.bookId === book.id ? { ...i, quantity: finalQty, stock: book.stock } : i
           );
         }
-        notify(`Added "${book.title}" to your reading bag.`, "success");
         return [
           ...prev,
           {
@@ -196,15 +194,9 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
 
   const removeFromCart = useCallback(
     (bookId: string) => {
-      setCart((prev) => {
-        const target = prev.find((i) => i.bookId === bookId);
-        if (target) {
-          notify(`Removed "${target.title}" from bag.`, "info");
-        }
-        return prev.filter((i) => i.bookId !== bookId);
-      });
+      setCart((prev) => prev.filter((i) => i.bookId !== bookId));
     },
-    [notify]
+    []
   );
 
   const updateQuantity = useCallback(

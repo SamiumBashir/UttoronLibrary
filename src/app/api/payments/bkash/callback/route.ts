@@ -14,7 +14,8 @@ export async function GET(request: Request) {
 
   if (status !== "success" || !paymentID || !orderNumber) {
     return NextResponse.redirect(
-      `${baseUrl}/checkout?paymentError=${encodeURIComponent("bKash payment was cancelled or failed.")}`
+      `${baseUrl}/checkout?paymentError=${encodeURIComponent("bKash payment was cancelled or failed.")}`,
+      303
     );
   }
 
@@ -94,7 +95,8 @@ export async function GET(request: Request) {
   }
 
   return NextResponse.redirect(
-    `${baseUrl}/orders/${encodeURIComponent(orderNumber)}?paid=1`
+    `${baseUrl}/orders/${encodeURIComponent(orderNumber)}?paid=1`,
+    303
   );
 }
 

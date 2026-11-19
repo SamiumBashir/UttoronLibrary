@@ -122,7 +122,6 @@ function AccountContent() {
           notify(data.error || "Sign in failed.", "error");
         } else {
           await refreshAuth();
-          notify("Welcome back to Uttoron Prokasoni.", "success");
         }
       } else if (authMode === "signup") {
         const res = await fetch("/api/auth/signup", {
@@ -135,7 +134,6 @@ function AccountContent() {
           notify(data.error || "Could not create account.", "error");
         } else {
           await refreshAuth();
-          notify("Account created! Welcome to the library.", "success");
         }
       } else if (authMode === "forgot") {
         const res = await fetch("/api/auth/forgot-password", {
@@ -189,7 +187,6 @@ function AccountContent() {
       });
       if (res.ok) {
         await refreshAuth();
-        notify(`Welcome, ${cred.user.displayName || "Reader"}!`, "success");
       } else {
         const err = (await res.json()) as { error?: string };
         notify(err.error || "Google sign-in failed.", "error");
@@ -652,10 +649,6 @@ function AccountContent() {
                             for (const b of wishlistedBooks) {
                               addToCart(b, 1, false);
                             }
-                            notify(
-                              `সবগুলো বই (${wishlistedBooks.length}টি) কার্টে যোগ করা হয়েছে।`,
-                              "success"
-                            );
                           }}
                           className="inline-flex items-center gap-1.5 rounded-full border border-[#141413] bg-[#141413] px-4 py-2 text-xs font-semibold text-white transition hover:bg-[#d93829]"
                         >
